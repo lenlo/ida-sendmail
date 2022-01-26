@@ -1,12 +1,12 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.19.2
-%%CreationDate: Tue Jan 25 17:35:32 2022
+%%CreationDate: Tue Jan 25 17:56:20 2022
 %%DocumentNeededResources: font Times-Bold
 %%+ font Times-Italic
 %%+ font Times-Roman
 %%+ font Symbol
 %%DocumentSuppliedResources: procset grops 1.19 2
-%%Pages: 24
+%%Pages: 27
 %%PageOrder: Ascend
 %%DocumentMedia: Default 612 792 0 () ()
 %%Orientation: Portrait
@@ -2013,599 +2013,621 @@ n services, such as electronic conferencing systems and database or e)72
 (long as we com-)2.703 F(municate, e)72 223.2 Q -.15(ve)-.25 G
 (rything can be impro).15 E -.15(ve)-.15 G(d.).15 E F1
 (The Mail Connectivity Conspir)233.326 238.8 Q(acy Continues)-.15 E
-1.666(...)1.666 G F0([Crispin86a])A/F2 10/Times-Bold@0 SF
-(APPENDIX A: LIST OF AFFECTED FILES)72 250.8 Q F0
-(This is description of all changes made to the)72 266.4 Q F1(sendmail)
-2.5 E F0(source \214les.)2.5 E F2(Nameser)72 290.4 Q -.1(ve)-.1 G 2.5
-(rD).1 G(efault Ar)-2.5 E(gument)-.1 E .4 LW 203.88 292.9 72 292.9 DL
-(daemon.c)72 306 Q F0(Changed to return)34.17 E/F3 9/Times-Roman@0 SF
-(TR)2.5 E(UE)-.36 E F0(if)2.5 E F1 -.1(ge)2.5 G(thostbyname).1 E F0
-(\(3\) succeeds and)A F3 -.666(FA)2.5 G(LSE).666 E F0(if not.)2.5 E F2
-(parseaddr)72 321.6 Q(.c)-1 E F0 1.155(Changed to interpret the)25.17 F
-F2($:)3.655 E F1(default)3.655 E F0(ar)3.655 E 1.155(gument and to tak)
--.18 F 3.655(ec)-.1 G 1.156(are of the returned v)-3.655 F 1.156
-(alue of)-.25 F F1(maphostname)147 333.6 Q F0(.)A F2(Dir)72 357.6 Q
-(ect Access to Dbm\(3\) Files)-.18 E 197.89 360.1 72 360.1 DL(alias.c)72
-373.2 Q F0(Changed to allo)48.61 E 2.5(wa)-.25 G
-(ccess using the `@' database.)-2.5 E F2(conf)72 388.8 Q(.c)-.15 E F0
-(Changed to initialize all databases to)49.88 E F3(DB_NO)2.5 E(TYET)-.36
-E(OPEN)-.162 E F0(.)A F2(daemon.c)72 404.4 Q F0 .214
-(The lookup function)34.17 F F1(mapk)2.713 E -.3(ey)-.1 G F0 .213
-(goes here.)3.013 F .213(It tak)5.213 F .213(es four ar)-.1 F(guments:)
--.18 E F1(db)2.713 E F0 2.713(,t)C .213(he character denot-)-2.713 F
-.906(ing the database,)147 416.4 R F1 -.1(ke)3.406 G(y)-.2 E F0 3.406
-(,t)C .907(he lookup string and b)-3.406 F(uf)-.2 E .907
-(fer in which a result is returned,)-.25 F F1 -.1(ke)3.407 G(ysiz)-.2 E
-F0(,)A .118(the maximum size of the k)147 428.4 R .418 -.15(ey b)-.1 H
-(uf)-.05 E(fer)-.25 E 2.618(,a)-.4 G(nd)-2.618 E F1(ar)2.618 E(g)-.37 E
-F0 2.617(,w)C .117(hich either should be a character string or)-2.617 F
-F3(NULL)147 440.4 Q F0 5.359(.T)C .359(he function returns)-5.359 F F3
-(TR)2.859 E(UE)-.36 E F0 .359(if a match could be found and)2.859 F F3
--.666(FA)2.86 G(LSE).666 E F0 .36(otherwise. The)2.86 F(deb)147 452.4 Q
-(ugging \215ag 60 may be used to trace database lookups.)-.2 E F2
-(main.c)72 468 Q F0(Added mappings of)46.39 E F2($\()2.5 E F0(and)2.5 E
-F2($\))2.5 E F0(to)2.5 E F3(KEYBEGIN)2.5 E F0(and)2.5 E F3(KEYEND)2.5 E
-F0(.)A F2(parseaddr)72 483.6 Q(.c)-1 E F0(Added code to interpret)25.17
-E F2($\()2.5 E F0 1.666(...)1.666 G F2($\))A F0(constructs.)2.5 E F2
--.18(re)72 499.2 S(adcf).18 E(.c)-.15 E F0
-(Added understanding of the `K' option.)41.18 E F2(sendmail.h)72 514.8 Q
-F0 .498(Added de\214nitions for the macro characters)28.6 F F3(KEYBEGIN)
-2.998 E F0(and)2.998 E F3(KEYEND)2.998 E F0 5.498(.A)C .498
-(dded the decla-)-5.498 F
-(ration of the global database \214le table DbmT)147 526.8 Q(ab)-.8 E(.)
--.4 E F2(Batched)72 550.8 Q/F4 9/Times-Bold@0 SF(SMTP)2.5 E F2(Support)
-2.5 E 172.012 553.3 72 553.3 DL(main.c)72 566.4 Q F0 .65(Added the)46.39
-F F3(MD_BSMTP)3.15 E F0 .65(option and the usage of)3.15 F F1(bsmtp)3.15
-E F0 .65(as an alternate name of)3.15 F F1(sendmail)3.15 E F0
-(that automatically will turn on the)147 578.4 Q F3(MD_BSMTP)2.5 E F0
-(mode.)2.5 E F2(sendmail.h)72 594 Q F0(Added the)28.6 E F3(MD_BSMTP)2.5
-E F0(de\214ne.)2.5 E F2(sr)72 609.6 Q(vrsmtp.c)-.1 E F0 .555(Added the)
-29.28 F F1(batc)3.055 E(hed)-.15 E F0(ar)3.055 E .555
-(gument \(boolean\) to the)-.18 F F1(smtp)3.055 E F0 .554
-(function and changes that will mak)3.055 F(e)-.1 E
-(it mail back errors is)147 621.6 Q F1(batc)2.5 E(hed)-.15 E F0(is set.)
-2.5 E F2(usersmtp.c)72 637.2 Q F0 2.433
-(Changed the code to automatically generate internal)28.62 F F3
-(SMTPGOODREPL)4.933 E(Y)-.9 E F0(\()4.933 E F2(250)A F0 4.933(\)r)C
-(eply)-4.933 E(codes to all)147 649.2 Q F3(SMTP)2.5 E F0
-(commands if the)2.5 E F3(M_BSMTP)2.5 E F0(mailer \215ag is set.)2.5 E
-F2(Separate En)72 673.2 Q -.1(ve)-.4 G(lope/Header Rewriting Rulesets).1
-E 268.98 675.7 72 675.7 DL(headers.c)72 688.8 Q F0 .814
-(Changed to propag)34.73 F .814(ate a \215ag telling if this is an en)
--.05 F -.15(ve)-.4 G .814(lope or header address for).15 F F1 -.37(re)
-3.314 G(mote-).37 E(name)147 700.8 Q F0(to re)2.5 E(write.)-.25 E F2
-(main.c)72 716.4 Q F0 -.35(Tr)46.39 G
-(ace statement changed to display mailers' en).35 E -.15(ve)-.4 G
-(lope and header speci\214c rulesets.).15 E 2.5<8a31>270.5 768 S 2.5
-<358a>-2.5 G 0 Cg EP
+1.666(...)1.666 G F0([Crispin86a])A 2.5<8a31>270.5 768 S 2.5<358a>-2.5 G
+0 Cg EP
 %%Page: 16 17
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF(parseaddr)72 84
-Q(.c)-1 E F0 3.145(Added a boolean)25.17 F/F2 10/Times-Italic@0 SF
-(header)5.645 E(addr)-.15 E(ess)-.37 E F0(ar)5.645 E 3.145(gument to)
--.18 F F2 -.37(re)5.645 G(motename).37 E F0 3.145
-(and code to distinguish)5.645 F(between en)147 96 Q -.15(ve)-.4 G
-(lope and header re).15 E(writing.)-.25 E F1(queue.c)72 111.6 Q F0
-(Set both en)42.5 E -.15(ve)-.4 G(lope and header re).15 E
-(writing rulesets to -1 in)-.25 E F2(nullmailer)2.5 E F0(.)A F1 -.18(re)
-72 127.2 S(adcf).18 E(.c)-.15 E F0
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX A: LIST OF AFFECTED FILES)72 84 Q F0
+(This is description of all changes made to the)72 99.6 Q/F2 10
+/Times-Italic@0 SF(sendmail)2.5 E F0(source \214les.)2.5 E F1(Nameser)72
+123.6 Q -.1(ve)-.1 G 2.5(rD).1 G(efault Ar)-2.5 E(gument)-.1 E .4 LW
+203.88 126.1 72 126.1 DL(daemon.c)72 139.2 Q F0(Changed to return)34.17
+E/F3 9/Times-Roman@0 SF(TR)2.5 E(UE)-.36 E F0(if)2.5 E F2 -.1(ge)2.5 G
+(thostbyname).1 E F0(\(3\) succeeds and)A F3 -.666(FA)2.5 G(LSE).666 E
+F0(if not.)2.5 E F1(parseaddr)72 154.8 Q(.c)-1 E F0 1.155
+(Changed to interpret the)25.17 F F1($:)3.655 E F2(default)3.655 E F0
+(ar)3.655 E 1.155(gument and to tak)-.18 F 3.655(ec)-.1 G 1.156
+(are of the returned v)-3.655 F 1.156(alue of)-.25 F F2(maphostname)147
+166.8 Q F0(.)A F1(Dir)72 190.8 Q(ect Access to Dbm\(3\) Files)-.18 E
+197.89 193.3 72 193.3 DL(alias.c)72 206.4 Q F0(Changed to allo)48.61 E
+2.5(wa)-.25 G(ccess using the `@' database.)-2.5 E F1(conf)72 222 Q(.c)
+-.15 E F0(Changed to initialize all databases to)49.88 E F3(DB_NO)2.5 E
+(TYET)-.36 E(OPEN)-.162 E F0(.)A F1(daemon.c)72 237.6 Q F0 .214
+(The lookup function)34.17 F F2(mapk)2.713 E -.3(ey)-.1 G F0 .213
+(goes here.)3.013 F .213(It tak)5.213 F .213(es four ar)-.1 F(guments:)
+-.18 E F2(db)2.713 E F0 2.713(,t)C .213(he character denot-)-2.713 F
+.906(ing the database,)147 249.6 R F2 -.1(ke)3.406 G(y)-.2 E F0 3.406
+(,t)C .907(he lookup string and b)-3.406 F(uf)-.2 E .907
+(fer in which a result is returned,)-.25 F F2 -.1(ke)3.407 G(ysiz)-.2 E
+F0(,)A .118(the maximum size of the k)147 261.6 R .418 -.15(ey b)-.1 H
+(uf)-.05 E(fer)-.25 E 2.618(,a)-.4 G(nd)-2.618 E F2(ar)2.618 E(g)-.37 E
+F0 2.617(,w)C .117(hich either should be a character string or)-2.617 F
+F3(NULL)147 273.6 Q F0 5.359(.T)C .359(he function returns)-5.359 F F3
+(TR)2.859 E(UE)-.36 E F0 .359(if a match could be found and)2.859 F F3
+-.666(FA)2.86 G(LSE).666 E F0 .36(otherwise. The)2.86 F(deb)147 285.6 Q
+(ugging \215ag 60 may be used to trace database lookups.)-.2 E F1
+(main.c)72 301.2 Q F0(Added mappings of)46.39 E F1($\()2.5 E F0(and)2.5
+E F1($\))2.5 E F0(to)2.5 E F3(KEYBEGIN)2.5 E F0(and)2.5 E F3(KEYEND)2.5
+E F0(.)A F1(parseaddr)72 316.8 Q(.c)-1 E F0(Added code to interpret)
+25.17 E F1($\()2.5 E F0 1.666(...)1.666 G F1($\))A F0(constructs.)2.5 E
+F1 -.18(re)72 332.4 S(adcf).18 E(.c)-.15 E F0
+(Added understanding of the `K' option.)41.18 E F1(sendmail.h)72 348 Q
+F0 .498(Added de\214nitions for the macro characters)28.6 F F3(KEYBEGIN)
+2.998 E F0(and)2.998 E F3(KEYEND)2.998 E F0 5.498(.A)C .498
+(dded the decla-)-5.498 F
+(ration of the global database \214le table DbmT)147 360 Q(ab)-.8 E(.)
+-.4 E F1(Batched)72 384 Q/F4 9/Times-Bold@0 SF(SMTP)2.5 E F1(Support)2.5
+E 172.012 386.5 72 386.5 DL(main.c)72 399.6 Q F0 .65(Added the)46.39 F
+F3(MD_BSMTP)3.15 E F0 .65(option and the usage of)3.15 F F2(bsmtp)3.15 E
+F0 .65(as an alternate name of)3.15 F F2(sendmail)3.15 E F0
+(that automatically will turn on the)147 411.6 Q F3(MD_BSMTP)2.5 E F0
+(mode.)2.5 E F1(sendmail.h)72 427.2 Q F0(Added the)28.6 E F3(MD_BSMTP)
+2.5 E F0(de\214ne.)2.5 E F1(sr)72 442.8 Q(vrsmtp.c)-.1 E F0 .555
+(Added the)29.28 F F2(batc)3.055 E(hed)-.15 E F0(ar)3.055 E .555
+(gument \(boolean\) to the)-.18 F F2(smtp)3.055 E F0 .554
+(function and changes that will mak)3.055 F(e)-.1 E
+(it mail back errors is)147 454.8 Q F2(batc)2.5 E(hed)-.15 E F0(is set.)
+2.5 E F1(usersmtp.c)72 470.4 Q F0 2.433
+(Changed the code to automatically generate internal)28.62 F F3
+(SMTPGOODREPL)4.933 E(Y)-.9 E F0(\()4.933 E F1(250)A F0 4.933(\)r)C
+(eply)-4.933 E(codes to all)147 482.4 Q F3(SMTP)2.5 E F0
+(commands if the)2.5 E F3(M_BSMTP)2.5 E F0(mailer \215ag is set.)2.5 E
+F1(Separate En)72 506.4 Q -.1(ve)-.4 G(lope/Header Rewriting Rulesets).1
+E 268.98 508.9 72 508.9 DL(headers.c)72 522 Q F0 .814(Changed to propag)
+34.73 F .814(ate a \215ag telling if this is an en)-.05 F -.15(ve)-.4 G
+.814(lope or header address for).15 F F2 -.37(re)3.314 G(mote-).37 E
+(name)147 534 Q F0(to re)2.5 E(write.)-.25 E F1(main.c)72 549.6 Q F0
+-.35(Tr)46.39 G(ace statement changed to display mailers' en).35 E -.15
+(ve)-.4 G(lope and header speci\214c rulesets.).15 E F1(parseaddr)72
+565.2 Q(.c)-1 E F0 3.145(Added a boolean)25.17 F F2(header)5.645 E(addr)
+-.15 E(ess)-.37 E F0(ar)5.645 E 3.145(gument to)-.18 F F2 -.37(re)5.645
+G(motename).37 E F0 3.145(and code to distinguish)5.645 F(between en)147
+577.2 Q -.15(ve)-.4 G(lope and header re).15 E(writing.)-.25 E F1
+(queue.c)72 592.8 Q F0(Set both en)42.5 E -.15(ve)-.4 G
+(lope and header re).15 E(writing rulesets to -1 in)-.25 E F2
+(nullmailer)2.5 E F0(.)A F1 -.18(re)72 608.4 S(adcf).18 E(.c)-.15 E F0
 (Made it parse the `/' option and the e)41.18 E
 (xtended mailer ruleset speci\214cation syntax.)-.15 E F1(sendmail.h)72
-142.8 Q F0(Extended the mailer declaration to include both en)28.6 E
--.15(ve)-.4 G(lope and header speci\214c rulesets.).15 E F1
-(Separate Local)72 166.8 Q/F3 9/Times-Bold@0 SF(UUCP)2.5 E F1(Host Name)
-2.5 E .4 LW 213.643 169.3 72 169.3 DL(deli)72 182.4 Q -.1(ve)-.1 G -1
-(r.).1 G(c)1 E F0(Used when producing \231From_\232 lines.)39.82 E F1
-(main.c)72 198 Q F0(Added the de\214nition of)46.39 E F1($k)2.5 E F0
-(to the initial v)2.5 E(alue of)-.25 E F1($w)2.5 E F0(.)A F1(parseaddr)
-72 213.6 Q(.c)-1 E F0(Used when making addresses)25.17 E/F4 9
-/Times-Roman@0 SF(UUCP)2.5 E F0(relati)2.5 E -.15(ve)-.25 G(.).15 E F1
-(Retur)72 237.6 Q 2.5(nP)-.15 G(ath f)-2.6 E(or)-.25 E F3(UUCP)2.5 E F1
-(Mailers)2.5 E 202.583 240.1 72 240.1 DL(deli)72 253.2 Q -.1(ve)-.1 G -1
-(r.).1 G(c)1 E F0 .68(Changed to look for the mailer \215ag)39.82 F F4
-(M_FR)3.18 E(OMP)-.36 E -.999(AT)-.828 G(H).999 E F0 .68
-(when producing the)3.18 F F4(UUCP)3.179 E F0(\231From_\232)3.179 E
-(lines.)147 265.2 Q F3(UUCP)72 289.2 Q F1(Header Addr)2.5 E(ess Relati)
--.18 E(vization)-.1 E 230.313 291.7 72 291.7 DL(parseaddr)72 304.8 Q(.c)
--1 E F0 .848(Changed to)25.17 F F2(uur)3.348 E(elativize)-.37 E F0 .849
-(addresses after ruleset 4 has been applied if the \232mailer \215ag is)
-3.348 F 2.5(set. The)147 316.8 R(actual)2.5 E F2(uur)2.5 E(elativize)
--.37 E F0(is here too.)2.5 E F1(sendmail.h)72 332.4 Q F0(De\214ned the)
-28.6 E F4(M_RELA)2.5 E(TIVIZE)-.999 E F0(\215ag to be 'V'.)2.5 E F1
-(Support f)72 356.4 Q(or Multi-T)-.25 E(ok)-.92 E(en Class Matches)-.1 E
-241.84 358.9 72 358.9 DL(parseaddr)72 372 Q(.c)-1 E F0
-(Crude code added to enable multi-tok)25.17 E(en class matches.)-.1 E F1
-(Support f)72 396 Q(or Embedded Subruleset Calls)-.25 E 242.88 398.5 72
-398.5 DL(parseaddr)72 411.6 Q(.c)-1 E F0(Wrote a separate)25.17 E F2
-(callsubr)2.5 E F0(function to tak)2.5 E 2.5(ec)-.1 G
-(are of subruleset calls.)-2.5 E F1(Elaborate Matching Algorithm f)72
-435.6 Q(or Unkno)-.25 E(wn Local Recipients)-.1 E 337.2 438.1 72 438.1
-DL -.18(re)72 451.2 S(cipient.c).18 E F0 .24(Added the)30.47 F F2
-(partialstring)2.74 E F0 .24
-(matching routine and code that calls it for unkno)2.74 F .24
-(wn local recipi-)-.25 F(ents.)147 463.2 Q F1(Support f)72 487.2 Q
-(or Maryland')-.25 E 2.5(sm)-.37 G(dbm P)-2.5 E(ackage)-.1 E 242.39
-489.7 72 489.7 DL(alias.c)72 502.8 Q F0
-(Changed to be independent on which package is being used.)48.61 E F1
-(conf)72 518.4 Q(.h)-.15 E F0 .481(Added the)48.76 F F4(MDBM)2.981 E F0
-.481(de\214ne, to be used if the mdbm routines should be used instead o\
-f the)2.981 F 2.5(ndbm. Note)147 530.4 R(that)2.5 E F4(NDBM)2.5 E F0
-(still should be de\214ned.)2.5 E F1(mdbm_compat.h)72 546 Q F0 3.724(Am)
-147 558 S 1.223(dbm compatibility \214le, used to de\214ne macros which\
- map ndbm functions to their)-3.724 F(mdbm equi)147 570 Q -.25(va)-.25 G
-(lents.).25 E F1(sendmail.h)72 585.6 Q F0(Added mdbm compatibility macr\
-os and generalized the dbm code in general.)28.6 E F1(Impr)72 609.6 Q
--.1(ove)-.18 G 2.5(dT).1 G(est Mode Output)-3.42 E 194.31 612.1 72 612.1
-DL(main.c)72 625.2 Q F0(Changed it to e)46.39 E
-(xport the macros' symbolic names.)-.15 E F1(parseaddr)72 640.8 Q(.c)-1
-E F0(Changed it to call)25.17 E F2(printcav)2.5 E F0(instead of)2.5 E F2
-(printav)2.5 E F0(when tracing the re)2.5 E(writing rules.)-.25 E F1
-(sendmail.h)72 656.4 Q F0(Included main.c')28.6 E 2.5(sm)-.55 G
-(acro table among the global v)-2.5 E(ariables.)-.25 E F1(util.h)72 672
-Q F0 1.256(Changed it to print macros using their symbolic names.)52.49
-F 1.257(Added the)6.257 F F2(printcav)3.757 E F0(function,)3.757 E
-(which prints ar)147 684 Q(gument v)-.18 E
-(ectors without enclosing quotation marks.)-.15 E 2.5<8a31>270.5 768 S
-2.5<368a>-2.5 G 0 Cg EP
+624 Q F0(Extended the mailer declaration to include both en)28.6 E -.15
+(ve)-.4 G(lope and header speci\214c rulesets.).15 E F1(Separate Local)
+72 648 Q F4(UUCP)2.5 E F1(Host Name)2.5 E 213.643 650.5 72 650.5 DL
+(deli)72 663.6 Q -.1(ve)-.1 G -1(r.).1 G(c)1 E F0
+(Used when producing \231From_\232 lines.)39.82 E F1(main.c)72 679.2 Q
+F0(Added the de\214nition of)46.39 E F1($k)2.5 E F0(to the initial v)2.5
+E(alue of)-.25 E F1($w)2.5 E F0(.)A F1(parseaddr)72 694.8 Q(.c)-1 E F0
+(Used when making addresses)25.17 E F3(UUCP)2.5 E F0(relati)2.5 E -.15
+(ve)-.25 G(.).15 E 2.5<8a31>270.5 768 S 2.5<368a>-2.5 G 0 Cg EP
 %%Page: 17 18
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF(Better T)72 84 Q
-(o: and Cc: Headers of Retur)-.92 E(ned Messages)-.15 E .4 LW 285.61
-86.5 72 86.5 DL(sa)72 99.6 Q -.1(ve)-.25 G(mail.c).1 E F0
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF(Retur)72 84 Q
+2.5(nP)-.15 G(ath f)-2.6 E(or)-.25 E/F2 9/Times-Bold@0 SF(UUCP)2.5 E F1
+(Mailers)2.5 E .4 LW 202.583 86.5 72 86.5 DL(deli)72 99.6 Q -.1(ve)-.1 G
+-1(r.).1 G(c)1 E F0 .68(Changed to look for the mailer \215ag)39.82 F/F3
+9/Times-Roman@0 SF(M_FR)3.18 E(OMP)-.36 E -.999(AT)-.828 G(H).999 E F0
+.68(when producing the)3.18 F F3(UUCP)3.179 E F0(\231From_\232)3.179 E
+(lines.)147 111.6 Q F2(UUCP)72 135.6 Q F1(Header Addr)2.5 E(ess Relati)
+-.18 E(vization)-.1 E 230.313 138.1 72 138.1 DL(parseaddr)72 151.2 Q(.c)
+-1 E F0 .848(Changed to)25.17 F/F4 10/Times-Italic@0 SF(uur)3.348 E
+(elativize)-.37 E F0 .849
+(addresses after ruleset 4 has been applied if the \232mailer \215ag is)
+3.348 F 2.5(set. The)147 163.2 R(actual)2.5 E F4(uur)2.5 E(elativize)
+-.37 E F0(is here too.)2.5 E F1(sendmail.h)72 178.8 Q F0(De\214ned the)
+28.6 E F3(M_RELA)2.5 E(TIVIZE)-.999 E F0(\215ag to be 'V'.)2.5 E F1
+(Support f)72 202.8 Q(or Multi-T)-.25 E(ok)-.92 E(en Class Matches)-.1 E
+241.84 205.3 72 205.3 DL(parseaddr)72 218.4 Q(.c)-1 E F0
+(Crude code added to enable multi-tok)25.17 E(en class matches.)-.1 E F1
+(Support f)72 242.4 Q(or Embedded Subruleset Calls)-.25 E 242.88 244.9
+72 244.9 DL(parseaddr)72 258 Q(.c)-1 E F0(Wrote a separate)25.17 E F4
+(callsubr)2.5 E F0(function to tak)2.5 E 2.5(ec)-.1 G
+(are of subruleset calls.)-2.5 E F1(Elaborate Matching Algorithm f)72
+282 Q(or Unkno)-.25 E(wn Local Recipients)-.1 E 337.2 284.5 72 284.5 DL
+-.18(re)72 297.6 S(cipient.c).18 E F0 .24(Added the)30.47 F F4
+(partialstring)2.74 E F0 .24
+(matching routine and code that calls it for unkno)2.74 F .24
+(wn local recipi-)-.25 F(ents.)147 309.6 Q F1(Support f)72 333.6 Q
+(or Maryland')-.25 E 2.5(sm)-.37 G(dbm P)-2.5 E(ackage)-.1 E 242.39
+336.1 72 336.1 DL(alias.c)72 349.2 Q F0
+(Changed to be independent on which package is being used.)48.61 E F1
+(conf)72 364.8 Q(.h)-.15 E F0 .481(Added the)48.76 F F3(MDBM)2.981 E F0
+.481(de\214ne, to be used if the mdbm routines should be used instead o\
+f the)2.981 F 2.5(ndbm. Note)147 376.8 R(that)2.5 E F3(NDBM)2.5 E F0
+(still should be de\214ned.)2.5 E F1(mdbm_compat.h)72 392.4 Q F0 3.724
+(Am)147 404.4 S 1.223(dbm compatibility \214le, used to de\214ne macros\
+ which map ndbm functions to their)-3.724 F(mdbm equi)147 416.4 Q -.25
+(va)-.25 G(lents.).25 E F1(sendmail.h)72 432 Q F0(Added mdbm compatibil\
+ity macros and generalized the dbm code in general.)28.6 E F1(Impr)72
+456 Q -.1(ove)-.18 G 2.5(dT).1 G(est Mode Output)-3.42 E 194.31 458.5 72
+458.5 DL(main.c)72 471.6 Q F0(Changed it to e)46.39 E
+(xport the macros' symbolic names.)-.15 E F1(parseaddr)72 487.2 Q(.c)-1
+E F0(Changed it to call)25.17 E F4(printcav)2.5 E F0(instead of)2.5 E F4
+(printav)2.5 E F0(when tracing the re)2.5 E(writing rules.)-.25 E F1
+(sendmail.h)72 502.8 Q F0(Included main.c')28.6 E 2.5(sm)-.55 G
+(acro table among the global v)-2.5 E(ariables.)-.25 E F1(util.h)72
+518.4 Q F0 1.256(Changed it to print macros using their symbolic names.)
+52.49 F 1.257(Added the)6.257 F F4(printcav)3.757 E F0(function,)3.757 E
+(which prints ar)147 530.4 Q(gument v)-.18 E
+(ectors without enclosing quotation marks.)-.15 E F1(Better T)72 554.4 Q
+(o: and Cc: Headers of Retur)-.92 E(ned Messages)-.15 E 285.61 556.9 72
+556.9 DL(sa)72 570 Q -.1(ve)-.25 G(mail.c).1 E F0
 (Changed the code to produce the abo)31.19 E .3 -.15(ve r)-.15 H(esult.)
-.15 E F1(Queue Bug Fixed)72 123.6 Q 145.9 126.1 72 126.1 DL(queue.c)72
-139.2 Q F0(Set the current en)42.5 E -.15(ve)-.4 G(lope').15 E 2.5(si)
--.55 G 2.5(dt)-2.5 G(o)-2.5 E/F2 9/Times-Roman@0 SF(NULL)2.5 E F0
-(before e)2.5 E(xiting.)-.15 E F1(Shar)72 163.2 Q(ed Input)-.18 E/F3 9
-/Times-Bold@0 SF(SMTP)2.5 E F1(Bug T)2.5 E(entati)-.92 E -.1(ve)-.1 G
-(ly Fixed).1 E 252.112 165.7 72 165.7 DL(main.c)72 178.8 Q F0 -.45(Tu)
-46.39 G(rned of).45 E 2.5(fb)-.25 G(uf)-2.7 E
-(fering from standard input before the call to)-.25 E/F4 10
-/Times-Italic@0 SF(smtp)2.5 E F0(.)A F1(Optional)72 202.8 Q F3(BSD)2.5 E
-F1(4.2 Compatibility Code)A 228.965 205.3 72 205.3 DL(conf)72 218.4 Q
-(.h)-.15 E F0 .131(Added the de\214nition of)48.76 F F4(sigmask)2.631 E
-F0 .131(if left unde\214ned by <signal.h>.)2.631 F .13
-(Added mock de\214nitions)5.131 F(for)147 230.4 Q F2(LOG_MAIL)2.5 E F0
-(,)A F2(TR)2.5 E(Y_A)-.585 E(GAIN)-.36 E F0 2.5(,a)C(nd)-2.5 E F4
-(h_errno)2.5 E F0(.)A F1(Optional)72 254.4 Q F3(BSD)2.5 E F1
-(2.9 Compatibility Code)A 228.965 256.9 72 256.9 DL(conf)72 270 Q(.h)
--.15 E F0 .594(Added the de\214nition of)48.76 F F2(EPR)3.094 E(OCLIM)
--.36 E F0 .595(\(not really applicable under)3.095 F F2(BSD)3.095 E F0
-.595(2.9\) and the inclu-)3.095 F(sion of ../lib/libndir/dir)147 282 Q
-(.h.)-.55 E F1(conf)72 297.6 Q(.c)-.15 E F0 .707(Changed to include <a.\
-out.h> instead of <nlist.h>, and to search /unix instead of /vmu-)49.88
-F(nix for k)147 309.6 Q(ernel symbols.)-.1 E F1(daemon.c)72 325.2 Q F0
-(Changed to use)34.17 E F4 -.1(ge)2.5 G(thostname).1 E F0
-(\(3\) instead of <whoami.h> to \214nd out its local host name.)A F1
-(deli)72 340.8 Q -.1(ve)-.1 G -1(r.).1 G(h)1 E F0
-(Changed not to include <netdb)38.7 E(.h>)-.4 E F1(err)72 356.4 Q(.c)-1
-E F0(Changed not to include <netdb)55.74 E(.h>)-.4 E F1
-(Miscellaneous Changes)72 380.4 Q 171.17 382.9 72 382.9 DL(deli)72 396 Q
--.1(ve)-.1 G -1(r.).1 G(c)1 E F0 .279(An array of v)39.82 F .279(erbose\
- mailer error messages has been added together with code that prints)
--.15 F .405(out the error in te)147 408 R .405(xt instead of just gi)
--.15 F .404(ving the code in numeric form.)-.25 F .404
-([Incorporated from)5.404 F F2(USENET)147 420 Q F0(])A F1(main.c)72
-435.6 Q F0 3.311(An)46.39 G -.25(ew)-3.311 G F1<ad5a>3.561 E F0 .811(co\
-mmand line option has been added, which de\214nes the name of the froze\
-n)3.311 F(con\214guration \214le in analogy with)147 447.6 Q F1<ad43>2.5
-E F0(.)A F1(parseaddr)72 463.2 Q(.c)-1 E F0 .179
-(Has been changed to compare aliased users with)25.17 F F4(same)2.679 E
-(wor)-.15 E(d)-.37 E F0 .178(instead of)2.678 F F4(str)2.678 E(cmp)-.37
-E F0 .178(to mak)2.678 F 2.678(eu)-.1 G(p)-2.678 E(for dif)147 475.2 Q
-(ferencing case.)-.25 E F1(sendmail.h)72 490.8 Q F0 1.898(The reference\
- to <sys/syslog.h> has been replaced by <syslog.h> unless sendmail is)
-28.6 F 1.706(compiling on a)147 502.8 R F2 -1.215(VA)4.205 G(X)1.215 E
-F0 6.705(.I)C 1.705('m not sure that this is correct, b)-6.705 F 1.705
-(ut neither our Suns, nor the)-.2 F .377
-(Gould had syslog.h in that directory)147 514.8 R 5.378(.A)-.65 G(lso,)
--5.378 E F4(s_host)2.878 E F0 2.878(,h)C .378
-(as been forced unde\214ned if compil-)-2.878 F(ing on a Sun.)147 526.8
-Q(This is because it is de\214ned in one of the Sun')5 E 2.5(si)-.55 G
-(nclude \214les as well.)-2.5 E F1(sr)72 542.4 Q(vrsmtp.c)-.1 E F0(The)
-29.28 E F1($s)2.802 E F0 .302(macro w)2.802 F .302
-(as set to be the name of the remote host, b)-.1 F .301
-(ut then cleared before it could)-.2 F 1.97(be used.)147 554.4 R 1.97
-(It is no)6.97 F 4.47(wb)-.25 G 1.97(eing set)-4.47 F F4(after)4.47 E F0
-1.97(the rele)4.47 F -.25(va)-.25 G 1.97(nt cleanup routines ha).25 F
-2.27 -.15(ve b)-.2 H 1.97(een run.).15 F(An)6.97 E 1.381
-(unnecessary additional re)147 566.4 R 1.38(writing of en)-.25 F -.15
-(ve)-.4 G 1.38(lope recipient addresses in the).15 F F2(SMTP)3.88 E F0
-(routines)3.88 E(has been remo)147 578.4 Q -.15(ve)-.15 G 2.5(d. It).15
-F(could e)2.5 E -.15(ve)-.25 G 2.5(nb).15 G 2.5(eh)-2.5 G
-(armful if it w)-2.5 E(as to be left alone.)-.1 E F1(../doc/op.me)72 594
-Q F0(Added te)23.61 E(xt to describe our ne)-.15 E 1.3 -.65(w, w)-.25 H
-(onderful features.).55 E F1(APPENDIX C: CUST)72 606 Q(OMIZA)-.18 E
-(TION P)-.95 E(ARAMETERS)-.74 E F0(The follo)72 621.6 Q
-(wing is a list of all)-.25 E F4(m4)2.5 E F0
-(identi\214ers used in the con\214guration \214le.)2.5 E
-(All of them are optional.)5 E F2(ALIASES)72 637.2 Q F0
-(Name of the aliases \214le, def)97 649.2 Q(aults to sendmail')-.1 E 2.5
-(sd)-.55 G(ef)-2.5 E(ault.)-.1 E F2(BSD29)72 664.8 Q F0(Acti)97 676.8 Q
--.25(va)-.25 G(tes v).25 E(arious hacks for usage on)-.25 E F2(BSD)2.5 E
-F0(2.9 systems.)2.5 E F2 -.315(BA)72 692.4 S(NGIMPLIESUUCP).315 E F0 .67
-(If de\214ned, will inhibit domaintable lookups for unquali\214ed nodes\
- \214rst in `!'-paths and al)97 704.4 R -.1(wa)-.1 G .67(ys inter).1 F
-(-)-.2 E(preting them to reside in the)97 716.4 Q F2(UUCP)2.5 E F0
-(pseudo-domain.)2.5 E 2.5<8a31>270.5 768 S 2.5<378a>-2.5 G 0 Cg EP
+.15 E F1(Queue Bug Fixed)72 594 Q 145.9 596.5 72 596.5 DL(queue.c)72
+609.6 Q F0(Set the current en)42.5 E -.15(ve)-.4 G(lope').15 E 2.5(si)
+-.55 G 2.5(dt)-2.5 G(o)-2.5 E F3(NULL)2.5 E F0(before e)2.5 E(xiting.)
+-.15 E F1(Shar)72 633.6 Q(ed Input)-.18 E F2(SMTP)2.5 E F1(Bug T)2.5 E
+(entati)-.92 E -.1(ve)-.1 G(ly Fixed).1 E 252.112 636.1 72 636.1 DL
+(main.c)72 649.2 Q F0 -.45(Tu)46.39 G(rned of).45 E 2.5(fb)-.25 G(uf)
+-2.7 E(fering from standard input before the call to)-.25 E F4(smtp)2.5
+E F0(.)A F1(Optional)72 673.2 Q F2(BSD)2.5 E F1(4.2 Compatibility Code)A
+228.965 675.7 72 675.7 DL(conf)72 688.8 Q(.h)-.15 E F0 .131
+(Added the de\214nition of)48.76 F F4(sigmask)2.631 E F0 .131
+(if left unde\214ned by <signal.h>.)2.631 F .13
+(Added mock de\214nitions)5.131 F(for)147 700.8 Q F3(LOG_MAIL)2.5 E F0
+(,)A F3(TR)2.5 E(Y_A)-.585 E(GAIN)-.36 E F0 2.5(,a)C(nd)-2.5 E F4
+(h_errno)2.5 E F0(.)A 2.5<8a31>270.5 768 S 2.5<378a>-2.5 G 0 Cg EP
 %%Page: 18 19
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M/F1 9/Times-Roman@0 SF(DECNETNODES)72
-84 Q F0 4.443<418c>97 96 S 1.942(le containing)-4.443 F F1(DEC)4.442 E
-F0 1.942(net host names.)B 1.942(Used in combination with)6.942 F F1
-(DECNETXT)4.442 E(ABLE)-.837 E F0 1.942(to determine)4.442 F(deli)97 108
-Q -.15(ve)-.25 G .252(ry through the).15 F F1(DEC)2.753 E F0 .253
-(net mailer and when to e)B .253(xpand \215atspaced)-.15 F F1(DEC)2.753
-E F0 .253(net host names into domains.)B F1(DECNETXT)72 123.6 Q(ABLE)
--.837 E F0(The)97 135.6 Q F1(DEC)3.17 E F0 .67(net translation table.)B
-.67(Returns a node')5.67 F(s)-.55 E F1(DEC)3.17 E F0 .67
-(net host name if gi)B -.15(ve)-.25 G 3.17(ni).15 G .67(ts domain name.)
--3.17 F(\()5.67 E/F2 10/Times-Italic@0 SF(Dbm)A F0
-(\214le, see ruleset 24 for more info\).)97 147.6 Q F1(DEF)72 163.2 Q
--.495(AU)-.666 G -.828(LT).495 G(_HOST).828 E F0
-(Explicit host name, replaces automatic de\214nition of)97 175.2 Q/F3 10
-/Times-Bold@0 SF($w)2.5 E F0 5(.[)C(Not normally used])-5 E F1(DEF)72
-190.8 Q -.495(AU)-.666 G -.828(LT).495 G(_DOMAIN).828 E F0 .855
-(The string that \(+ `.)97 202.8 R 3.355('\) will)-.7 F .855
-(be attached to)3.355 F F3($w)3.356 E F0 .856(to form)3.356 F F3($j)
-3.356 E F0 3.356(,t)C .856(his node')-3.356 F 3.356(so)-.55 G -.25<668c>
--3.356 G .856(cial domain name.).25 F(Should)5.856 E
-(only be left unde\214ned when your hostname \()97 214.8 Q F3($w)A F0
-2.5(\)a)C(lready contains its domain.)-2.5 E F1(DOMAINT)72 230.4 Q(ABLE)
--.837 E F2(Dbm)97 242.4 Q F0 .655
-(database used for hostname canonicalization, i.e.)3.155 F .655
-(to \214nd the of)5.655 F .654(\214cial domain name for local or)-.25 F
-(otherwise unquali\214ed hosts.)97 254.4 Q F1(GENERICFR)72 270 Q(OM)-.36
-E F0 2.679(Ad)97 282 S .18
-(atabase mapping actual user names to generic user names.)-2.679 F .18
-(Used instead of)5.18 F F1(HIDDENNET)2.68 E F0 .18(in a het-)2.68 F
-(erogeneous en)97 294 Q(vironment.)-.4 E F1(HIDDENNET)72 309.6 Q F0 .762
-(Points to a \214le containing a list of host names, one per line.)97
-321.6 R .761(Mail from users on an)5.761 F 3.261(yo)-.15 G 3.261(ft)
--3.261 G .761(hese hosts)-3.261 F(will ha)97 333.6 Q .3 -.15(ve t)-.2 H
-(heir host names substituted for our host,).15 E F3($w)2.5 E F0(.)A F1
-(LIBDIR)72 349.2 Q F0(The directory that will hold most data \214les, i\
-ncluding sendmail.{hf,st}; def)97 361.2 Q(aults to /usr/lib/mail.)-.1 E
-F1 -.828(PA)72 376.8 S(THT)-.171 E(ABLE)-.837 E F0 .025(The heart & sou\
-l of this sendmail con\214guration\212the pathalias routing table in)97
-388.8 R F2(dbm)2.526 E F0 .026(\(3\) format, as pro-)B .551
-(duced by the)97 400.8 R F2(pathalias)3.051 E F0 .551(\(1\) program.)B
-.551(If you w)5.551 F .55
-(ant some kind of routing capabilities, you either de\214ne)-.1 F
-(this or rely on)97 412.8 Q F1(RELA)2.5 E(YHOST/RELA)-.945 E(YMAILER)
--.945 E F0(.)A F1(MAILER)72 428.4 Q -.837(TA)-.54 G(BLE).837 E F0(A)97
-440.4 Q F2(dbm)2.572 E F0 .073
-(table mapping node names to \231mailer:host\232 pairs.)2.573 F .073
-(It is used for special cases when the resolv-)5.073 F
-(ing heuristics of ruleset 26 aren')97 452.4 Q 2.5(te)-.18 G(nough.)-2.5
-E F1(NEW)72 468 Q(ALIASES)-1.08 E F0 .573(If de\214ned, will mak)97 480
-R 3.073(er)-.1 G .573(uleset 26 return all addresses as local.)-3.073 F
-.573(This should be used by the ne)5.573 F -.1(wa)-.25 G(liases).1 E
-(program only when parsing the aliases \214le if you w)97 492 Q
-(ant to handle non-local aliases as well as local.)-.1 E F1(PSEUDONYMS)
-72 507.6 Q F0 1.68(Additional names that we are kno)97 519.6 R 1.68
-(wn under \(in addition to the nicknames returned by)-.25 F F2 -.1(ge)
-4.18 G(thostby-).1 E(name)97 531.6 Q F0(\(3\)\).)A F1(RELA)72 547.2 Q
-(Y_HOST & RELA)-.945 E(Y_MAILER)-.945 E F0 .512
-(Name of the host and mailer to ship unkno)97 559.2 R .512
-(wn recipient addresses to.)-.25 F .511
-(Not necessary to de\214ne if you)5.512 F(ha)97 571.2 Q .3 -.15(ve a c)
--.2 H(omplete).15 E F1 -.828(PA)2.5 G(THT)-.171 E(ABLE)-.837 E F0(.)A F1
-(RSH_SER)72 586.8 Q(VER)-.72 E F0(If de\214ned, do local deli)97 598.8 Q
--.15(ve)-.25 G(ries by).15 E F2 -.1(rs)2.5 G(h).1 E F0
-(\(1\)'ing /bin/mail on the)A F1(RSH_SER)2.5 E(VER)-.72 E F0(host.)2.5 E
-F1(SPOOLDIR)72 614.4 Q F0(Directory for sendmail queue \214les; def)97
-626.4 Q(aults to /usr/spool/mqueue.)-.1 E F1(UUCPN)72 642 Q(AME)-.315 E
-F0(This node')97 654 Q(s)-.55 E F1(UUCP)2.5 E F0(host name, if dif)2.5 E
-(ferent from)-.25 E F3($w)2.5 E F0(.)A F1(UUCPNODES)72 669.6 Q F0 2.5
-<418c>97 681.6 S(le containing names of directly connectable)-2.5 E F1
-(UUCP)2.5 E F0(nodes, normally /usr/lib/uucp/L.sys.)2.5 E F1
-(UUCPPRECEDENCE)72 697.2 Q F0 1.201
-(If de\214ned, will change the interpretation of mix)97 709.2 R 1.202
-(ed `!'- / `@'-addresses to use heuristics instead of)-.15 F 2.5<8a31>
-270.5 768 S 2.5<388a>-2.5 G 0 Cg EP
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF(Optional)72 84 Q
+/F2 9/Times-Bold@0 SF(BSD)2.5 E F1(2.9 Compatibility Code)A .4 LW
+228.965 86.5 72 86.5 DL(conf)72 99.6 Q(.h)-.15 E F0 .594
+(Added the de\214nition of)48.76 F/F3 9/Times-Roman@0 SF(EPR)3.094 E
+(OCLIM)-.36 E F0 .595(\(not really applicable under)3.095 F F3(BSD)3.095
+E F0 .595(2.9\) and the inclu-)3.095 F(sion of ../lib/libndir/dir)147
+111.6 Q(.h.)-.55 E F1(conf)72 127.2 Q(.c)-.15 E F0 .707(Changed to incl\
+ude <a.out.h> instead of <nlist.h>, and to search /unix instead of /vmu\
+-)49.88 F(nix for k)147 139.2 Q(ernel symbols.)-.1 E F1(daemon.c)72
+154.8 Q F0(Changed to use)34.17 E/F4 10/Times-Italic@0 SF -.1(ge)2.5 G
+(thostname).1 E F0
+(\(3\) instead of <whoami.h> to \214nd out its local host name.)A F1
+(deli)72 170.4 Q -.1(ve)-.1 G -1(r.).1 G(h)1 E F0
+(Changed not to include <netdb)38.7 E(.h>)-.4 E F1(err)72 186 Q(.c)-1 E
+F0(Changed not to include <netdb)55.74 E(.h>)-.4 E F1
+(Miscellaneous Changes)72 210 Q 171.17 212.5 72 212.5 DL(deli)72 225.6 Q
+-.1(ve)-.1 G -1(r.).1 G(c)1 E F0 .279(An array of v)39.82 F .279(erbose\
+ mailer error messages has been added together with code that prints)
+-.15 F .405(out the error in te)147 237.6 R .405(xt instead of just gi)
+-.15 F .404(ving the code in numeric form.)-.25 F .404
+([Incorporated from)5.404 F F3(USENET)147 249.6 Q F0(])A F1(main.c)72
+265.2 Q F0 3.311(An)46.39 G -.25(ew)-3.311 G F1<ad5a>3.561 E F0 .811(co\
+mmand line option has been added, which de\214nes the name of the froze\
+n)3.311 F(con\214guration \214le in analogy with)147 277.2 Q F1<ad43>2.5
+E F0(.)A F1(parseaddr)72 292.8 Q(.c)-1 E F0 .179
+(Has been changed to compare aliased users with)25.17 F F4(same)2.679 E
+(wor)-.15 E(d)-.37 E F0 .178(instead of)2.678 F F4(str)2.678 E(cmp)-.37
+E F0 .178(to mak)2.678 F 2.678(eu)-.1 G(p)-2.678 E(for dif)147 304.8 Q
+(ferencing case.)-.25 E F1(sendmail.h)72 320.4 Q F0 1.898(The reference\
+ to <sys/syslog.h> has been replaced by <syslog.h> unless sendmail is)
+28.6 F 1.706(compiling on a)147 332.4 R F3 -1.215(VA)4.205 G(X)1.215 E
+F0 6.705(.I)C 1.705('m not sure that this is correct, b)-6.705 F 1.705
+(ut neither our Suns, nor the)-.2 F .377
+(Gould had syslog.h in that directory)147 344.4 R 5.378(.A)-.65 G(lso,)
+-5.378 E F4(s_host)2.878 E F0 2.878(,h)C .378
+(as been forced unde\214ned if compil-)-2.878 F(ing on a Sun.)147 356.4
+Q(This is because it is de\214ned in one of the Sun')5 E 2.5(si)-.55 G
+(nclude \214les as well.)-2.5 E F1(sr)72 372 Q(vrsmtp.c)-.1 E F0(The)
+29.28 E F1($s)2.802 E F0 .302(macro w)2.802 F .302
+(as set to be the name of the remote host, b)-.1 F .301
+(ut then cleared before it could)-.2 F 1.97(be used.)147 384 R 1.97
+(It is no)6.97 F 4.47(wb)-.25 G 1.97(eing set)-4.47 F F4(after)4.47 E F0
+1.97(the rele)4.47 F -.25(va)-.25 G 1.97(nt cleanup routines ha).25 F
+2.27 -.15(ve b)-.2 H 1.97(een run.).15 F(An)6.97 E 1.381
+(unnecessary additional re)147 396 R 1.38(writing of en)-.25 F -.15(ve)
+-.4 G 1.38(lope recipient addresses in the).15 F F3(SMTP)3.88 E F0
+(routines)3.88 E(has been remo)147 408 Q -.15(ve)-.15 G 2.5(d. It).15 F
+(could e)2.5 E -.15(ve)-.25 G 2.5(nb).15 G 2.5(eh)-2.5 G(armful if it w)
+-2.5 E(as to be left alone.)-.1 E F1(../doc/op.me)72 423.6 Q F0
+(Added te)23.61 E(xt to describe our ne)-.15 E 1.3 -.65(w, w)-.25 H
+(onderful features.).55 E 2.5<8a31>270.5 768 S 2.5<388a>-2.5 G 0 Cg EP
 %%Page: 19 20
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M(al)97 84 Q -.1(wa)-.1 G(ys preferring)
-.1 E/F1 9/Times-Roman@0 SF(RFC)2.5 E F0(822 style.)A/F2 7/Times-Roman@0
-SF(12)-4.1 I F1(UUCPRELA)72 99.6 Q(YS)-.945 E F0 .405
-(Name of \214le containing names of kno)97 111.6 R .405(wn \()-.25 F F1
-(UUCP)A F0 2.905(\)r)C 2.905(elays. Header)-2.905 F .405
-(addresses containing paths through)2.905 F(an)97 123.6 Q 3.124(yo)-.15
-G 3.124(ft)-3.124 G .624(hese will be shortened by ha)-3.124 F .625
-(ving the path to the relay remo)-.2 F -.15(ve)-.15 G 3.125(d. \(It).15
-F .625(is assumed that paths to)3.125 F(each of these are kno)97 135.6 Q
-(wn to e)-.25 E -.15(ve)-.25 G(rybody\)).15 E F1(UUCPXT)72 151.2 Q(ABLE)
--.837 E F0 3.407(At)97 163.2 S .907(able mapping domain node names to)
--3.407 F F1(UUCP)3.407 E F0 .906(node names. Used in en)3.406 F -.15(ve)
--.4 G .906(lope addresses sent using).15 F F1(UUCP)97 175.2 Q F0
-(/rmail.)A/F3 10/Times-Bold@0 SF(APPENDIX D: LIST OF DOMAINS)72 187.2 Q
-F0 .268(The follo)72 202.8 R .268(wing is a list of all top-le)-.25 F
--.15(ve)-.25 G 2.769(ld).15 G .269(omains of)-2.769 F .269
-(\214cially re)-.25 F .269(gistered with the SRI Netw)-.15 F .269
-(ork Information Cen-)-.1 F(ter as of May 13, 1987:)72 214.8 Q F3(Or)72
-242.4 Q(ganizational Domains)-.1 E .4 LW 231.06 256.5 72 256.5 DL/F4 10
-/Times-Italic@0 SF 12.5(Domain Or)77 266 R(ganizations)-.37 E 231.06
-270.5 72 270.5 DL F1(COM)77 280 Q F0(Commercial)26.718 E F1(EDU)77 292 Q
-F0(Educational)28.725 E F1(GO)77 304 Q(V)-.45 E F0(Go)28.176 E -.15(ve)
--.15 G(rnment).15 E F1(MIL)77 316 Q F0(Military)30.723 E F1(NET)77 328 Q
-F0(Netw)29.724 E(ork Administrations)-.1 E F1(ORG)77 340 Q F0(Other Or)
-28.221 E -.05(ga)-.18 G(nizations).05 E 231.06 344.5 72 344.5 DL 231.06
-256.5 231.06 344.5 DL 72 256.5 72 344.5 DL F3(National Domains)72 370 Q
-248.64 384.1 72 384.1 DL F4 12.5(Domain Country)77 393.6 R 248.64 398.1
-72 398.1 DL F1 -.495(AU)77 407.6 S F0(Australia)35.214 E F1(DE)77 419.6
-Q F0(German)35.223 E(y)-.15 E F1(FI)77 431.6 Q F0(Finland)39.219 E F1
-(FR)77 443.6 Q F0(France)36.213 E F1(IL)77 455.6 Q F0(Israel)38.724 E F1
-(JP)77 467.6 Q F0(Japan)38.715 E F1(KR)77 479.6 Q F0 -.35(Ko)34.719 G
-(rea).35 E F1(NO)77 491.6 Q F0(Norw)34.224 E(ay)-.1 E F1(NL)77 503.6 Q
-F0(The Netherlands)35.223 E F1(NZ)77 515.6 Q F0(Ne)35.223 E 2.5(wZ)-.25
-G(ealand)-2.5 E F1(SE)77 527.6 Q F0(Sweden)36.717 E F1(UK)77 539.6 Q F0
-(The United Kingdom)34.224 E F1(US)77 551.6 Q F0
-(The United States of America)35.718 E 248.64 556.1 72 556.1 DL 248.64
-384.1 248.64 556.1 DL 72 384.1 72 556.1 DL F3(Netw)72 581.6 Q
-(ork Domains)-.1 E 332.27 595.7 72 595.7 DL F4 12.5(Domain Network)77
-605.2 R 332.27 609.7 72 609.7 DL F1(ARP)77 619.2 Q(A)-.828 E F0(The Adv)
-24.045 E(anced Research Projects Agenc)-.25 E 2.5(yN)-.15 G(etw)-2.5 E
-(ork)-.1 E 332.27 623.7 72 623.7 DL 332.27 595.7 332.27 623.7 DL 72
-595.7 72 623.7 DL(which is the only of)72 637.2 Q(\214cially re)-.25 E
-(gistered netw)-.15 E(ork domain, b)-.1 E
-(ut others more or less widely recognized are:)-.2 E .32 LW 144 710 72
-710 DL/F5 5.6/Times-Roman@0 SF(12)82 716.72 Q/F6 8/Times-Roman@0 SF
-(Not fully tested.)2 3.28 M F0 2.5<8a31>270.5 768 S 2.5<398a>-2.5 G 0 Cg
-EP
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX C: CUST)72 84 Q(OMIZA)-.18 E(TION P)-.95 E(ARAMETERS)-.74 E F0
+(The follo)72 99.6 Q(wing is a list of all)-.25 E/F2 10/Times-Italic@0
+SF(m4)2.5 E F0(identi\214ers used in the con\214guration \214le.)2.5 E
+(All of them are optional.)5 E/F3 9/Times-Roman@0 SF(ALIASES)72 115.2 Q
+F0(Name of the aliases \214le, def)97 127.2 Q(aults to sendmail')-.1 E
+2.5(sd)-.55 G(ef)-2.5 E(ault.)-.1 E F3(BSD29)72 142.8 Q F0(Acti)97 154.8
+Q -.25(va)-.25 G(tes v).25 E(arious hacks for usage on)-.25 E F3(BSD)2.5
+E F0(2.9 systems.)2.5 E F3 -.315(BA)72 170.4 S(NGIMPLIESUUCP).315 E F0
+.67(If de\214ned, will inhibit domaintable lookups for unquali\214ed no\
+des \214rst in `!'-paths and al)97 182.4 R -.1(wa)-.1 G .67(ys inter).1
+F(-)-.2 E(preting them to reside in the)97 194.4 Q F3(UUCP)2.5 E F0
+(pseudo-domain.)2.5 E F3(DECNETNODES)72 210 Q F0 4.443<418c>97 222 S
+1.942(le containing)-4.443 F F3(DEC)4.442 E F0 1.942(net host names.)B
+1.942(Used in combination with)6.942 F F3(DECNETXT)4.442 E(ABLE)-.837 E
+F0 1.942(to determine)4.442 F(deli)97 234 Q -.15(ve)-.25 G .252
+(ry through the).15 F F3(DEC)2.753 E F0 .253(net mailer and when to e)B
+.253(xpand \215atspaced)-.15 F F3(DEC)2.753 E F0 .253
+(net host names into domains.)B F3(DECNETXT)72 249.6 Q(ABLE)-.837 E F0
+(The)97 261.6 Q F3(DEC)3.17 E F0 .67(net translation table.)B .67
+(Returns a node')5.67 F(s)-.55 E F3(DEC)3.17 E F0 .67
+(net host name if gi)B -.15(ve)-.25 G 3.17(ni).15 G .67(ts domain name.)
+-3.17 F(\()5.67 E F2(Dbm)A F0(\214le, see ruleset 24 for more info\).)97
+273.6 Q F3(DEF)72 289.2 Q -.495(AU)-.666 G -.828(LT).495 G(_HOST).828 E
+F0(Explicit host name, replaces automatic de\214nition of)97 301.2 Q F1
+($w)2.5 E F0 5(.[)C(Not normally used])-5 E F3(DEF)72 316.8 Q -.495(AU)
+-.666 G -.828(LT).495 G(_DOMAIN).828 E F0 .855(The string that \(+ `.)97
+328.8 R 3.355('\) will)-.7 F .855(be attached to)3.355 F F1($w)3.356 E
+F0 .856(to form)3.356 F F1($j)3.356 E F0 3.356(,t)C .856(his node')
+-3.356 F 3.356(so)-.55 G -.25<668c>-3.356 G .856(cial domain name.).25 F
+(Should)5.856 E(only be left unde\214ned when your hostname \()97 340.8
+Q F1($w)A F0 2.5(\)a)C(lready contains its domain.)-2.5 E F3(DOMAINT)72
+356.4 Q(ABLE)-.837 E F2(Dbm)97 368.4 Q F0 .655
+(database used for hostname canonicalization, i.e.)3.155 F .655
+(to \214nd the of)5.655 F .654(\214cial domain name for local or)-.25 F
+(otherwise unquali\214ed hosts.)97 380.4 Q F3(GENERICFR)72 396 Q(OM)-.36
+E F0 2.679(Ad)97 408 S .18
+(atabase mapping actual user names to generic user names.)-2.679 F .18
+(Used instead of)5.18 F F3(HIDDENNET)2.68 E F0 .18(in a het-)2.68 F
+(erogeneous en)97 420 Q(vironment.)-.4 E F3(HIDDENNET)72 435.6 Q F0 .762
+(Points to a \214le containing a list of host names, one per line.)97
+447.6 R .761(Mail from users on an)5.761 F 3.261(yo)-.15 G 3.261(ft)
+-3.261 G .761(hese hosts)-3.261 F(will ha)97 459.6 Q .3 -.15(ve t)-.2 H
+(heir host names substituted for our host,).15 E F1($w)2.5 E F0(.)A F3
+(LIBDIR)72 475.2 Q F0(The directory that will hold most data \214les, i\
+ncluding sendmail.{hf,st}; def)97 487.2 Q(aults to /usr/lib/mail.)-.1 E
+F3 -.828(PA)72 502.8 S(THT)-.171 E(ABLE)-.837 E F0 .025(The heart & sou\
+l of this sendmail con\214guration\212the pathalias routing table in)97
+514.8 R F2(dbm)2.526 E F0 .026(\(3\) format, as pro-)B .551
+(duced by the)97 526.8 R F2(pathalias)3.051 E F0 .551(\(1\) program.)B
+.551(If you w)5.551 F .55
+(ant some kind of routing capabilities, you either de\214ne)-.1 F
+(this or rely on)97 538.8 Q F3(RELA)2.5 E(YHOST/RELA)-.945 E(YMAILER)
+-.945 E F0(.)A F3(MAILER)72 554.4 Q -.837(TA)-.54 G(BLE).837 E F0(A)97
+566.4 Q F2(dbm)2.572 E F0 .073
+(table mapping node names to \231mailer:host\232 pairs.)2.573 F .073
+(It is used for special cases when the resolv-)5.073 F
+(ing heuristics of ruleset 26 aren')97 578.4 Q 2.5(te)-.18 G(nough.)-2.5
+E F3(NEW)72 594 Q(ALIASES)-1.08 E F0 .573(If de\214ned, will mak)97 606
+R 3.073(er)-.1 G .573(uleset 26 return all addresses as local.)-3.073 F
+.573(This should be used by the ne)5.573 F -.1(wa)-.25 G(liases).1 E
+(program only when parsing the aliases \214le if you w)97 618 Q
+(ant to handle non-local aliases as well as local.)-.1 E F3(PSEUDONYMS)
+72 633.6 Q F0 1.68(Additional names that we are kno)97 645.6 R 1.68
+(wn under \(in addition to the nicknames returned by)-.25 F F2 -.1(ge)
+4.18 G(thostby-).1 E(name)97 657.6 Q F0(\(3\)\).)A F3(RELA)72 673.2 Q
+(Y_HOST & RELA)-.945 E(Y_MAILER)-.945 E F0 .512
+(Name of the host and mailer to ship unkno)97 685.2 R .512
+(wn recipient addresses to.)-.25 F .511
+(Not necessary to de\214ne if you)5.512 F(ha)97 697.2 Q .3 -.15(ve a c)
+-.2 H(omplete).15 E F3 -.828(PA)2.5 G(THT)-.171 E(ABLE)-.837 E F0(.)A F3
+(RSH_SER)72 712.8 Q(VER)-.72 E F0(If de\214ned, do local deli)97 724.8 Q
+-.15(ve)-.25 G(ries by).15 E F2 -.1(rs)2.5 G(h).1 E F0
+(\(1\)'ing /bin/mail on the)A F3(RSH_SER)2.5 E(VER)-.72 E F0(host.)2.5 E
+2.5<8a31>270.5 768 S 2.5<398a>-2.5 G 0 Cg EP
 %%Page: 20 21
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M .4 LW 418.57 76.5 72 76.5 DL/F1 9
-/Times-Roman@0 SF(BITNET)77 86 Q F0(IBM Netw)23.496 E(ork, includes)-.1
-E F1(NETNOR)2.5 E(TH)-.54 E F0(and)2.5 E F1(EARN)2.5 E(CSNET)77 98 Q F0
-(The Computer Science Netw)26.988 E(ork)-.1 E F1(JUNET)77 110 Q F0
-(The Japanese Uni)27.996 E -.15(ve)-.25 G(rsity Netw).15 E(ork)-.1 E F1
-(MAILNET)77 122 Q F0 2.5(An)15 G .5 -.25(ow d)-2.5 H(eceased\(?\) netw)
-.25 E(orking project centered around)-.1 E F1(MIT)2.5 E(-MUL)-.828 E
-(TICS)-.828 E(OZ)77 134 Q F0(The Australian Computer Science Netw)43.494
-E(ork \(A)-.1 E(CSnet\))-.4 E F1(SUNET)77 146 Q F0(The Swedish Uni)
-26.493 E -.15(ve)-.25 G(rsity Netw).15 E(ork)-.1 E F1(UNINETT)77 158 Q
-F0(The Norwe)16.503 E(gian Uni)-.15 E -.15(ve)-.25 G(rsity Netw).15 E
-(ork)-.1 E F1(UUCP)77 170 Q F0(The)31.488 E F1(UNIX)2.5 E F0(-to-)A F1
-(UNIX)A F0(-Cop)A 2.5(yN)-.1 G(etw)-2.5 E(ork)-.1 E 418.57 174.5 72
-174.5 DL 418.57 76.5 418.57 174.5 DL 72 76.5 72 174.5 DL/F2 10
-/Times-Bold@0 SF(APPENDIX F: LIST OF D)72 188 Q -1.5 -.95(AT A)-.35 H
-(FILES)3.45 E F0 .427(The follo)72 203.6 R .427
-(wing is a list of all data \214les used by the)-.25 F/F3 10
-/Times-Italic@0 SF(sendmail)2.927 E F0 .427
-(program in conjunction with the supplied con-)2.927 F .741
-(\214guration \214le.)72 215.6 R .741
-(Not all of them are used in the sample setup.)5.741 F .741
-(Not all of them will probably be needed by)5.741 F(your setup either)72
-227.6 Q(.)-.55 E F2(aliases)72 243.2 Q F0 1.666(...)47.22 G
-(is better described in)-1.666 E F3(aliases)2.5 E F0(\(5\).)A F2
-(domaintable)72 258.8 Q F0 1.666(...)21.66 G 1.475
-(is domain name table used when \214nding a node')-1.666 F 3.975(sc)-.55
-G 1.475(anonical name.)-3.975 F 1.474(It is written in)6.475 F F3(dbm)
-147 270.8 Q F0(\(1\))A F2(parse)2.5 E F0(format.)2.5 E F2(generics)72
-286.4 Q F0 1.666(...)40.01 G .897(is automatically produced by the)
--1.666 F F3(xalpar)3.397 E(se)-.1 E F0 .897
-(\(8\) program from the xaliases \214le.)B .898(It con-)5.898 F
-(tains entries mapping sending user')147 298.4 Q 2.5(sr)-.55 G
-(eal addresses to generic ones.)-2.5 E F2(hiddennet)72 314 Q F0 1.666
-(...)32.21 G .802(may contain a list of node \(domain\) names that shou\
-ld be hidden by the local host')-1.666 F(s)-.55 E
-(name on header sender addresses.)147 326 Q F2(mailertable)72 341.6 Q F0
-1.666(...)26.12 G 1.147
-(de\214nes the mapping from node \(domain\) names to)-1.666 F F3 1.147
-(Special Mailer)3.647 F(s)-.1 E F0 6.147(.I)C 3.647(ti)-6.147 G 3.647
-(sw)-3.647 G 1.147(ritten in)-3.647 F F3(dbm)147 353.6 Q F0(\(1\))A F2
-(parse)2.5 E F0(format, with each v)2.5 E
-(alue being a \231mailer:host\232 tuple.)-.25 E F2(newaliases.cf)72
-369.2 Q F0 1.666(...)19.73 G .878
-(is a con\214guration \214le produced by ha)-1.666 F .878
-(ving de\214ned the)-.2 F F1(NEW)3.378 E(ALIASES)-1.08 E F0 .878
-(identi\214er in the)3.378 F 2.141(master \214le.)147 381.2 R 2.141
-(This should only be used when producing a ne)7.141 F(w)-.25 E F3
-(aliases)4.642 E F0 2.142(\(5\) dbm table,)B .288
-(because it returns all addresses to the)147 393.2 R F1(LOCAL)2.787 E F0
-.287(mailer in order to accept non-local aliases.)2.787 F F2(pathtable)
-72 408.8 Q F0 1.666(...)34.44 G .77(is the basis for all e)-1.666 F .77
-(xplicit routing decisions.)-.15 F .77(It is written in)5.77 F F3
-(pathalias)3.27 E F0 .77(\(1\) format and)B .296(describes ho)147 420.8
-R 2.796(ws)-.25 G .295(ystems connect to each other and where to forw)
--2.796 F .295(ard according to \(parent\))-.1 F(domains.)147 432.8 Q F2
-(xaliases)72 448.4 Q F0 1.666(...)42.22 G .479(is the e)-1.666 F .479
-(xtended aliases \214le that is used to produce the)-.15 F F3(aliases)
-2.979 E F0 .48(\(5\) \214le together with the)B F3 -.1(ge)147 460.4 S
-(nerics).1 E F0 5.373(\214le. It)5.373 F 2.873
-(is further described in the section about)5.373 F F3(Mana)5.372 E 2.872
-(ging Generic Mail)-.1 F(Addr)147 472.4 Q(esses)-.37 E F0(.)A F2(\\k:)72
-488 Q F3(network)A F2(/nodes\\h'|\\n:u'\\v'+1')A F3(network)A F2
-(/xtable)A F0(\\v'-1')A 1.666(...)147 500 S .977
-(are used when translating node names from one netw)-1.666 F .978
-(ork to another)-.1 F 5.978(.T)-.55 G(he)-5.978 E F2(nodes)3.478 E F0
-(\214le)3.478 E .172(contain all internally kno)147 512 R .172
-(wn node names for the netw)-.25 F .171(ork and)-.1 F F2(xtable)2.671 E
-F0 .171(is a translation table)2.671 F(that maps of)147 524 Q
-(\214cial domain names to the netw)-.25 E(ork')-.1 E 2.5(si)-.55 G
-(nternal node names.)-2.5 E F2(uucp/r)72 539.6 Q(elays)-.18 E F0 1.666
-(...)25.73 G 2.572(contains node names of well-kno)-1.666 F(wn)-.25 E F1
-(UUCP)5.072 E F0 5.072(relays. It)5.072 F 2.573
-(is used when compressing)5.072 F(header paths in the header re)147
-551.6 Q(writing rulesets.)-.25 E F2(APPENDIX I: INST)72 563.6 Q(ALLA)-.9
-E(TION INSTR)-.95 E(UCTIONS)-.3 E F0 1.148
-(These instructions will tell you step-by-step ho)72 579.2 R 3.648(wt)
--.25 G 3.648(oi)-3.648 G 1.148(nstall and bring the Kit')-3.648 F(s)-.55
-E F3(sendmail)3.648 E F0 1.148(system up.)3.648 F(The)6.148 E .444
-(source code modi\214cations are gi)72 591.2 R -.15(ve)-.25 G 2.944(na)
-.15 G 2.945(sc)-2.944 G(onte)-2.945 E(xt)-.15 E F3(dif)2.945 E(f)-.18 E
-F0(\(1\)')A .445(s, based on the)-.55 F F1(BSD)2.945 E F0 .445
-(4.3 release of)2.945 F F3(sendmail)2.945 E F0(\(v)2.945 E(ersion)-.15 E
-1.552(5.11\), ready to be installed using Larry W)72 603.2 R(all')-.8 E
-4.051(se)-.55 G(minent)-4.051 E F3(patc)4.051 E(h)-.15 E F0 4.051
-(program. Y)4.051 F 1.551(ou will also need Maryland')-1.1 F(s)-.55 E F3
-(mdbm)72 615.2 Q F0 .615(library if you intend to use this instead of)
-3.115 F F3(ndbm)3.115 E F0 5.615(.F)C(inally)-5.615 E 3.115(,i)-.65 G
-3.116(no)-3.115 G .616(rder to automatically produce routing)-3.116 F
-1.104(tables, you will need Peter Hone)72 627.2 R(yman')-.15 E(s)-.55 E
-F3(pathalias)3.604 E F0 3.604(program. All)3.604 F 1.104(of these are a)
-3.604 F -.25(va)-.2 G 1.104(ilable from your nearest).25 F F1(USENET)72
-639.2 Q F2(comp.sour)2.5 E(ces.unix)-.18 E F0(archi)2.5 E -.15(ve)-.25 G
-(.).15 E(No)97 654.8 Q 1.369 -.65(w, a)-.25 H .069(ssuming that you ha)
-.65 F .369 -.15(ve r)-.2 H .069(ead this f).15 F .07
-(ar and made up your mind to try it all for yourself, do the fol-)-.1 F
-(lo)72 666.8 Q(wing:)-.25 E 10.84([1] Unpack)72 682.4 R .384
-(the Kit in the)2.884 F F2(sendmail)2.884 E F0 .384
-(directory \(preferably\).)2.884 F .384(This should gi)5.384 F .684 -.15
-(ve y)-.25 H .384(ou a ne).15 F(w)-.25 E F2(ida)2.884 E F0(subdirectory)
-2.884 E(with all the Kit')97 694.4 Q 2.5<738c>-.55 G(les.)-2.5 E 10.84
-([2] Goto)72 710 R F2(sendmail/ida)2.603 E F0 .103
-(and check that you agree with the Mak)2.603 F(e\214le')-.1 E 2.604(sd)
--.55 G 2.604(e\214nitions. If)-2.604 F .104(you change an)2.604 F
-(ything,)-.15 E(do a \231mak)97 722 Q 2.5(ec)-.1 G
-(on\214gure\232 to propag)-2.5 E
-(ate those changes to the subdirectories' Mak)-.05 E(e\214les.)-.1 E 2.5
-<8a32>270.5 768 S 2.5<308a>-2.5 G 0 Cg EP
+-.1 M(vstrand \251 1987).835 .1 M/F1 9/Times-Roman@0 SF(SPOOLDIR)72 84 Q
+F0(Directory for sendmail queue \214les; def)97 96 Q
+(aults to /usr/spool/mqueue.)-.1 E F1(UUCPN)72 111.6 Q(AME)-.315 E F0
+(This node')97 123.6 Q(s)-.55 E F1(UUCP)2.5 E F0(host name, if dif)2.5 E
+(ferent from)-.25 E/F2 10/Times-Bold@0 SF($w)2.5 E F0(.)A F1(UUCPNODES)
+72 139.2 Q F0 2.5<418c>97 151.2 S
+(le containing names of directly connectable)-2.5 E F1(UUCP)2.5 E F0
+(nodes, normally /usr/lib/uucp/L.sys.)2.5 E F1(UUCPPRECEDENCE)72 166.8 Q
+F0 1.201(If de\214ned, will change the interpretation of mix)97 178.8 R
+1.202(ed `!'- / `@'-addresses to use heuristics instead of)-.15 F(al)97
+190.8 Q -.1(wa)-.1 G(ys preferring).1 E F1(RFC)2.5 E F0(822 style.)A/F3
+7/Times-Roman@0 SF(12)-4.1 I F1(UUCPRELA)72 206.4 Q(YS)-.945 E F0 .405
+(Name of \214le containing names of kno)97 218.4 R .405(wn \()-.25 F F1
+(UUCP)A F0 2.905(\)r)C 2.905(elays. Header)-2.905 F .405
+(addresses containing paths through)2.905 F(an)97 230.4 Q 3.124(yo)-.15
+G 3.124(ft)-3.124 G .624(hese will be shortened by ha)-3.124 F .625
+(ving the path to the relay remo)-.2 F -.15(ve)-.15 G 3.125(d. \(It).15
+F .625(is assumed that paths to)3.125 F(each of these are kno)97 242.4 Q
+(wn to e)-.25 E -.15(ve)-.25 G(rybody\)).15 E F1(UUCPXT)72 258 Q(ABLE)
+-.837 E F0 3.407(At)97 270 S .907(able mapping domain node names to)
+-3.407 F F1(UUCP)3.407 E F0 .906(node names. Used in en)3.406 F -.15(ve)
+-.4 G .906(lope addresses sent using).15 F F1(UUCP)97 282 Q F0(/rmail.)A
+.32 LW 144 710 72 710 DL/F4 5.6/Times-Roman@0 SF(12)82 716.72 Q/F5 8
+/Times-Roman@0 SF(Not fully tested.)2 3.28 M F0 2.5<8a32>270.5 768 S 2.5
+<308a>-2.5 G 0 Cg EP
 %%Page: 21 22
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M 10.84([3] Goto)72 84 R/F1 10
-/Times-Bold@0 SF(sendmail/ida/doc)3.046 E F0 5.546(.D)C .546
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX D: LIST OF DOMAINS)72 84 Q F0 .268(The follo)72 99.6 R .268
+(wing is a list of all top-le)-.25 F -.15(ve)-.25 G 2.769(ld).15 G .269
+(omains of)-2.769 F .269(\214cially re)-.25 F .269
+(gistered with the SRI Netw)-.15 F .269(ork Information Cen-)-.1 F
+(ter as of May 13, 1987:)72 111.6 Q F1(Or)72 139.2 Q
+(ganizational Domains)-.1 E .4 LW 231.06 153.3 72 153.3 DL/F2 10
+/Times-Italic@0 SF 12.5(Domain Or)77 162.8 R(ganizations)-.37 E 231.06
+167.3 72 167.3 DL/F3 9/Times-Roman@0 SF(COM)77 176.8 Q F0(Commercial)
+26.718 E F3(EDU)77 188.8 Q F0(Educational)28.725 E F3(GO)77 200.8 Q(V)
+-.45 E F0(Go)28.176 E -.15(ve)-.15 G(rnment).15 E F3(MIL)77 212.8 Q F0
+(Military)30.723 E F3(NET)77 224.8 Q F0(Netw)29.724 E
+(ork Administrations)-.1 E F3(ORG)77 236.8 Q F0(Other Or)28.221 E -.05
+(ga)-.18 G(nizations).05 E 231.06 241.3 72 241.3 DL 231.06 153.3 231.06
+241.3 DL 72 153.3 72 241.3 DL F1(National Domains)72 266.8 Q 248.64
+280.9 72 280.9 DL F2 12.5(Domain Country)77 290.4 R 248.64 294.9 72
+294.9 DL F3 -.495(AU)77 304.4 S F0(Australia)35.214 E F3(DE)77 316.4 Q
+F0(German)35.223 E(y)-.15 E F3(FI)77 328.4 Q F0(Finland)39.219 E F3(FR)
+77 340.4 Q F0(France)36.213 E F3(IL)77 352.4 Q F0(Israel)38.724 E F3(JP)
+77 364.4 Q F0(Japan)38.715 E F3(KR)77 376.4 Q F0 -.35(Ko)34.719 G(rea)
+.35 E F3(NO)77 388.4 Q F0(Norw)34.224 E(ay)-.1 E F3(NL)77 400.4 Q F0
+(The Netherlands)35.223 E F3(NZ)77 412.4 Q F0(Ne)35.223 E 2.5(wZ)-.25 G
+(ealand)-2.5 E F3(SE)77 424.4 Q F0(Sweden)36.717 E F3(UK)77 436.4 Q F0
+(The United Kingdom)34.224 E F3(US)77 448.4 Q F0
+(The United States of America)35.718 E 248.64 452.9 72 452.9 DL 248.64
+280.9 248.64 452.9 DL 72 280.9 72 452.9 DL F1(Netw)72 478.4 Q
+(ork Domains)-.1 E 332.27 492.5 72 492.5 DL F2 12.5(Domain Network)77
+502 R 332.27 506.5 72 506.5 DL F3(ARP)77 516 Q(A)-.828 E F0(The Adv)
+24.045 E(anced Research Projects Agenc)-.25 E 2.5(yN)-.15 G(etw)-2.5 E
+(ork)-.1 E 332.27 520.5 72 520.5 DL 332.27 492.5 332.27 520.5 DL 72
+492.5 72 520.5 DL(which is the only of)72 534 Q(\214cially re)-.25 E
+(gistered netw)-.15 E(ork domain, b)-.1 E
+(ut others more or less widely recognized are:)-.2 E 418.57 544.5 72
+544.5 DL F3(BITNET)77 554 Q F0(IBM Netw)23.496 E(ork, includes)-.1 E F3
+(NETNOR)2.5 E(TH)-.54 E F0(and)2.5 E F3(EARN)2.5 E(CSNET)77 566 Q F0
+(The Computer Science Netw)26.988 E(ork)-.1 E F3(JUNET)77 578 Q F0
+(The Japanese Uni)27.996 E -.15(ve)-.25 G(rsity Netw).15 E(ork)-.1 E F3
+(MAILNET)77 590 Q F0 2.5(An)15 G .5 -.25(ow d)-2.5 H(eceased\(?\) netw)
+.25 E(orking project centered around)-.1 E F3(MIT)2.5 E(-MUL)-.828 E
+(TICS)-.828 E(OZ)77 602 Q F0(The Australian Computer Science Netw)43.494
+E(ork \(A)-.1 E(CSnet\))-.4 E F3(SUNET)77 614 Q F0(The Swedish Uni)
+26.493 E -.15(ve)-.25 G(rsity Netw).15 E(ork)-.1 E F3(UNINETT)77 626 Q
+F0(The Norwe)16.503 E(gian Uni)-.15 E -.15(ve)-.25 G(rsity Netw).15 E
+(ork)-.1 E F3(UUCP)77 638 Q F0(The)31.488 E F3(UNIX)2.5 E F0(-to-)A F3
+(UNIX)A F0(-Cop)A 2.5(yN)-.1 G(etw)-2.5 E(ork)-.1 E 418.57 642.5 72
+642.5 DL 418.57 544.5 418.57 642.5 DL 72 544.5 72 642.5 DL 2.5<8a32>
+270.5 768 S 2.5<318a>-2.5 G 0 Cg EP
+%%Page: 22 23
+%%BeginPageSetup
+BP
+%%EndPageSetup
+/F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
+2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX F: LIST OF D)72 84 Q -1.5 -.95(AT A)-.35 H(FILES)3.45 E F0
+.427(The follo)72 99.6 R .427
+(wing is a list of all data \214les used by the)-.25 F/F2 10
+/Times-Italic@0 SF(sendmail)2.927 E F0 .427
+(program in conjunction with the supplied con-)2.927 F .741
+(\214guration \214le.)72 111.6 R .741
+(Not all of them are used in the sample setup.)5.741 F .741
+(Not all of them will probably be needed by)5.741 F(your setup either)72
+123.6 Q(.)-.55 E F1(aliases)72 139.2 Q F0 1.666(...)47.22 G
+(is better described in)-1.666 E F2(aliases)2.5 E F0(\(5\).)A F1
+(domaintable)72 154.8 Q F0 1.666(...)21.66 G 1.475
+(is domain name table used when \214nding a node')-1.666 F 3.975(sc)-.55
+G 1.475(anonical name.)-3.975 F 1.474(It is written in)6.475 F F2(dbm)
+147 166.8 Q F0(\(1\))A F1(parse)2.5 E F0(format.)2.5 E F1(generics)72
+182.4 Q F0 1.666(...)40.01 G .897(is automatically produced by the)
+-1.666 F F2(xalpar)3.397 E(se)-.1 E F0 .897
+(\(8\) program from the xaliases \214le.)B .898(It con-)5.898 F
+(tains entries mapping sending user')147 194.4 Q 2.5(sr)-.55 G
+(eal addresses to generic ones.)-2.5 E F1(hiddennet)72 210 Q F0 1.666
+(...)32.21 G .802(may contain a list of node \(domain\) names that shou\
+ld be hidden by the local host')-1.666 F(s)-.55 E
+(name on header sender addresses.)147 222 Q F1(mailertable)72 237.6 Q F0
+1.666(...)26.12 G 1.147
+(de\214nes the mapping from node \(domain\) names to)-1.666 F F2 1.147
+(Special Mailer)3.647 F(s)-.1 E F0 6.147(.I)C 3.647(ti)-6.147 G 3.647
+(sw)-3.647 G 1.147(ritten in)-3.647 F F2(dbm)147 249.6 Q F0(\(1\))A F1
+(parse)2.5 E F0(format, with each v)2.5 E
+(alue being a \231mailer:host\232 tuple.)-.25 E F1(newaliases.cf)72
+265.2 Q F0 1.666(...)19.73 G .878
+(is a con\214guration \214le produced by ha)-1.666 F .878
+(ving de\214ned the)-.2 F/F3 9/Times-Roman@0 SF(NEW)3.378 E(ALIASES)
+-1.08 E F0 .878(identi\214er in the)3.378 F 2.141(master \214le.)147
+277.2 R 2.141(This should only be used when producing a ne)7.141 F(w)
+-.25 E F2(aliases)4.642 E F0 2.142(\(5\) dbm table,)B .288
+(because it returns all addresses to the)147 289.2 R F3(LOCAL)2.787 E F0
+.287(mailer in order to accept non-local aliases.)2.787 F F1(pathtable)
+72 304.8 Q F0 1.666(...)34.44 G .77(is the basis for all e)-1.666 F .77
+(xplicit routing decisions.)-.15 F .77(It is written in)5.77 F F2
+(pathalias)3.27 E F0 .77(\(1\) format and)B .296(describes ho)147 316.8
+R 2.796(ws)-.25 G .295(ystems connect to each other and where to forw)
+-2.796 F .295(ard according to \(parent\))-.1 F(domains.)147 328.8 Q F1
+(xaliases)72 344.4 Q F0 1.666(...)42.22 G .479(is the e)-1.666 F .479
+(xtended aliases \214le that is used to produce the)-.15 F F2(aliases)
+2.979 E F0 .48(\(5\) \214le together with the)B F2 -.1(ge)147 356.4 S
+(nerics).1 E F0 5.373(\214le. It)5.373 F 2.873
+(is further described in the section about)5.373 F F2(Mana)5.372 E 2.872
+(ging Generic Mail)-.1 F(Addr)147 368.4 Q(esses)-.37 E F0(.)A F1(\\k:)72
+384 Q F2(network)A F1(/nodes\\h'|\\n:u'\\v'+1')A F2(network)A F1
+(/xtable)A F0(\\v'-1')A 1.666(...)147 396 S .977
+(are used when translating node names from one netw)-1.666 F .978
+(ork to another)-.1 F 5.978(.T)-.55 G(he)-5.978 E F1(nodes)3.478 E F0
+(\214le)3.478 E .172(contain all internally kno)147 408 R .172
+(wn node names for the netw)-.25 F .171(ork and)-.1 F F1(xtable)2.671 E
+F0 .171(is a translation table)2.671 F(that maps of)147 420 Q
+(\214cial domain names to the netw)-.25 E(ork')-.1 E 2.5(si)-.55 G
+(nternal node names.)-2.5 E F1(uucp/r)72 435.6 Q(elays)-.18 E F0 1.666
+(...)25.73 G 2.572(contains node names of well-kno)-1.666 F(wn)-.25 E F3
+(UUCP)5.072 E F0 5.072(relays. It)5.072 F 2.573
+(is used when compressing)5.072 F(header paths in the header re)147
+447.6 Q(writing rulesets.)-.25 E 2.5<8a32>270.5 768 S 2.5<328a>-2.5 G 0
+Cg EP
+%%Page: 23 24
+%%BeginPageSetup
+BP
+%%EndPageSetup
+/F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
+2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX I: INST)72 84 Q(ALLA)-.9 E(TION INSTR)-.95 E(UCTIONS)-.3 E F0
+1.148(These instructions will tell you step-by-step ho)72 99.6 R 3.648
+(wt)-.25 G 3.648(oi)-3.648 G 1.148(nstall and bring the Kit')-3.648 F(s)
+-.55 E/F2 10/Times-Italic@0 SF(sendmail)3.648 E F0 1.148(system up.)
+3.648 F(The)6.148 E .444(source code modi\214cations are gi)72 111.6 R
+-.15(ve)-.25 G 2.944(na).15 G 2.945(sc)-2.944 G(onte)-2.945 E(xt)-.15 E
+F2(dif)2.945 E(f)-.18 E F0(\(1\)')A .445(s, based on the)-.55 F/F3 9
+/Times-Roman@0 SF(BSD)2.945 E F0 .445(4.3 release of)2.945 F F2
+(sendmail)2.945 E F0(\(v)2.945 E(ersion)-.15 E 1.552
+(5.11\), ready to be installed using Larry W)72 123.6 R(all')-.8 E 4.051
+(se)-.55 G(minent)-4.051 E F2(patc)4.051 E(h)-.15 E F0 4.051(program. Y)
+4.051 F 1.551(ou will also need Maryland')-1.1 F(s)-.55 E F2(mdbm)72
+135.6 Q F0 .615(library if you intend to use this instead of)3.115 F F2
+(ndbm)3.115 E F0 5.615(.F)C(inally)-5.615 E 3.115(,i)-.65 G 3.116(no)
+-3.115 G .616(rder to automatically produce routing)-3.116 F 1.104
+(tables, you will need Peter Hone)72 147.6 R(yman')-.15 E(s)-.55 E F2
+(pathalias)3.604 E F0 3.604(program. All)3.604 F 1.104(of these are a)
+3.604 F -.25(va)-.2 G 1.104(ilable from your nearest).25 F F3(USENET)72
+159.6 Q F1(comp.sour)2.5 E(ces.unix)-.18 E F0(archi)2.5 E -.15(ve)-.25 G
+(.).15 E(No)97 175.2 Q 1.369 -.65(w, a)-.25 H .069(ssuming that you ha)
+.65 F .369 -.15(ve r)-.2 H .069(ead this f).15 F .07
+(ar and made up your mind to try it all for yourself, do the fol-)-.1 F
+(lo)72 187.2 Q(wing:)-.25 E 10.84([1] Unpack)72 202.8 R .384
+(the Kit in the)2.884 F F1(sendmail)2.884 E F0 .384
+(directory \(preferably\).)2.884 F .384(This should gi)5.384 F .684 -.15
+(ve y)-.25 H .384(ou a ne).15 F(w)-.25 E F1(ida)2.884 E F0(subdirectory)
+2.884 E(with all the Kit')97 214.8 Q 2.5<738c>-.55 G(les.)-2.5 E 10.84
+([2] Goto)72 230.4 R F1(sendmail/ida)2.603 E F0 .103
+(and check that you agree with the Mak)2.603 F(e\214le')-.1 E 2.604(sd)
+-.55 G 2.604(e\214nitions. If)-2.604 F .104(you change an)2.604 F
+(ything,)-.15 E(do a \231mak)97 242.4 Q 2.5(ec)-.1 G
+(on\214gure\232 to propag)-2.5 E
+(ate those changes to the subdirectories' Mak)-.05 E(e\214les.)-.1 E
+10.84([3] Goto)72 258 R F1(sendmail/ida/doc)3.046 E F0 5.546(.D)C .546
 (oing \231mak)-5.546 F 3.046(ed)-.1 G .545
 (oc\232 will print out this paper b)-3.046 F .545
 (ut since you already are read-)-.2 F 1.106
-(ing it, this might be unneccesary)97 96 R 6.106(.A)-.65 G -.15(ny)
+(ing it, this might be unneccesary)97 270 R 6.106(.A)-.65 G -.15(ny)
 -6.106 G -.1(wa).15 G 2.406 -.65(y, d).1 H 3.606<6f99>.65 G(mak)-3.606 E
 3.606(em)-.1 G 1.106(an\232 to print the manual pages.)-3.606 F 1.107
 (Do \231mak)6.107 F(e)-.1 E
-(install\232 to install them in your manuals directory)97 108 Q(.)-.65 E
-10.84([4] Goto)72 123.6 R F1(sendmail/ida/patches)5.27 E F0 2.77
+(install\232 to install them in your manuals directory)97 282 Q(.)-.65 E
+10.84([4] Goto)72 297.6 R F1(sendmail/ida/patches)5.27 E F0 2.77
 (and do \231mak)5.27 F 5.269(eb)-.1 G(ackup.)-5.269 E 7.769<9a54>-.7 G
 2.769(his will create a backup cop)-7.769 F 5.269(yo)-.1 G(f)-5.269 E F1
-(send-)5.269 E(mail/sr)97 135.6 Q(c/*.[hc])-.18 E F0(and)3.141 E F1
+(send-)5.269 E(mail/sr)97 309.6 Q(c/*.[hc])-.18 E F0(and)3.141 E F1
 (sendmail/doc/op.me)3.141 E F0(in)3.141 E F1(Backup.tar)3.141 E F0 5.642
 (.Y)C .642(ou can restore them if necessary by per)-6.742 F(-)-.2 E
-(forming \231mak)97 147.6 Q 2.5(er)-.1 G(estore,)-2.5 E 2.5<9a73>-.7 G
-(till in the patches directory)-2.5 E(.)-.65 E 10.84([5] Do)72 163.2 R
+(forming \231mak)97 321.6 Q 2.5(er)-.1 G(estore,)-2.5 E 2.5<9a73>-.7 G
+(till in the patches directory)-2.5 E(.)-.65 E 10.84([5] Do)72 337.2 R
 2.077(one of \231mak)4.577 F 4.577(eb)-.1 G(sd43,)-4.577 E 4.576<9a99>
 -.7 G(mak)-4.576 E 4.576(eb)-.1 G(sd42,)-4.576 E 4.576<9a6f>-.7 G 4.576
 <7299>-4.576 G(mak)-4.576 E 4.576(eb)-.1 G 2.076(sd29\232 to patch the)
--4.576 F/F2 10/Times-Italic@0 SF(sendmail)4.576 E F0 2.076
-(source to the)4.576 F .282(required compatibility le)97 175.2 R -.15
-(ve)-.25 G 2.782(l. Y).15 F .282(ou will need)-1.1 F F2(patc)2.782 E(h)
--.15 E F0 .282(\(1\), for this or else edit the \214les by hand.)B .283
-(Look out)5.283 F(for rejected patches.)97 187.2 Q 10.84([6] Goto)72
-202.8 R F1(sendmail/sr)4.62 E(c)-.18 E F0 2.12(and recompile)4.62 F F2
-(sendmail)4.62 E F0 7.12(.S)C 2.12(ee that it still w)-7.12 F 4.62
-(orks. Y)-.1 F 2.12(our old con\214guration \214le)-1.1 F F2(should)97
-214.8 Q F0 .253(still w)2.753 F .253
-(ork unless you depend on some obscure side ef)-.1 F 2.754(fects. Note)
--.25 F .254(that a)2.754 F/F3 9/Times-Roman@0 SF(BSD)2.754 E F0 .254
-(4.2 con\214guration)2.754 F(\214le might not w)97 226.8 Q(ork with)-.1
-E F2(sendmail)2.5 E F0(5.11.)2.5 E 10.84([7] Goto)72 242.4 R F1
+-4.576 F F2(sendmail)4.576 E F0 2.076(source to the)4.576 F .282
+(required compatibility le)97 349.2 R -.15(ve)-.25 G 2.782(l. Y).15 F
+.282(ou will need)-1.1 F F2(patc)2.782 E(h)-.15 E F0 .282
+(\(1\), for this or else edit the \214les by hand.)B .283(Look out)5.283
+F(for rejected patches.)97 361.2 Q 10.84([6] Goto)72 376.8 R F1
+(sendmail/sr)4.62 E(c)-.18 E F0 2.12(and recompile)4.62 F F2(sendmail)
+4.62 E F0 7.12(.S)C 2.12(ee that it still w)-7.12 F 4.62(orks. Y)-.1 F
+2.12(our old con\214guration \214le)-1.1 F F2(should)97 388.8 Q F0 .253
+(still w)2.753 F .253(ork unless you depend on some obscure side ef)-.1
+F 2.754(fects. Note)-.25 F .254(that a)2.754 F F3(BSD)2.754 E F0 .254
+(4.2 con\214guration)2.754 F(\214le might not w)97 400.8 Q(ork with)-.1
+E F2(sendmail)2.5 E F0(5.11.)2.5 E 10.84([7] Goto)72 416.4 R F1
 (sendmail/ida/aux)4.015 E F0 1.515(and do \231mak)4.015 F 1.515
 (e\232 to compile the auxiliary programs.)-.1 F -.35(Tr)6.514 G 4.014
-(yt).35 G 1.514(hem out, guided)-4.014 F(with the ne)97 254.4 Q
-(wly printed manual pages.)-.25 E 10.84([8] Do)72 270 R(\231mak)3.593 E
+(yt).35 G 1.514(hem out, guided)-4.014 F(with the ne)97 428.4 Q
+(wly printed manual pages.)-.25 E 10.84([8] Do)72 444 R(\231mak)3.593 E
 3.593(ei)-.1 G 1.094(nstall\232 to install the programs in)-3.593 F F3
 (BINDIR)3.594 E F0(\()3.594 E F1(/usr/local/bin)A F0 1.094(by def)3.594
-F 1.094(ault; b)-.1 F 1.094(ut another choice)-.2 F -.1(wo)97 282 S .764
+F 1.094(ault; b)-.1 F 1.094(ut another choice)-.2 F -.1(wo)97 456 S .764
 (uld be).1 F F1(/usr/lib/mail)3.264 E F0 .764
 (if you only intend to use them with this kit\).)3.264 F(It')5.764 E
 3.264(sa)-.55 G .764(lso about time to \(manu-)-3.264 F .25
-(ally\) do a \(symbolic\) link from)97 294 R F1(/usr/ucb/bsmtp)2.751 E
+(ally\) do a \(symbolic\) link from)97 468 R F1(/usr/ucb/bsmtp)2.751 E
 F0(to)2.751 E F1(/usr/lib/sendmail)2.751 E F0 .251
 (if you intend to recei)2.751 F .551 -.15(ve b)-.25 H(atched).15 E F3
-(SMTP)97 306 Q F0(mail.)2.5 E 10.84([9] Goto)72 321.6 R F1
+(SMTP)97 480 Q F0(mail.)2.5 E 10.84([9] Goto)72 495.6 R F1
 (sendmail/ida/cf)3.339 E F0 .839(and inspect the supplied)3.339 F F2(m4)
 3.339 E F0 .839(\(1\) con\214guration de\214nitions.)B(Send)5.839 E F1
-(Sendmail.mc)3.339 E F0(to your line printer and study it.)97 333.6 Q
+(Sendmail.mc)3.339 E F0(to your line printer and study it.)97 507.6 Q
 (Do \231mak)5 E(e\232 to see ho)-.1 E 2.5(wt)-.25 G
 (he sample con\214gurations look e)-2.5 E(xpanded.)-.15 E 5.84
-([10] Goto)72 349.2 R F1(sendmail/ida/lib)2.582 E F0 .082
+([10] Goto)72 523.2 R F1(sendmail/ida/lib)2.582 E F0 .082
 (and inspect the supplied sample data \214les.)2.582 F -.35(Tr)5.082 G
 2.583(ya).35 G .083(pplying the)-2.583 F F2(xalpar)2.583 E(se)-.1 E F0
-(program)2.583 E(on the)97 361.2 Q F2(xaliases)2.5 E F0
+(program)2.583 E(on the)97 535.2 Q F2(xaliases)2.5 E F0
 (\214le if you feel lik)2.5 E 2.5(ei)-.1 G(t.)-2.5 E 5.84
-([11] Determine)72 376.8 R 1.291(your site')3.791 F 3.791(sr)-.55 G
+([11] Determine)72 550.8 R 1.291(your site')3.791 F 3.791(sr)-.55 G
 1.291(outing capabilities and create your corresponding data \214les in)
 -3.791 F F3(LIBDIR)3.791 E F0 6.291(.G)C(o)-6.291 E .104(back to)97
-388.8 R F1(sendmail/ida/cf)2.604 E F0 .104(and create your o)2.604 F(wn)
+562.8 R F1(sendmail/ida/cf)2.604 E F0 .104(and create your o)2.604 F(wn)
 -.25 E F2(m4)2.604 E F0 .105
 (\(1\) con\214guration \214le using the samples as templates.)B
-(Produce an actual, personal)97 400.8 Q F1(sendmail.cf)2.5 E F0(\214le.)
-2.5 E 5.84([12] T)72 416.4 R(ry out your ne)-.35 E(w)-.25 E F2(sendmail)
-2.5 E F0(system.)2.5 E(Good Luck!)97 428.4 Q F1(APPENDIX P: LIST OF A)72
-440.4 Q(UXILIAR)-.5 E 2.5(YP)-.35 G -.3(RO)-2.5 G(GRAMS).3 E F0 1.176
-(All programs b)72 456 R(ut)-.2 E F2(scanf)3.676 E F0 1.176
+(Produce an actual, personal)97 574.8 Q F1(sendmail.cf)2.5 E F0(\214le.)
+2.5 E 5.84([12] T)72 590.4 R(ry out your ne)-.35 E(w)-.25 E F2(sendmail)
+2.5 E F0(system.)2.5 E(Good Luck!)97 602.4 Q .32 LW 144 710 72 710 DL/F4
+8/Times-Roman@0 SF([13] Mail problems or comments to lel@ida.liu.se.)82
+720 Q F0 2.5<8a32>270.5 768 S 2.5<338a>-2.5 G 0 Cg EP
+%%Page: 24 25
+%%BeginPageSetup
+BP
+%%EndPageSetup
+/F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
+2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF
+(APPENDIX P: LIST OF A)72 84 Q(UXILIAR)-.5 E 2.5(YP)-.35 G -.3(RO)-2.5 G
+(GRAMS).3 E F0 1.176(All programs b)72 99.6 R(ut)-.2 E/F2 10
+/Times-Italic@0 SF(scanf)3.676 E F0 1.176
 (are further described by their manual pages.)3.676 F 1.175
-(What you \214nd here is only a short)6.175 F -.15(ove)72 468 S(rvie).15
-E 2.5(wo)-.25 G 2.5(ft)-2.5 G(heir functionality)-2.5 E(.)-.65 E F1(dbm)
-72 483.6 Q F0 3.269(Ag)55.55 G(eneral)-3.269 E F2(dbm)3.269 E F0 .769
-(\(3\) database management tool.)B .769
+(What you \214nd here is only a short)6.175 F -.15(ove)72 111.6 S(rvie)
+.15 E 2.5(wo)-.25 G 2.5(ft)-2.5 G(heir functionality)-2.5 E(.)-.65 E F1
+(dbm)72 127.2 Q F0 3.269(Ag)55.55 G(eneral)-3.269 E F2(dbm)3.269 E F0
+.769(\(3\) database management tool.)B .769
 (Clears, loads, and dumps complete data-)5.769 F 3.547(bases. Stores,)
-147 495.6 R 1.047(fetches, and deletes indi)3.547 F 1.047(vidual k)-.25
+147 139.2 R 1.047(fetches, and deletes indi)3.547 F 1.047(vidual k)-.25
 F -.15(ey)-.1 G 3.547(s. Also).15 F 1.046
-(includes a special parser that)3.547 F(produces k)147 507.6 Q -.15(ey)
+(includes a special parser that)3.547 F(produces k)147 151.2 Q -.15(ey)
 -.1 G(/v).15 E(alue pairs from a compressed b)-.25 E
-(ut easily readable format.)-.2 E F1(mkdomext)72 523.2 Q F0(Mak)29.45 E
+(ut easily readable format.)-.2 E F1(mkdomext)72 166.8 Q F0(Mak)29.45 E
 3.394(et)-.1 G .894(he e)-3.394 F .894(xtended set of domain names.)-.15
 F .895(This program acts as a \214lter that, when sup-)5.895 F .362(pli\
 ed with fully quali\214ed domain names on stdin, will generate all le)
-147 535.2 R -.05(ga)-.15 G 2.861(la).05 G(bbre)-2.861 E .361
+147 178.8 R -.05(ga)-.15 G 2.861(la).05 G(bbre)-2.861 E .361
 (viations of)-.25 F .152
-(these on stdout with respect to the parent domains gi)147 547.2 R -.15
+(these on stdout with respect to the parent domains gi)147 190.8 R -.15
 (ve)-.25 G 2.652(no).15 G 2.652(nt)-2.652 G .152(he command line.)-2.652
 F .152(It is used)5.152 F 1.075(to be able to recognize unquali\214ed l\
-ocal subdomains and sibling domains from one or)147 559.2 R
-(more positions in the domain hierarch)147 571.2 Q 3.8 -.65(y. S)-.05 H
-(ee).65 E F3(RFC)2.5 E F0(822, section 6.2.2 for a rationale.)A F1
-(rmail)72 586.8 Q F0 -1(Ye)51.67 G 3.389(ta)1 G .889
+ocal subdomains and sibling domains from one or)147 202.8 R
+(more positions in the domain hierarch)147 214.8 Q 3.8 -.65(y. S)-.05 H
+(ee).65 E/F3 9/Times-Roman@0 SF(RFC)2.5 E F0
+(822, section 6.2.2 for a rationale.)A F1(rmail)72 230.4 Q F0 -1(Ye)
+51.67 G 3.389(ta)1 G .889
 (nother implementation of the remote mail recei)-3.389 F .889
 (ving program.)-.25 F .89(This time with ra)5.889 F(w)-.15 E .584
-(header line logging together with)147 598.8 R F2(dbm)3.084 E F0 .583
+(header line logging together with)147 242.4 R F2(dbm)3.084 E F0 .583
 (lookup of remote node names and a more liberal)3.084 F .093
-(parsing of \231From_\232 lines.)147 610.8 R .094
+(parsing of \231From_\232 lines.)147 254.4 R .094
 (Needs to run \231seteuid root\232 to be able to use the macro setting)
-5.093 F .71(options of)147 622.8 R F2(sendmail)3.21 E F0 5.71(.N)C 3.21
+5.093 F .71(options of)147 266.4 R F2(sendmail)3.21 E F0 5.71(.N)C 3.21
 (on)-5.71 G 1.21 -.25(ew m)-3.21 H .71
 (anual supplied, your old one will ha).25 F 1.01 -.15(ve t)-.2 H 3.21
 (od).15 G 3.21(o. Actually)-3.21 F(,)-.65 E
-(your old rmail itself will probably do too.)147 634.8 Q F1(scanf)72
-650.4 Q F0 .937(Quick hack to scan and e)52.78 F .938
+(your old rmail itself will probably do too.)147 278.4 Q F1(scanf)72 294
+Q F0 .937(Quick hack to scan and e)52.78 F .938
 (xtract substrings from input lines using the)-.15 F F2(scanf)3.438 E F0
 .938(\(3\) function.)B
-(No manual page, the source code is self documenting.)147 662.4 Q F1
-(xalparse)72 678 Q F0 3.762(Ap)38.89 G 1.262(rogram that parses an e)
+(No manual page, the source code is self documenting.)147 306 Q F1
+(xalparse)72 321.6 Q F0 3.762(Ap)38.89 G 1.262(rogram that parses an e)
 -3.762 F 1.261
 (xtended aliases \214le and produceces an ordinary aliases \214le)-.15 F
-1.375(together with a \214le with generic address translations.)147 690
-R(It')6.375 E 3.876(sa)-.55 G 1.376(ll described in the manual)-3.876 F
-(page and in the section about)147 702 Q F2(Mana)2.5 E
-(ging Generic Mail Addr)-.1 E(esses)-.37 E F0 5(.Q)C(uod vide.)-5 E .32
-LW 144 710 72 710 DL/F4 8/Times-Roman@0 SF
-([13] Mail problems or comments to lel@ida.liu.se.)82 720 Q F0 2.5<8a32>
-270.5 768 S 2.5<318a>-2.5 G 0 Cg EP
-%%Page: 22 23
+1.375(together with a \214le with generic address translations.)147
+333.6 R(It')6.375 E 3.876(sa)-.55 G 1.376(ll described in the manual)
+-3.876 F(page and in the section about)147 345.6 Q F2(Mana)2.5 E
+(ging Generic Mail Addr)-.1 E(esses)-.37 E F0 5(.Q)C(uod vide.)-5 E 2.5
+<8a32>270.5 768 S 2.5<348a>-2.5 G 0 Cg EP
+%%Page: 25 26
 %%BeginPageSetup
 BP
 %%EndPageSetup
@@ -2649,131 +2671,132 @@ R(orks,)-.1 E<9a>-.7 E F2 .462(Communications of the A)2.963 F(CM)-.3 E
 F1(29)97 454.8 Q F0 -.83(\(1)C(0\) \(1986\).).83 E(Rose83a.)72 470.4 Q
 (Marshall Rose,)97 482.4 Q F2(Pr)2.5 E(oposed Standar)-.45 E 2.5(df)-.37
 G(or Messa)-2.5 E .2 -.1(ge H)-.1 H(eader Munging).1 E(,)-.1 E F4(RFC)
-2.5 E F0(886 \(1983\).)A F1(APPENDIX T)72 494.4 Q 2.5(:T)-.74 G
-(ABLE OF CONTENTS)-3.4 E(Sections)72 518.4 Q F0(INTR)72 534 Q -.64(ODUC\
-TION ..................................................................\
-.......................................................................\
-\247)-.4 F(1)2.5 E -.35(NA)72 546 S(MES, ADDRESSES, AND R).35 E -.03(OU\
-TES ...................................................................\
-..................................\247)-.4 F(2)2.5 E(MAIL ADDRESS FORMA)
-72 558 Q -.23(TS ......................................................\
-................................................................\247)
--1.11 F(3)2.5 E(Relati)87 570 Q .3 -.15(ve A)-.25 H -2.03(ddresses ....\
-.......................................................................\
-.....................................................\247).15 F(3.1)2.5
-E(Absolute Addresses)87 582 Q(.........................................\
-.......................................................................\
-..............\247 3.2)2.29 E(Attrib)87 594 Q(ute Addresses)-.2 E(.....\
-.......................................................................\
-..................................................\247 3.3)2.49 E
-(Hybrid Addresses)87 606 Q(............................................\
-.......................................................................\
-...............\247 3.4).07 E 2.5(AS)72 618 S(HOR)-2.5 E 2.5(TA)-.6 G
--.35(NA)-2.5 G -.18(TO)-.76 G(MY OF THE ELECTR).18 E(ONIC MESSA)-.4 E
--2.17(GE ..............................................................\
-........\247)-.4 F(4)2.5 E(The En)87 630 Q -.15(ve)-.4 G -.77(lope ....\
-.......................................................................\
-.............................................................\247).15 F
-(4.1)2.5 E(The Headers)87 642 Q(.......................................\
-.......................................................................\
-............................\247 4.2)1.19 E(ADDRESS REWRITING STRA)72
-654 Q -1.05(TEGIES ....................................................\
-.................................................\247)-1.11 F(5)2.5 E
-(Sneak-In Pre)87 666 Q(vie)-.25 E 1.13(w.)-.25 G(......................\
-.......................................................................\
-....................................\247 5.1)-1.13 E
-(The Con\214guration File)87 678 Q(....................................\
-.......................................................................\
-...............\247 5.2).33 E(Canonicalizing the Address)87 690 Q(.....\
-.......................................................................\
-......................................\247 5.3)1.46 E
-(Finding Route and Mailer)87 702 Q(....................................\
-.......................................................................\
-..........\247 5.4).89 E(Externalizing the Address)87 714 Q(...........\
-.......................................................................\
-...................................\247 5.5).63 E(MAN)72 726 Q -.4(AG)
--.35 G(ING GENERIC MAIL ADDRESSES).4 E(................................\
-............................................................\247 6)1.1 E
-2.5<8a32>270.5 768 S 2.5<328a>-2.5 G 0 Cg EP
-%%Page: 23 24
+2.5 E F0(886 \(1983\).)A 2.5<8a32>270.5 768 S 2.5<358a>-2.5 G 0 Cg EP
+%%Page: 26 27
 %%BeginPageSetup
 BP
 %%EndPageSetup
 /F0 10/Times-Roman@0 SF(Electronic Mail Addressing with The ID)72 48 Q
 2.5(AS)-.4 G(endmail Enhancement Kit)-2.5 E(Lennart Lo)44.02 E<a8>-4.165
--.1 M(vstrand \251 1987).835 .1 M(SENDMAIL SOURCE MODIFICA)72 84 Q -1.88
-(TIONS ................................................................\
-..................................\247)-1.11 F(7)2.5 E(Nameserv)87 96 Q
-(er Def)-.15 E(ault Ar)-.1 E -1.42(gument .............................\
+-.1 M(vstrand \251 1987).835 .1 M/F1 10/Times-Bold@0 SF(APPENDIX T)72 84
+Q 2.5(:T)-.74 G(ABLE OF CONTENTS)-3.4 E(Sections)72 108 Q F0(INTR)72
+123.6 Q -.64(ODUCTION .................................................\
 .......................................................................\
-.........\247)-.18 F(7.1)2.5 E(Direct Access to Dbm\(3\) Files)87 108 Q
+.................\247)-.4 F(1)2.5 E -.35(NA)72 135.6 S
+(MES, ADDRESSES, AND R).35 E -.03(OUTES ...............................\
+......................................................................\
+\247)-.4 F(2)2.5 E(MAIL ADDRESS FORMA)72 147.6 Q -.23(TS ..............\
+.......................................................................\
+.................................\247)-1.11 F(3)2.5 E(Relati)87 159.6 Q
+.3 -.15(ve A)-.25 H -2.03(ddresses ....................................\
+.......................................................................\
+.....................\247).15 F(3.1)2.5 E(Absolute Addresses)87 171.6 Q
 (......................................................................\
-.......................................\247 7.2)2.3 E(Batched)87 120 Q
-/F1 9/Times-Roman@0 SF(SMTP)2.5 E F0 -.948(Support ....................\
+........................................................\247 3.2)2.29 E
+(Attrib)87 183.6 Q(ute Addresses)-.2 E(................................\
 .......................................................................\
-..............................\247)2.5 F(7.3)2.5 E(Separate En)87 132 Q
--.15(ve)-.4 G(lope/Header Re).15 E(writing Rulesets)-.25 E(............\
+.......................\247 3.3)2.49 E(Hybrid Addresses)87 195.6 Q(....\
 .......................................................................\
-..\247 7.4).06 E(Separate Local)87 144 Q F1(UUCP)2.5 E F0(Host Name)2.5
-E(.....................................................................\
-....................................\247 7.5).527 E(Return P)87 156 Q
-(ath for)-.15 E F1(UUCP)2.5 E F0 -1.563(Mailers .......................\
+.......................................................\247 3.4).07 E
+2.5(AS)72 207.6 S(HOR)-2.5 E 2.5(TA)-.6 G -.35(NA)-2.5 G -.18(TO)-.76 G
+(MY OF THE ELECTR).18 E(ONIC MESSA)-.4 E -2.17(GE .....................\
+.................................................\247)-.4 F(4)2.5 E
+(The En)87 219.6 Q -.15(ve)-.4 G -.77(lope ............................\
 .......................................................................\
-................\247)2.5 F(7.6)2.5 E F1(UUCP)87 168 Q F0
-(Header Address Relati)2.5 E -2.003(vization ..........................\
+.....................................\247).15 F(4.1)2.5 E(The Headers)87
+231.6 Q(...............................................................\
 .......................................................................\
-..\247)-.25 F(7.7)2.5 E(Support for Multi-T)87 180 Q(ok)-.8 E
-(en Matches)-.1 E(.....................................................\
-...................................................\247 7.8)2.08 E
-(Support for Embedded Subruleset Calls)87 192 Q(.......................\
+....\247 4.2)1.19 E(ADDRESS REWRITING STRA)72 243.6 Q -1.05(TEGIES ....\
 .......................................................................\
-.\247 7.9).62 E(Elaborate Matching Algorithm for Unkno)87 204 Q
+..........................\247)-1.11 F(5)2.5 E(Sneak-In Pre)87 255.6 Q
+(vie)-.25 E 1.13(w.)-.25 G(............................................\
+.......................................................................\
+..............\247 5.1)-1.13 E(The Con\214guration File)87 267.6 Q(....\
+.......................................................................\
+...............................................\247 5.2).33 E
+(Canonicalizing the Address)87 279.6 Q(................................\
+.......................................................................\
+...........\247 5.3)1.46 E(Finding Route and Mailer)87 291.6 Q(........\
+.......................................................................\
+......................................\247 5.4).89 E
+(Externalizing the Address)87 303.6 Q(.................................\
+.......................................................................\
+.............\247 5.5).63 E(MAN)72 315.6 Q -.4(AG)-.35 G
+(ING GENERIC MAIL ADDRESSES).4 E(......................................\
+......................................................\247 6)1.1 E
+(SENDMAIL SOURCE MODIFICA)72 327.6 Q -1.88(TIONS ......................\
+.......................................................................\
+.....\247)-1.11 F(7)2.5 E(Nameserv)87 339.6 Q(er Def)-.15 E(ault Ar)-.1
+E -1.42(gument ........................................................\
+.....................................................\247)-.18 F(7.1)2.5
+E(Direct Access to Dbm\(3\) Files)87 351.6 Q(..........................\
+.......................................................................\
+............\247 7.2)2.3 E(Batched)87 363.6 Q/F2 9/Times-Roman@0 SF
+(SMTP)2.5 E F0 -.948(Support ..........................................\
+.......................................................................\
+........\247)2.5 F(7.3)2.5 E(Separate En)87 375.6 Q -.15(ve)-.4 G
+(lope/Header Re).15 E(writing Rulesets)-.25 E(.........................\
+............................................................\247 7.4).06
+E(Separate Local)87 387.6 Q F2(UUCP)2.5 E F0(Host Name)2.5 E(..........\
+.......................................................................\
+........................\247 7.5).527 E(Return P)87 399.6 Q(ath for)-.15
+E F2(UUCP)2.5 E F0 -1.563(Mailers .....................................\
+.......................................................................\
+..\247)2.5 F(7.6)2.5 E F2(UUCP)87 411.6 Q F0(Header Address Relati)2.5 E
+-2.003(vization .......................................................\
+............................................\247)-.25 F(7.7)2.5 E
+(Support for Multi-T)87 423.6 Q(ok)-.8 E(en Matches)-.1 E(.............\
+.......................................................................\
+....................\247 7.8)2.08 E
+(Support for Embedded Subruleset Calls)87 435.6 Q(.....................\
+.......................................................................\
+...\247 7.9).62 E(Elaborate Matching Algorithm for Unkno)87 447.6 Q
 (wn Local Recipients)-.25 E
 (.........................................................\247 7.10).34
-E(Support for Maryland')87 216 Q 2.5(sM)-.55 G(dbm P)-2.5 E -1.72(ackag\
-e .....................................................................\
-........................\247)-.15 F(7.11)2.5 E(Impro)87 228 Q -.15(ve)
--.15 G 2.5(dT).15 G(est Mode Output)-3.2 E(............................\
+E(Support for Maryland')87 459.6 Q 2.5(sM)-.55 G(dbm P)-2.5 E -1.72(ack\
+age ...................................................................\
+..........................\247)-.15 F(7.11)2.5 E(Impro)87 471.6 Q -.15
+(ve)-.15 G 2.5(dT).15 G(est Mode Output)-3.2 E(........................\
 .......................................................................\
-............\247 7.12).79 E(Better T)87 240 Q
+................\247 7.12).79 E(Better T)87 483.6 Q
 (o: and Cc: Headers of Returned Messages)-.8 E(........................\
 ....................................................\247 7.13)2.01 E
-(Queue Bug Fix)87 252 Q -.9(ed ........................................\
+(Queue Bug Fix)87 495.6 Q -.9(ed ......................................\
 .......................................................................\
-.................\247)-.15 F(7.14)2.5 E(Shared Input)87 264 Q F1(SMTP)
-2.5 E F0(Bug T)2.5 E(entati)-.7 E -.15(ve)-.25 G(ly Fix).15 E -1.638(ed\
- ......................................................................\
-...................\247)-.15 F(7.15)2.5 E(Optional)87 276 Q F1(BSD)2.5 E
-F0(2.9 and 4.2 Compatibility Code)2.5 E(...............................\
-....................................................\247 7.16).875 E
-(Miscellaneous Changes)87 288 Q(.......................................\
+...................\247)-.15 F(7.14)2.5 E(Shared Input)87 507.6 Q F2
+(SMTP)2.5 E F0(Bug T)2.5 E(entati)-.7 E -.15(ve)-.25 G(ly Fix).15 E
+-1.638(ed .............................................................\
+............................\247)-.15 F(7.15)2.5 E(Optional)87 519.6 Q
+F2(BSD)2.5 E F0(2.9 and 4.2 Compatibility Code)2.5 E(..................\
+.................................................................\247 7\
+.16).875 E(Miscellaneous Changes)87 531.6 Q(...........................\
 .......................................................................\
-........\247 7.17)2.29 E -2.44(CONCLUSION .............................\
+....................\247 7.17)2.29 E -2.44(CONCLUSION .................\
 .......................................................................\
-..........................................\247)72 300 R(8)2.5 E/F2 10
-/Times-Bold@0 SF -.25(Ap)72 324 S(pendices).25 E F0 .417
-(LIST OF AFFECTED FILES)72 339.6 R -2.499(.............................\
+......................................................\247)72 543.6 R(8)
+2.5 E F1 -.25(Ap)72 567.6 S(pendices).25 E F0 .417
+(LIST OF AFFECTED FILES)72 583.2 R -2.499(.............................\
 .......................................................................\
-..... Appendix).049 F(A)2.918 E(CUST)72 351.6 Q(OMIZA)-.18 E 1.11
+..... Appendix).049 F(A)2.918 E(CUST)72 595.2 Q(OMIZA)-.18 E 1.11
 (TION P)-1.11 F -2.451(ARAMETERS ......................................\
 .......................................................)-.92 F 1.11
-(Appendix C).001 F .417(LIST OF DOMAIN N)72 363.6 R -.971(AMES ........\
+(Appendix C).001 F .417(LIST OF DOMAIN N)72 607.2 R -.971(AMES ........\
 .......................................................................\
 ..........................)-.35 F .418(Appendix D).001 F(LIST OF D)72
-375.6 Q -1.21 -1.11(AT A)-.4 H -2.221(FILES ...........................\
+619.2 Q -1.21 -1.11(AT A)-.4 H -2.221(FILES ...........................\
 .......................................................................\
-.................)3.61 F(Appendix F).001 E(INST)72 387.6 Q(ALLA)-.93 E
+.................)3.61 F(Appendix F).001 E(INST)72 631.2 Q(ALLA)-.93 E
 (TION INSTR)-1.11 E -1.371(UCTIONS ....................................\
 ..........................................................)-.4 F
-(Appendix I).001 E(LIST OF A)72 399.6 Q(UXILIAR)-.55 E 2.5(YP)-.65 G -.4
+(Appendix I).001 E(LIST OF A)72 643.2 Q(UXILIAR)-.55 E 2.5(YP)-.65 G -.4
 (RO)-2.5 G -1.671(GRAMS ...............................................\
 .............................................).4 F(Appendix P).001 E
 -1.621(REFERENCES .....................................................\
 .......................................................................\
-...)72 411.6 R 2.22(Appendix R).001 F -.93(TA)72 423.6 S
+...)72 655.2 R 2.22(Appendix R).001 F -.93(TA)72 667.2 S
 (BLE OF CONTENTS).93 E -2.499(.........................................\
 ...................................................................... \
-Appendix)2.379 F(T)2.5 E 2.5<8a32>270.5 768 S 2.5<338a>-2.5 G 0 Cg EP
+Appendix)2.379 F(T)2.5 E 2.5<8a32>270.5 768 S 2.5<368a>-2.5 G 0 Cg EP
 %%Trailer
 end
 %%EOF
