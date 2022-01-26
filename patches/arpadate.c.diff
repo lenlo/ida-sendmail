@@ -1,0 +1,16 @@
+*** arpadate.c.orig	Sat Apr  2 01:51:03 1988
+--- arpadate.c	Mon Aug  1 19:33:25 1988
+***************
+*** 139,145 ****
+--- 139,149 ----
+  	else
+  		p = tzname[0];
+  # else
++ #ifndef sun
+  	p = localtime(&t.time)->tm_zone;
++ #else
++ 	p = (char *)timezone(t.timezone, localtime(&t.time)->tm_isdst);
++ #endif
+  # endif USG
+  	if ((strncmp(p, "GMT", 3) == 0 || strncmp(p, "gmt", 3) == 0) &&
+  	    p[3] != '\0')

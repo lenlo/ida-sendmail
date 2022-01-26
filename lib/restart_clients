@@ -1,0 +1,8 @@
+#!/bin/sh
+#		restart sendmail on all clients
+#
+
+for h in crabbofix lillefix miraculix portofix prefix senilix smidefix tragicomix; do
+  echo -n "$h "
+  rsh $h -n "(cd /usr/lib/mail; make restart)"
+done

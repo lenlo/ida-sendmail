@@ -1,0 +1,119 @@
+#########################################################################
+###  Pathalias Route Database	##############################  v3.0  ###
+#########################################################################
+# Edited by Lennart.Lovstrand@IDA.LiU.SE Fri Apr 17 19:37:39 MET DST 1987
+
+###				#########################################
+#	Special Links							#
+###				#########################################
+
+asterix.liu.se		obelix.liu.se(DIRECT)		# UUCP/TTY
+majestix.liu.se		alp.UUCP(DAILY),		# UUCP/modem-1200
+			enea.se(DEMAND),		# UUCP/modem-2400
+			erilin.UUCP(DIRECT),		# UUCP/modem-2400
+			erix.UUCP(DEMAND),		# UUCP/modem-2400
+			kuling.uu.se(HOURLY),		# UUCP/modem-2400?
+			liutde.UUCP(DAILY),		# UUCP/modem-1200
+			prosys.UUCP(HOURLY),		# UUCP/modem-2400
+			rainier.UUCP(HOURLY),		# UUCP/modem-2400?
+			ida.liu.se(0),			# via aliases dbm
+			IDA-TCP-NET			# SMTP/TCP-IP
+rainier.UUCP		carola.UUCP, adams.UUCP		# SMTP/TCP-IP
+aida.uu.se		carmen.uu.se			# Cafard/TTY
+athena.sunet.se		aida.uu.se			# Cafard/UPNET
+
+
+###				#########################################
+#	Physical Networks						#
+###				#########################################
+
+IDA-TCP-NET = {
+	asterix.liu.se,		# Gould
+	crabbofix.liu.se,	# Sun-3/75M
+	lillefix.liu.se,	# Sun-3/52
+	lisbet.liu.se,		# DEC-2060
+	majestix.liu.se,	# Sun-3/160 FS
+	miraculix.liu.se,	# Sun-3/75C
+	portofix.liu.se,	# Sun-3/75M
+	prefix.liu.se,		# Sun-3/75M
+	senilix.liu.se,		# Sun-3/75M
+	smidefix.liu.se,	# Sun-3/75M
+	tragicomix.liu.se}	# Sun-3/75M
+
+##  The SUNET-xx definitions includes only nodes that know about DECnet
+##  area addressing.
+
+SUNET = {
+	.sunet.se, SUNET-08, SUNET-13, SUNET-18, SUNET-46}
+
+SUNET-08 = {
+	freja.qz.se, vera.sunet.se}
+
+SUNET-13 = {
+	aladin.liu.se, clover.liu.se, daisy.liu.se, elinor.liu.se,
+	hazel.liu.se, jinjin.liu.se, lina.liu.se, linus.liu.se,
+	linnea.liu.se, lisbet.liu.se, liuida.sunet.se, ludvig.liu.se,
+	minmin.liu.se, p13l00.liu.se, turtle.liu.se, viktor.liu.se,
+	weiwei.liu.se}
+
+SUNET-18 = {
+	malin.uu.se, tekla.uu.se, cartus.uu.se, pelle.uu.se, pictor.uu.se,
+	tlu.uu.se, max.uu.se, kvax1.uu.se, kvax2.uu.se, sigurd.uu.se,
+	escil.uu.se, gwax1.uu.se, gwax2.uu.se, kemist.uu.se, cell.uu.se,
+	minc.uu.se, silver.uu.se, lapse.uu.se, maja.uu.se, rtr18a.uu.se,
+	imunis.uu.se, xray.uu.se, graph.uu.se, immuna.uu.se, bmc1.uu.se,
+	farfar.uu.se, eva.uu.se, nimbus.uu.se, laban.uu.se, pax.uu.se}
+
+SUNET-46 = {
+	agaton.lu.se, pandor.lu.se}
+
+##  DECNET-xx defintions include both area-addressing nodes (which
+##  may serve as gateways) and non-area-addressing nodes.
+
+DECNET-08 = {
+	athena.sunet.se, freja.qz.se, vera.sunet.se}
+
+
+###				#########################################
+#	Domain Gateways							#
+###				#########################################
+
+enea.se		.ARPA, .BITNET, .CSNET, .DEC, .JUNET, .MAILNET, .UUCP,
+		.com, .edu, .gov, .mil, .net, .org,
+		.au, .ca, .de, .fi, .fr, .gb, .il, .jp, .kr, .nl, .no, .nz,
+		.se, .uk, .us,
+		.cdn, .oz
+erix.UUCP	.ericsson, .ericsson.se
+lisbet.liu.se	.sunet.se
+liuida.sunet.se	.psi
+majestix.liu.se	.liu, .liu.se, .ida, .ida.liu, .ida.liu.se,
+		.qz, .qz.se, .uu, .uu.se, .uppsala, .uppsala.se
+nta-vax.ARPA	.Uninett
+
+
+###				#########################################
+#	Implicit links							#
+###				#########################################
+
+enea.se			calgary.UUCP, relay.cs.net, nta-vax.ARPA,
+			uoregon.UUCP, ohio-state.arpa
+lisbet.liu.se		freja.qz.se
+
+###				#########################################
+#	Other explict links						#
+###				#########################################
+
+kuling.uu.se		emil.uu.se
+relay.cs.net		csri.toronto.edu, isc.intel.com
+uoregon.UUCP		drizzle.UUCP
+calgary.UUCP		vuw90x.UUCP
+ohio-state.arpa		OSU-20.OHIO-STATE.EDU
+
+###				#########################################
+#	Useful synonyms							#
+###				#########################################
+
+ida.liu.se	= liuida.UUCP
+obelix.liu.se	= obelix.UUCP
+.ericsson	= .erix
+.ericsson.se	= .erix.se

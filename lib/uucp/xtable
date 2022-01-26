@@ -1,0 +1,26 @@
+#
+#	Translation table between domain addresses and
+#	flat-spaced UUCP node names.
+#
+#	This table is used when formatting addresses for
+#	delivery overold-fashioned UUCP links.  Batched SMTP
+#	over UUCP does not use this table, since it is assumed
+#	that (B)SMTP nodes already know about domain names.
+#
+#	It is never necessary to enter a translation from "foo.UUCP"
+#	to "foo", since that already (automatically) is done by
+#	ruleset 14.
+#
+
+alp		alp.se
+emil		emil.uu.se
+enea		enea.se
+erilin		erilin.ericsson.se
+erix		erix.ericsson.se
+kuling		kuling.uu.se
+liuida		ida.liu.se
+liutde		tde.liu.se
+mcvax		mcvax.cwi.nl
+numax		numax.uu.se
+obelix		obelix.liu.se
+prosys		prosys.se

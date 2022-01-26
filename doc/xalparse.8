@@ -1,0 +1,64 @@
+.TH XALPARSE 8 "24 April 1987"				\" -*- nroff -*-
+.SH NAME
+xalparse \- parse an extended aliases file
+.SH SYNOPSIS
+.B xalparse
+.I xaliases aliases generics
+.SH DESCRIPTION
+The
+.I xalparse
+program parses an extended aliases file and produceces an ordinary
+aliases file together with a file with generic address translations.
+.PP
+The format of the xaliases file is a superset of
+.IR aliases (5):
+.RS
+alias, alias, \|.\|.\|.\|: prefix address, prefix address, \|.\|.\|.\|
+.RE
+It differes by allowing more than one LHS alias and by adding an
+optional
+.I prefix
+in front of each RHS address.  The
+.I prefix
+marks the address as either inbound or outbound according to the
+following table:
+.RS
+.nf
+.ta \w'(\fIno mark\fP)'u+5n
+(\fIno mark\fP)	Inbound
+<	Outbound
+>	Inbound
+<>	Both Inbound and Outbound
+.fi
+.RE
+.PP
+Inbound aliasing is the normal function implemented by
+.IR aliases (5).
+All inbound entries are therefore simply copied to the
+.I aliases
+output file.  Outbound addresses are written to the
+.I generics
+file in a format suitable for parsing by
+.I dbm (1).
+Each line will consist of the first LHS
+.I alias
+of the entry followed by the outbound addresses separated with spaces.
+The
+.I generics
+file is then normally loaded into a
+.IR dbm (3)
+database that is read by
+.IR sendmail (8)
+and used to substitute header sender addresses with the aliased name.
+.SH AUTHOR
+.nf
+Lennart Lovstrand <lel@ida.liu.se>
+CIS Dept, Univ of Linkoping, Sweden
+.fi
+.SH "SEE ALSO"
+.IR dbm (1),
+.IR aliases (5),
+.IR sendmail (8)
+.br
+Electronic Mail Addressing in Theory and Practice with The IDA Sendmail
+Enchancement Kit.

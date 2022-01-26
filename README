@@ -1,0 +1,228 @@
+#
+#  README -- The IDA Sendmail Enhancement Kit.
+#  Copyright (c) 1987, 1988 Lennart Lovstrand
+#  CIS Dept, Univ of Linkoping, Sweden
+#
+#  Use it, abuse it, but don't sell it.
+#
+#  Revision 1 of Wed May 27 04:29:05 MET DST 1987 [sendmail 5.51]
+#  Revision 1.1 of Sun Jun 19 00:36:52 BST 1988 [sendmail 5.58]
+#  Revision 1.2 of Thu Aug 25 13:36:47 BST 1988 [sendmail 5.59]
+#  Revision 1.2.5 of Thu Sep 15 20:17:12 1988 [sendmail 5.59]
+
+
+	    Welcome to The IDA Sendmail Enhancement Kit.
+
+
+This Kit includes a set of source code modifications to the BSD 4.3
+sendmail program (version 5.59), which will enable it to have direct
+access to dbm(3) files, separate envelope/header rewritings, multi-token
+class matches, and many other things.  Also included is the IDA Sendmail
+Master Configuration file and a sample setup used at the CIS Dept, U of
+Linkoping.  The configuration file together with the supplied data files
+and utility programs, implement such nice features as pathalias based
+systems routing within sendmail, fully !-/@-translating rulesets, and
+generic local user addresses.
+
+The new sendmail functions are breifly listed below and further
+described in the accompanying paper, which also discusses electronic
+mail addressing in general and hybrid addresses in particular.  (The
+numbers to the right indicate in what section of the paper they are
+described.)
+
+   Nameserver Default Argument............................... 7.1
+   Direct Access to Dbm(3) Files............................. 7.2
+   Batched SMTP Support...................................... 7.3
+   Separate Envelope/Header Rewriting Rulesets............... 7.4
+   Separate Local UUCP Host Name............................. 7.5
+   Return Path for UUCP Mailers.............................. 7.6
+   UUCP Header Address Relativization........................ 7.7
+   Support for Multi-Token Matches........................... 7.8
+   Support for Embedded Subruleset Calls..................... 7.9
+   Elaborate Matching Algorithm for Unknown Local Recipients 7.10
+   Support for Maryland's Mdbm Package...................... 7.11
+   Improved Test Mode Output................................ 7.12
+   Better To: and Cc: Headers of Returned Messages.......... 7.13
+   Queue Bug Fixed.......................................... 7.14
+   Shared Input SMTP Bug Tentatively Fixed.................. 7.15
+   Optional BSD 2.9 and 4.2 Compatibility Code.............. 7.16
+   Miscellaneous Changes.................................... 7.17
+
+If you are reading this without actually having a copy of the kit, look
+for it in your nearest comp.sources.unix archive or use anonymous ftp to
+fetch a compressed tape archive from arisia.xerox.com in ftp1/ida.tar.Z.
+
+Read more in INSTALL about how to get it all together.  Send bug reports
+and dito fixes to the author, but please note he (and his employer) may
+believe that there is more in life than maintaining everybody else's
+mail systems.  Also note that this is an unsupported package as far as
+the University of Linkoping and Rank Xerox Ltd are concerend -- so do
+not go to your local Xerox Copy Center and complain about the rewriting
+rules.  Remember: you got it for free => you can't get your money back.
+
+Enjoy!
+
+--Lennart Lovstrand
+  Rank Xerox EuroPARC
+  61 Regent Street
+  Cambridge
+  CB2 1AB
+  England
+
+  DARPA Internet: Lovstrand.EuroPARC@Xerox.COM
+  Xerox Internet: Lovstrand:EuroPARC:RX
+
+
+======================================================================
+Addendum for the 2nd release (1.1) of the IDA Sendmail Enhancement Kit
+----------------------------------------------------------------------
+
+Release 1.1 of the Kit has been upgraded to work with Sun's ported
+version of sendmail (5.58).  Only minor changes has been made to
+sendmail.h.diff and srvrsmtp.c.diff in order to patch the new source
+correctly, but queue.c.diff was removed entirely since that bug now
+should be fixed in the BSD release -- subsequently, you should ignore
+section 7.14 of the IDA Kit documentation.  Expect some of the patches
+to install with a minor offset reported by patch -- they have not been
+changed since 1.0 but should still be correct.
+
+
+======================================================================
+Addendum for the 3rd release (1.2) of the IDA Sendmail Enhancement Kit
+----------------------------------------------------------------------
+
+A complete new set of patches has been made for this release, which
+applies to sendmail 5.59 with MX.  For this, the BSD4.2 and BSD2.9
+compatibility code has been removed but it will still compile on Suns
+with SunOS 3.x or greater.  A new addition is the support for Sun's
+Yellow Pages in the dbm routines--if the name of a database you specify
+begins with a percent sign, eg:
+
+	OKP%pathtable
+
+then lookups to that database will be handled by YP instead of a local
+dbm file.  See example in lib/Makefile on how to set up a shared
+pathalias database for a local area network.
+
+Furthermore, the code that searches dbm files has been changed to
+automatically notice if a database has been changed and to reinitialize
+itself accordingly.  Also, both sendmail and dbm(1) has been modified to
+use file locking when updating local dbm files.  This won't help for
+shared nfs file systems, though--use YP instead.
+
+The syntax for set (class) declarations has been extended to allow
+programs as well as files to define a set.  If a file name in an F
+statement begins with a vertical bar, as in:
+
+	FU|uuname
+
+it is assumed to be followed by the name of a program, which will
+produce the set's members on its standard output.  Scanf formats are
+allowed as usual.
+
+A set of patches received from gamiddleton@waterloo has been included in
+this release:
+
+$&x -- Delayed macro evaluation [from gatech?]
+
+	This macro is used in the config file to delay interpretation
+	until run-time.  A typical application would be to delay
+	evaluation of the 'r' macro, which is usually passed to sendmail
+	by other programs to define the sending protocol; e.g. rmail
+	does:
+		sendmail -oMrUUCP ...
+	If you don't use $&r and then freeze the configuration file,
+	you'll get the value of $r at "freezing" time instead of
+	"thawing" time.  Note that this only applies to RHS expressions
+	in rules; use $r elsewhere.
+
+$!x -- RFC822 quoted macro expansion
+
+	Used to keep address legal wrt RFC822 when constructing the
+	From: line for a local user.  The macro is expanded as usual,
+	but if any character in it is illegal, the whole string gets
+	quoted.  Eg, with:
+		Dq$?x$!x $.<$g>
+	an address like 'Joe User @ Waterloo <juser@waterloo.edu>'
+	would be rewritten as '"Joe User @ Waterloo" <juser@waterloo.edu>'
+	to make it legal.
+
+Address rewriting loop detection
+
+	We found address rewriting was looping if the sendmail.cf file
+	was slightly wrong; this code keeps sendmail from looping forever.
+
+An extra compile-time frozen file check
+
+	The date of the frozen configuration file is compared to the
+	time sendmail itself was compiled.  If the .fc file is older, it
+	is ignored and the .cf file is used instead.
+
+
+Be aware that you will need the latest version (4.8) of BIND in order to
+compile sendmail 5.59 with MX support.  If you don't want to install its
+include and library files in the system directories, add an additional
+-I{bind}/include to CFLAGS in sendmail/src/Makefile and -L{bind}/res in
+front of the LIBS variable ({bind} = location of bind directory).
+
+Sun users: Make sure that your syslog.o {in /lib/libc.a} has been
+compiled with the BSD4.3 netdb.h if you want to use the LOG option.
+Also note that sendmail compiled with bind's resolver won't use the
+Yellow Pages host table at all.  For your convenience, a compressed
+binary copy of IDA sendmail for Sun-3 is available in
+~ftp/pub1/ida-sendmail-sun3.Z on Arisia.Xerox.COM via anonymous ftp.
+
+
+Note for BIND experts
+---------------------
+One of the changes I made to the code was to use the gethostbyname()
+that BIND's resolver supplies instead of the internal getcanonname()
+that does repeated res_searches for CNAME records.  This was because I
+needed both an acknowledgement of the domain's existance as well as its
+fully qualified name (eg. foo.bar => foo.bar.edu), of which the old code
+supported neither.  But this now means that there has to be an IN A
+(Internet address) record for the domain name we wish to canonicalize.
+Another possible option could have been to modify getcanonname() to do
+wildcard lookups, but I'm not convinced that's the right way to go.  On
+the other hand, I'm no name server wizard, so if you think I'm wrong,
+please let me know why (and how) and I'll change it.
+
+
+Bugs
+----
+ o  There is currently no equivalent of $[...$] for MX records, so the
+    IDA Sendmail.mc file will always use any available pathalias routing
+    before defaulting to MX/TCP.
+ o  When a name server responds with an athoritive "host not found",
+    there is currently no way of finding out who is responsible for this
+    information -- we'll need to do our own NS lookups to do so.
+ o  It has been reported that a syserr of "net timeout" {in util.c} may
+    cause sendmail to exit ungracefully without removing the lock file
+    and without making a note of which recipients the message already
+    has been delivered to.
+
+
+Minor Revisions
+---------------
+1.2.1 - Various changes to Sendmail.mc regarding its interpretation of
+	hybrid addresses; made to parse according to receiving protocol.
+	(Reimplemented BANGIMPLIESUUCP;	obsoleted UUCPPRECEDENCE; added
+	STRICTLY822, UUCPMAILER.)
+1.2.2 -	Made database lookups NOT send result through sprintf if there
+	was no sprintf arg in call, ie. $(X foo $) or $(X foo $: bar $).
+	This will make it less error-prone for usage with non-pathalias
+	databases.  Note, however, that from this version of IDA, double
+	percent signs will NOT be reduced to single percents (ie, you may
+	need to update your databases if you had adjusted for this before).
+1.2.3 - Split the TCP mailer into TCP and TCP-D (DECnet gateway); added
+	a TCP-U mailer and ruleset 13 for UUCP gateways that require
+	hybrid addresses, ie. UUCP !-paths on top of @-domains (brr).
+	Made sure the h macro (remote host) is defined in buildaddr()
+	before the mailer rulesets are called.  Added TCPMAILER option.
+1.2.4 - Sendmail.mc: A list of well-known pseudo-domains (PSEUDODDOMAINS) 
+	has been added to reduce load on the root name server by
+	avoiding name server lookups on domains ending in these.
+1.2.5 - Sendmail.mc: Experimental support for XNS Mail (XNSMAIL, XNSDOMAIN).
+	Improved the error reporting code in usersmtp.c to mention what
+	host it was talking to when the error occurred.  Also made
+	deliver.c tell a little more about "host unknown" errors.

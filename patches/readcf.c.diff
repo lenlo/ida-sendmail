@@ -1,0 +1,138 @@
+*** readcf.c.orig	Sat Apr  2 01:51:11 1988
+--- readcf.c	Fri Sep 16 19:23:34 1988
+***************
+*** 309,315 ****
+  	FILE *f;
+  	char buf[MAXLINE];
+  
+! 	f = fopen(filename, "r");
+  	if (f == NULL)
+  	{
+  		syserr("cannot open %s", filename);
+--- 309,318 ----
+  	FILE *f;
+  	char buf[MAXLINE];
+  
+! 	if (filename[0] == '|')
+! 		f = popen(&filename[1], "r");
+! 	else
+! 		f = fopen(filename, "r");
+  	if (f == NULL)
+  	{
+  		syserr("cannot open %s", filename);
+***************
+*** 357,363 ****
+  		}
+  	}
+  
+! 	(void) fclose(f);
+  }
+  /*
+  **  MAKEMAILER -- define a new mailer.
+--- 360,369 ----
+  		}
+  	}
+  
+! 	if (filename[0] == '|')
+! 		(void) pclose(f);
+! 	else
+! 		(void) fclose(f);
+  }
+  /*
+  **  MAKEMAILER -- define a new mailer.
+***************
+*** 440,447 ****
+  				setbitn(*p, m->m_flags);
+  			break;
+  
+! 		  case 'S':		/* sender rewriting ruleset */
+! 		  case 'R':		/* recipient rewriting ruleset */
+  			i = atoi(p);
+  			if (i < 0 || i >= MAXRWSETS)
+  			{
+--- 446,453 ----
+  				setbitn(*p, m->m_flags);
+  			break;
+  
+! 		  case 'S':		/* sender rewriting ruleset(s) */
+! 		  case 'R':		/* recipient rewriting ruleset(s) */
+  			i = atoi(p);
+  			if (i < 0 || i >= MAXRWSETS)
+  			{
+***************
+*** 448,457 ****
+  				syserr("invalid rewrite set, %d max", MAXRWSETS);
+  				return;
+  			}
+! 			if (fcode == 'S')
+! 				m->m_s_rwset = i;
+! 			else
+! 				m->m_r_rwset = i;
+  			break;
+  
+  		  case 'E':		/* end of line string */
+--- 454,482 ----
+  				syserr("invalid rewrite set, %d max", MAXRWSETS);
+  				return;
+  			}
+! 			/* default envelope ruleset for header ruleset */
+! 			if (fcode == 'S') {
+! 				m->m_se_rwset = i;
+! 				m->m_sh_rwset = i;
+! 			} else {
+! 				m->m_re_rwset = i;
+! 				m->m_rh_rwset = i;
+! 			}
+! 			/* look for specific header rewriting ruleset */
+! 			while (*p != '\0' && *p != ',' && *p != '/') p++;
+! 			if (*p++ == '/') {
+! 				i = atoi(p);
+! 				if (i < 0 || i >= MAXRWSETS)
+! 				{
+! 					syserr("invalid rewrite set, %d max",
+! 					       MAXRWSETS);
+! 					return;
+! 				}
+! 				if (fcode == 'S')
+! 					m->m_sh_rwset = i;
+! 				else
+! 					m->m_rh_rwset = i;
+! 			}
+  			break;
+  
+  		  case 'E':		/* end of line string */
+***************
+*** 803,809 ****
+  	  case 'i':		/* ignore dot lines in message */
+  		IgnrDot = atobool(val);
+  		break;
+! 
+  	  case 'L':		/* log level */
+  		LogLevel = atoi(val);
+  		break;
+--- 828,839 ----
+  	  case 'i':		/* ignore dot lines in message */
+  		IgnrDot = atobool(val);
+  		break;
+! # ifdef NDBM
+! 	  case 'K':		/* keyed database file */
+! 		if (*val != '\0')
+! 			DbmTab[*val & 0177].db_name = newstr(&val[1]);
+! 		break;
+! # endif NDBM
+  	  case 'L':		/* log level */
+  		LogLevel = atoi(val);
+  		break;
+***************
+*** 909,914 ****
+--- 939,948 ----
+  
+  	  case 'Z':		/* work time factor */
+  		WkTimeFact = atoi(val);
++ 		break;
++ 
++ 	  case '/':		/* use split envelope/header rewriting */
++ 		SplitRewriting = TRUE;
+  		break;
+  
+  	  default:

@@ -1,0 +1,10 @@
+: MDBM.edit SRCDIR DBMLIB
+cd $1
+chmod u+w Makefile
+echo ">>> Editing $1/Makefile to enable MDBM..."
+/bin/ed Makefile <<EOF
+g/^LIBS=/s/-ldbm/$2/
+w
+q
+EOF
+chmod u-w Makefile

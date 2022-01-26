@@ -1,0 +1,35 @@
+*** domain.c.orig	Wed May  4 01:13:44 1988
+--- domain.c	Thu Aug 25 10:26:46 1988
+***************
+*** 147,152 ****
+--- 147,169 ----
+  	return(nmx);
+  }
+  
++ /*
++ **	Getcanonname() below is broken in the sense that it won't return
++ **	unqualified local host names with their full domain extension,
++ **	unless the argument is an alias.
++ **
++ **	Since gethostbyname() calls the name server with bind 4.8,
++ **	I don't see why this function would be needed at all.  I've
++ **	therefore restored the old code in maphostname() of daemon.c
++ **	that uses gethostbyname().  If there's something I've missed,
++ **	feel free to change maphostname() to again call getcanonname(),
++ **	but also make sure that the latter will qualify the host with
++ **	its full domain AND return a status code indicating if the host
++ **	was found.
++ **
++ **	Lennart Lovstrand, Rank Xerox EuroPARC, 24-Aug-88
++ */
++ #ifdef GETHOSTBYNAME_ISNT_ENOUGH
+  getcanonname(host, hbsize)
+  	char *host;
+  	int hbsize;
+***************
+*** 224,226 ****
+--- 241,244 ----
+  		}
+  	}
+  }
++ #endif GETHOSTBYNAME_ISNT_ENOUGH

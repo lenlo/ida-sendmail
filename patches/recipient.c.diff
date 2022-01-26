@@ -1,0 +1,219 @@
+*** recipient.c.orig	Mon Mar 14 05:31:54 1988
+--- recipient.c	Wed Aug 24 16:44:19 1988
+***************
+*** 306,311 ****
+--- 306,312 ----
+  			if (pw == NULL)
+  			{
+  				a->q_flags |= QBADADDR;
++ 				errno = 0;	/* no special error */
+  				giveresponse(EX_NOUSER, m, CurEnv);
+  			}
+  			else
+***************
+*** 351,356 ****
+--- 352,360 ----
+  **		may modify name.
+  */
+  
++ #define WORST_MATCH	-2		/* even worse than no match */
++ #define NO_UID		-999		/* any "impossible" uid will do */
++ 
+  struct passwd *
+  finduser(name)
+  	char *name;
+***************
+*** 357,365 ****
+--- 361,374 ----
+  {
+  	register struct passwd *pw;
+  	register char *p;
++ 	int best_match = WORST_MATCH;
++ 	int best_uid = NO_UID;
+  	extern struct passwd *getpwent();
+  	extern struct passwd *getpwnam();
++ 	extern struct passwd *getpwuid();
+  
++ 	errno = 0;
++ 
+  	/* map upper => lower case */
+  	for (p = name; *p != '\0'; p++)
+  	{
+***************
+*** 367,395 ****
+  			*p = tolower(*p);
+  	}
+  
+  	/* look up this login name using fast path */
+  	if ((pw = getpwnam(name)) != NULL)
+  		return (pw);
+  
+! 	/* search for a matching full name instead */
+! 	for (p = name; *p != '\0'; p++)
+! 	{
+! 		if (*p == (SpaceSub & 0177) || *p == '_')
+! 			*p = ' ';
+! 	}
+  	(void) setpwent();
+  	while ((pw = getpwent()) != NULL)
+  	{
+  		char buf[MAXNAME];
+  
+! 		buildfname(pw->pw_gecos, pw->pw_name, buf);
+! 		if (index(buf, ' ') != NULL && !strcasecmp(buf, name))
+! 		{
+! 			message(Arpa_Info, "sending to login name %s", pw->pw_name);
+! 			return (pw);
+  		}
+  	}
+! 	return (NULL);
+  }
+  /*
+  **  WRITABLE -- predicate returning if the file is writable.
+--- 376,521 ----
+  			*p = tolower(*p);
+  	}
+  
++ # ifdef DEBUG
++ 	if (tTd(26, 6))
++ 		printf("%s password entry for \"%s\"\n",
++ 		       getpwnam(name) ? "found" : "can't find", name);
++ # endif DEBUG
++ 
+  	/* look up this login name using fast path */
+  	if ((pw = getpwnam(name)) != NULL)
+  		return (pw);
+  
+! # ifdef DEBUG
+! 	if (tTd(26, 6))
+! 		printf("looking for partial match to \"%s\"\n", name);
+! # endif DEBUG
+  	(void) setpwent();
+  	while ((pw = getpwent()) != NULL)
+  	{
+  		char buf[MAXNAME];
++ 		register int this_match;
+  
+! 		if (strcasecmp(pw->pw_name, name) == 0) {
+! # ifdef DEBUG
+! 		    if (tTd(26, 6))
+! 			printf("found password entry for \"%s\" as \"%s\"\n",
+! 				   name, pw->pw_name);
+! # endif DEBUG
+! 		    return (pw);
+  		}
++ 
++ 		buildfname(pw->pw_gecos, pw->pw_name, buf);
++ 		this_match = partialstring(buf, name);
++ # ifdef DEBUG
++ 		if (tTd(26, 6 && this_match >= 0))
++ 			printf("matched on level %d with \"%s\"\n",
++ 			       this_match, buf);
++ # endif DEBUG
++ 		if (this_match < best_match)
++ 			continue;
++ 		else if (this_match > best_match) {
++ 			best_match = this_match;
++ 			best_uid = pw->pw_uid;
++ 		} else if (best_uid != pw->pw_uid)
++ 			best_uid = NO_UID;
+  	}
+! # ifdef DEBUG
+! 		if (tTd(26, 6))
+! 			if (best_match == WORST_MATCH)
+! 				printf("no match, failing...\n");
+! 			else if (best_uid == NO_UID)
+! 				printf("ambiguous match, failing...\n");
+! 			else
+! 				printf("succeding on level %d...\n",
+! 				       best_match);
+! # endif DEBUG
+! 
+! 	if (best_uid == NO_UID)
+! 		return (NULL);
+! 
+! 	pw = getpwuid(best_uid);
+! 	message(Arpa_Info, "sending to login name %s", pw->pw_name);
+! 	return (pw);
+! }
+! /*
+! **  PARTIALSTRING -- is one string of words contained by another?
+! **
+! **	See if one string of words can be found as part of
+! **	another string of words.  All substrings delimited by
+! **	one or more non-alphanumeric characters are considered
+! **	"words", and a partial match is such that all the words
+! **	of the pattern string are either full prefixes
+! **	of the target string.  Upper or lower case letters are
+! **	considered equal.
+! **
+! **	Parameters:
+! **		target -- target string
+! **		pattern -- pattern string
+! **
+! **	Returns:
+! **		The number of fully matched words, or -1 if none.
+! **
+! **	Side Effects:
+! **		None.
+! **
+! */
+! 
+! partialstring(target, pattern)
+!     char *target;
+!     char *pattern;
+! {
+!     register char *t, *p, *q;
+!     int full_words = 0;
+! 
+!     /* skip initial delimiters */
+!     for (t = target; *t != '\0' && !isalnum(*t); t++);
+!     for (p = pattern; *p != '\0' && !isalnum(*p); p++);
+!     q = p;
+! 
+!     while (*t != '\0' && *p != '\0') {
+! 	/*
+! 	 * if at end of pattern word, find next, remember it,
+! 	 * and eat the current target word
+! 	 */
+! 	if (!isalnum(*p)) {
+! 	    while (*p != '\0' && !isalnum(*p)) p++;
+! 	    if (*p == '\0')
+! 		continue;
+! 	    q = p;
+! 	    if (!isalnum(*t)) {
+! 		full_words++;
+! 	    }
+! 	    while (*t != '\0' && isalnum(*t)) t++;
+! 	    while (*t != '\0' && !isalnum(*t)) t++;
+! 	    continue;
+! 	}
+! 
+! 	/*
+! 	 * if match, advance both pointers
+! 	 */
+! 	if ((isupper(*t) ? tolower(*t) : *t) ==
+! 	    (isupper(*p) ? tolower(*p) : *p)) {
+! 	    t++, p++;
+! 	    continue;
+! 	}
+! 
+! 	/*
+! 	 * if no match, backtrack to last unmatched pattern word and
+! 	 * eat current target word
+! 	 */
+! 	p = q;
+! 	while (*t != '\0' && isalnum(*t)) t++;
+! 	while (*t != '\0' && !isalnum(*t)) t++;
+!     }
+! 
+!     /*
+!      * now, the pattern should be fully consumed if there was a match
+!      */
+!     if (*p == '\0')
+! 	return isalnum(*t) ? full_words : full_words + 1;
+!     else
+! 	return -1;
+  }
+  /*
+  **  WRITABLE -- predicate returning if the file is writable.

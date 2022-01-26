@@ -1,0 +1,37 @@
+*** queue.c.orig	Mon Mar 14 03:54:04 1988
+--- queue.c	Sat Aug 20 01:15:36 1988
+***************
+*** 181,187 ****
+  	*/
+  
+  	bzero((char *) &nullmailer, sizeof nullmailer);
+! 	nullmailer.m_r_rwset = nullmailer.m_s_rwset = -1;
+  	nullmailer.m_eol = "\n";
+  
+  	define('g', "\001f", e);
+--- 181,188 ----
+  	*/
+  
+  	bzero((char *) &nullmailer, sizeof nullmailer);
+! 	nullmailer.m_re_rwset = nullmailer.m_se_rwset = -1;
+! 	nullmailer.m_rh_rwset = nullmailer.m_sh_rwset = -1;
+  	nullmailer.m_eol = "\n";
+  
+  	define('g', "\001f", e);
+***************
+*** 336,342 ****
+  	**  Make sure the alias database is open.
+  	*/
+  
+! 	initaliases(AliasFile, FALSE);
+  
+  	/*
+  	**  Start making passes through the queue.
+--- 337,343 ----
+  	**  Make sure the alias database is open.
+  	*/
+  
+! 	initaliases(FALSE);
+  
+  	/*
+  	**  Start making passes through the queue.

@@ -1,0 +1,25 @@
+*** conf.h.orig	Sat Apr  2 01:21:19 1988
+--- conf.h	Fri Aug 26 18:24:13 1988
+***************
+*** 48,53 ****
+--- 48,54 ----
+  
+  # define DBM		1	/* use DBM library (requires -ldbm) */
+  # define NDBM		1	/* new DBM library available (requires DBM) */
++ # define YP		1	/* enable Yellow Pages code */
+  # define DEBUG		1	/* enable debugging */
+  # define LOG		1	/* enable logging */
+  # define SMTP		1	/* enable user and server SMTP */
+***************
+*** 56,58 ****
+--- 57,66 ----
+  # define DAEMON		1	/* include the daemon (requires IPC & SMTP) */
+  # define SETPROCTITLE	1	/* munge argv to display current status */
+  /* # define WIZ		1	/* allow wizard mode */
++ 
++ /*
++ **  This was neither defined under SunOS 3.5 nor my test BSD4.3 machine.
++ */
++ #ifndef EX_CONFIG
++ # define EX_CONFIG 78
++ #endif EX_CONFIG

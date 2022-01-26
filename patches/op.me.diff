@@ -1,0 +1,607 @@
+*** op.me.orig	Thu May  5 22:28:51 1988
+--- op.me	Thu Aug 25 15:15:49 1988
+***************
+*** 7,13 ****
+  .\"
+  .\"	@(#)op.me	5.8 (Berkeley) 5/9/86
+  .\"
+! .\" eqn % | troff -me
+  .\"if n .ls 2
+  .\".he 'Sendmail Installation and Operation Guide''%'
+  .\".fo 'Version 5.8''Last Mod 5/9/86'
+--- 7,13 ----
+  .\"
+  .\"	@(#)op.me	5.8 (Berkeley) 5/9/86
+  .\"
+! .\" pic % | eqn | troff -me
+  .\"if n .ls 2
+  .\".he 'Sendmail Installation and Operation Guide''%'
+  .\".fo 'Version 5.8''Last Mod 5/9/86'
+***************
+*** 40,46 ****
+  Eric Allman
+  Britton-Lee, Inc.
+  .sp
+! Version 5.8
+  .)l
+  .sp 2
+  .pp
+--- 40,51 ----
+  Eric Allman
+  Britton-Lee, Inc.
+  .sp
+! .sz 8
+! Enhancements by Lennart L\o"o\(um"vstrand
+! Rank Xerox EuroPARC, Cambridge, England
+! .sz 10
+! .sp
+! Version 5.8++
+  .)l
+  .sp 2
+  .pp
+***************
+*** 524,529 ****
+--- 529,546 ----
+  will print the contents of the mail queue;
+  see below).
+  This should be a link to /usr/lib/sendmail.
++ .sh 3 "/usr/ucb/bsmtp"
++ .pp
++ If
++ .i sendmail
++ is invoked as
++ .q bsmtp,
++ it will simulate the
++ .b \-bb
++ flag (i.e.,
++ .i sendmail
++ will start accepting batched SMTP commands from stdin; see below).
++ This should be a link to /usr/lib/sendmail.
+  .sh 1 "NORMAL OPERATIONS"
+  .sh 2 "Quick Configuration Startup"
+  .pp
+***************
+*** 823,834 ****
+  .(b
+  name: name1, name2, ...
+  .)b
+! Only local names may be aliased;
+  e.g.,
+  .(b
+  eric@mit-xx: eric@berkeley.EDU
+  .)b
+! will not have the desired effect.
+  Aliases may be continued by starting any continuation lines
+  with a space or a tab.
+  Blank lines and lines beginning with a sharp sign
+--- 840,855 ----
+  .(b
+  name: name1, name2, ...
+  .)b
+! It is possible not
+! only local names may be aliased,
+! but even non-locals if the configuration file is properly set up;
+  e.g.,
+  .(b
+  eric@mit-xx: eric@berkeley.EDU
+  .)b
+! will have the desired effect if the
+! .i aliases
+! database is searched before determining mailer in ruleset 0.
+  Aliases may be continued by starting any continuation lines
+  with a space or a tab.
+  Blank lines and lines beginning with a sharp sign
+***************
+*** 1136,1141 ****
+--- 1157,1170 ----
+  it defaults to
+  .i sendmail.cf
+  in the current directory.
++ .pp
++ You can also specify a different frozen configuration file with the
++ .b \-Z
++ option.  It is used the same way as the
++ .b \-C
++ flag and defaults to
++ .i sendmail.fc
++ in the current directory.
+  .sh 2 "Changing the Values of Options"
+  .pp
+  Options can be overridden using the
+***************
+*** 1705,1712 ****
+  .ta 1i
+  Path	The pathname of the mailer
+  Flags	Special flags for this mailer
+! Sender	A rewriting set for sender addresses
+! Recipient	A rewriting set for recipient addresses
+  Argv	An argument vector to pass to this mailer
+  Eol	The end-of-line string for this mailer
+  Maxsize	The maximum message length to this mailer
+--- 1734,1741 ----
+  .ta 1i
+  Path	The pathname of the mailer
+  Flags	Special flags for this mailer
+! Sender	Rewriting sets for sender addresses
+! Recipient	Rewriting sets for recipient addresses
+  Argv	An argument vector to pass to this mailer
+  Eol	The end-of-line string for this mailer
+  Maxsize	The maximum message length to this mailer
+***************
+*** 1868,1873 ****
+--- 1897,1920 ----
+  .b $| )
+  clause may be omitted.
+  .pp
++ To make sure that a string (phrase) conforms with RFC822, a special
++ construct
++ .b $! \c
++ .i x
++ can be used.  When it is expanded, it will be checked against certain
++ illegal character and quoted using a pair of double quotes if necessary.
++ This would typically be used when defining the
++ .i q
++ macro as in:
++ .(b
++ Dq$?x$!x $.<$g>
++ .)b
++ Here, an address like `Joe User @ Waterloo <juser@waterloo.edu>' would
++ be rewritten as `"Joe User @ Waterloo" <juser@waterloo.edu>' in order to
++ make it legal.  See more below on the
++ .i q
++ macro.
++ .pp
+  The following macros
+  .i must
+  be defined to transmit information into
+***************
+*** 1878,1886 ****
+  j	The \*(lqofficial\*(rq domain name for this site
+  l	The format of the UNIX from line
+  n	The name of the daemon (for error messages)
+! o	The set of "operators" in addresses
+! q	default format of sender address
+  .)b
+  The
+  .b $e
+  macro is printed out when SMTP starts up.
+--- 1925,1944 ----
+  j	The \*(lqofficial\*(rq domain name for this site
+  l	The format of the UNIX from line
+  n	The name of the daemon (for error messages)
+! o	The set of \*(lqoperators\*(rq in addresses
+! q	Default format of sender address
+  .)b
++ In addition, you also have the
++ .b $k
++ macro:
++ .(b
++ .ta 4n
++ k	Your node's UUCP hostname
++ .)b
++ which is optional to define (it defaults to the value of
++ .b $w,
++ your normal hostname).
++ .pp
+  The
+  .b $e
+  macro is printed out when SMTP starts up.
+***************
+*** 2087,2094 ****
+  and
+  .b $s
+  fields are set to the protocol used to communicate with sendmail
+! and the sending hostname;
+! these are not supported in the current version.
+  .sh 3 "Special classes"
+  .pp
+  The class
+--- 2145,2151 ----
+  and
+  .b $s
+  fields are set to the protocol used to communicate with sendmail
+! and the sending hostname.
+  .sh 3 "Special classes"
+  .pp
+  The class
+***************
+*** 2107,2114 ****
+  \fB$*\fP	Match zero or more tokens
+  \fB$+\fP	Match one or more tokens
+  \fB$\-\fP	Match exactly one token
+! \fB$=\fP\fIx\fP	Match any token in class \fIx\fP
+! \fB$~\fP\fIx\fP	Match any token not in class \fIx\fP
+  .)b
+  If any of these match,
+  they are assigned to the symbol
+--- 2164,2171 ----
+  \fB$*\fP	Match zero or more tokens
+  \fB$+\fP	Match one or more tokens
+  \fB$\-\fP	Match exactly one token
+! \fB$=\fP\fIx\fP	Match any sequence of tokens in class \fIx\fP
+! \fB$~\fP\fIx\fP	Match any sequence of tokens not in class \fIx\fP
+  .)b
+  If any of these match,
+  they are assigned to the symbol
+***************
+*** 2141,2149 ****
+  unless they begin with a dollar sign.
+  Metasymbols are:
+  .(b
+! .ta \w'$#mailer  'u
+  \fB$\fP\fIn\fP	Substitute indefinite token \fIn\fP from LHS
+! \fB$[\fP\fIname\fP\fB$]\fP	Canonicalize \fIname\fP
+  \fB$>\fP\fIn\fP	\*(lqCall\*(rq ruleset \fIn\fP
+  \fB$#\fP\fImailer\fP	Resolve to \fImailer\fP
+  \fB$@\fP\fIhost\fP	Specify \fIhost\fP
+--- 2198,2208 ----
+  unless they begin with a dollar sign.
+  Metasymbols are:
+  .(b
+! .ta \w'$(x key$@arg$:default$)  'u
+  \fB$\fP\fIn\fP	Substitute indefinite token \fIn\fP from LHS
+! \fB$&\fP\fIx\fP	Force runtime evaluation of macro \fIx\fP
+! \fB$[\fP\fIname\fP\fB$:\fP\fIdefault\fP\fB$]\fP	Canonicalize \fIname\fP
+! \fB$(\fP\fIx key\fP\fB$@\fP\fIarg\fP\fB$:\fP\fIdefault\fP\fB$)\fP	Lookup the \fIkey\fP in database \fIx\fP, and sprintf \fIarg\fP through the result.
+  \fB$>\fP\fIn\fP	\*(lqCall\*(rq ruleset \fIn\fP
+  \fB$#\fP\fImailer\fP	Resolve to \fImailer\fP
+  \fB$@\fP\fIhost\fP	Specify \fIhost\fP
+***************
+*** 2178,2184 ****
+--- 2237,2304 ----
+  .q $[[128.32.130.2]$]
+  would become
+  .q vangogh.berkeley.edu.
++ The
++ .b $: \c
++ .i default
++ part is optional and specifies what should be substituted
++ in case that the
++ .i name
++ is not known to 
++ .i gethostent \|(3).
+  .pp
++ General 
++ .i dbm \|(3)
++ databases may be searched using the
++ .b $( \c
++ .i "x key" \c
++ .b $)
++ syntax.  The expression may be supplied with an optional result argument,
++ .b $@ \c
++ .i arg,
++ and a default string,
++ .b $: \c
++ .i default.
++ The database is specified by a single character and defined using the
++ .q K
++ option as in
++ .(b
++ OKP/usr/lib/mail/pathtable
++ .)b
++ which defines database
++ .b P
++ to be associated with the dbm files /usr/lib/mail/pathtable.{dir,pag}.
++ You can also make sendmail search a
++ .i "Yellow Pages"
++ database if your machine supports this.  To do this, use the same
++ definition as above but prefix the map name with a percent sign, as in:
++ .(b
++ OKP%mail.aliases
++ .)b
++ Only maps in your default domain can currently be accessed.
++ An expression like
++ .q "$(P sun $@ soren $: backbone!sun!soren $)"
++ would look for the string
++ .q sun
++ in the
++ .q P
++ database and sprintf
++ .q soren
++ through the result, or substitute
++ .q backbone!sun!soren
++ if the key could not be found.
++ If no 
++ .i default
++ argument is supplied and the key could not be found, the whole
++ expression is replaced with the key.
++ .pp
++ The aliases database is automatically available as database
++ .b @ .
++ It can either be defined using the
++ .b A
++ option or by a
++ .b OK@
++ declaration and is in both cases allowed to be a YP map.
++ .pp
+  The
+  .b $> \c
+  .i n
+***************
+*** 2191,2197 ****
+  then becomes
+  the substitution for this rule.
+  .pp
+! The
+  .b $#
+  syntax should
+  .i only
+--- 2311,2317 ----
+  then becomes
+  the substitution for this rule.
+  .pp
+! In most cases, the
+  .b $#
+  syntax should
+  .i only
+***************
+*** 2236,2252 ****
+  .b $@
+  and
+  .b $:
+! prefixes may precede a
+  .b $>
+! spec;
+  for example:
+  .(b
+  .ta 8n
+! R$+	$:$>7$1
+  .)b
+  matches anything,
+! passes that to ruleset seven,
+! and continues;
+  the
+  .b $:
+  is necessary to avoid an infinite loop.
+--- 2356,2372 ----
+  .b $@
+  and
+  .b $:
+! prefixes may precede
+  .b $>
+! specs;
+  for example:
+  .(b
+  .ta 8n
+! R$+	$:$>7$>8$1
+  .)b
+  matches anything,
+! passes that to ruleset eight and the result of that to ruleset seven,
+! and finally continues;
+  the
+  .b $:
+  is necessary to avoid an infinite loop.
+***************
+*** 2253,2260 ****
+  .pp
+  Substitution occurs in the order described,
+  that is,
+! parameters from the LHS are substituted,
+! hostnames are canonicalized,
+  .q subroutines
+  are called,
+  and finally
+--- 2373,2380 ----
+  .pp
+  Substitution occurs in the order described,
+  that is,
+! parameters from the LHS are substituted and runtime macros are expanded,
+! hostnames are canonicalized and database lookups are performed,
+  .q subroutines
+  are called,
+  and finally
+***************
+*** 2710,2720 ****
+  as it proceeds,
+  finally showing you the address it ends up with.
+  You may use a comma separated list of rwsets
+! for sequential application of rules to an input;
+! ruleset three is always applied first.
+  For example:
+  .(b
+! 1,21,4 monet:bollard
+  .)b
+  first applies ruleset three to the input
+  .q monet:bollard.
+--- 2830,2839 ----
+  as it proceeds,
+  finally showing you the address it ends up with.
+  You may use a comma separated list of rwsets
+! for sequential application of rules to an input.
+  For example:
+  .(b
+! 3,1,21,4 monet:bollard
+  .)b
+  first applies ruleset three to the input
+  .q monet:bollard.
+***************
+*** 2854,2859 ****
+--- 2973,2979 ----
+  Other flags are described
+  in Appendix C.
+  .pp
++ .pp
+  The S and R fields in the mailer description
+  are per-mailer rewriting sets
+  to be applied to sender and recipient addresses
+***************
+*** 2884,2889 ****
+--- 3004,3016 ----
+  These sets can also be used
+  to do special purpose output rewriting
+  in cooperation with ruleset four.
++ If required, the R and S rulesets may be specified independently for envelope
++ and header addresses by separating them with a slash.  E.g.,
++ .q R=13/14
++ means that envelope recipient addresses should be sent through ruleset 13
++ while those in the header should be passed to ruleset 14. 
++ You can disable any mailer specific rewriting by specifying the ruleset as
++ zero or by leaving it blank.
+  .pp
+  The E field defines the string to use
+  as an end-of-line indication.
+***************
+*** 3026,3031 ****
+--- 3153,3159 ----
+  i	Initialize the alias database
+  p	Print the mail queue
+  z	Freeze the configuration file
++ b	Run in Batched SMTP mode
+  .)b
+  The special processing for the
+  ARPANET
+***************
+*** 3050,3055 ****
+--- 3178,3188 ----
+  .i Sendmail
+  runs as the invoking user (rather than root)
+  when this flag is specified.
++ .ip \-Z\fIfile\fP
++ Use a different frozen configuration file.
++ .i Sendmail
++ runs as the invoking user (rather than root)
++ when this flag is specified.
+  .ip \-d\fIlevel\fP
+  Set debugging level.
+  .ip \-o\fIx\|value\fP
+***************
+*** 3166,3171 ****
+--- 3299,3318 ----
+  for SMTP.
+  .ip i
+  Ignore dots in incoming messages.
++ .ip K\fIxfile\fP
++ Declare the 
++ keyed database
++ .i x
++ to be associated with the 
++ .i dbm \|(3)
++ file
++ .i file.
++ (\fIX\fP is a single letter.)
++ The database
++ .q @
++ is always bound to the 
++ .i aliases
++ database.
+  .ip L\fIn\fP
+  Set the default log level to
+  .i n .
+***************
+*** 3406,3415 ****
+  will not terminate the message prematurely.
+  .ip L
+  Limit the line lengths as specified in RFC821.
+! .ip P
+  Use the return-path in the SMTP
+  .q "MAIL FROM:"
+! command
+  rather than just the return address;
+  although this is required in RFC821,
+  many hosts do not process return paths properly.
+--- 3553,3564 ----
+  will not terminate the message prematurely.
+  .ip L
+  Limit the line lengths as specified in RFC821.
+! .ip p
+  Use the return-path in the SMTP
+  .q "MAIL FROM:"
+! command or in the UUCP
+! .q From_
+! line
+  rather than just the return address;
+  although this is required in RFC821,
+  many hosts do not process return paths properly.
+***************
+*** 3450,3455 ****
+--- 3599,3620 ----
+  Escape lines beginning with
+  .q From
+  in the message with a `>' sign.
++ .ip V
++ Make all header addresses UUCP !-relative with respect to ourselves
++ and the recipient host.  This means that all header lines will have
++ working paths relative to the recipient host.  Routes through the
++ remote host, i.e. addresses that begin with
++ .q remote!
++ are stripped of that part unless the ultimate
++ recipient resides on the remote host (i.e., there are no more bangs in
++ the address).  All other addresses are prefixed with
++ .q ourhost!
++ if not already there.
++ .i Ourhost
++ is fetched from the 
++ .b $k
++ macro, which defaults to your hostname as supplied by
++ .i gethostname \|(3).
+  .+c "OTHER CONFIGURATION"
+  .rm $0
+  .nr ii 1i
+***************
+*** 3603,3608 ****
+--- 3768,3782 ----
+  that allows multiple databases will be used.
+  .q DBM
+  must also be set.
++ .ip MDBM
++ If set, Maryland's
++ .i mdbm \|(3)
++ package should be substituted for the
++ .i ndbm \|(3)
++ routines.  This should only be used if you want the keyed database
++ functionality (\fB$(x key$)\fP), but don't have
++ .i ndbm \|(3)
++ available.
+  .ip DEBUG
+  If set, debugging information is compiled in.
+  To actually get the debugging output,
+***************
+*** 3929,3935 ****
+  .ip "/usr/lib/sendmail"
+  The binary of
+  .i sendmail .
+! .ip /usr/bin/newaliases
+  A link to /usr/lib/sendmail;
+  causes the alias database to be rebuilt.
+  Running this program is completely equivalent to giving
+--- 4103,4109 ----
+  .ip "/usr/lib/sendmail"
+  The binary of
+  .i sendmail .
+! .ip /usr/ucb/newaliases
+  A link to /usr/lib/sendmail;
+  causes the alias database to be rebuilt.
+  Running this program is completely equivalent to giving
+***************
+*** 3937,3948 ****
+  the
+  .b \-bi
+  flag.
+! .ip /usr/bin/mailq
+  Prints a listing of the mail queue.
+  This program is equivalent to using the
+  .b \-bp
+  flag to
+  .i sendmail .
+  .ip /usr/lib/sendmail.cf
+  The configuration file,
+  in textual form.
+--- 4111,4128 ----
+  the
+  .b \-bi
+  flag.
+! .ip /usr/ucb/mailq
+  Prints a listing of the mail queue.
+  This program is equivalent to using the
+  .b \-bp
+  flag to
+  .i sendmail .
++ .ip /usr/ucb/bsmtp
++ A link to /usr/lib/sendmail; starts up
++ .i sendmail
++ in Batched SMTP mode (as if supplied with the
++ .b \-bb
++ option).
+  .ip /usr/lib/sendmail.cf
+  The configuration file,
+  in textual form.

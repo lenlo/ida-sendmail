@@ -1,0 +1,47 @@
+#
+#  MAKEFILE -- Configuration Files.
+#  Copyright (c) 1987 Lennart Lovstrand
+#  CIS Dept, Univ of Linkoping, Sweden
+#
+#  Use it, abuse it, but don't sell it.
+#
+#  Generic version.
+
+SITENAME=	# Value of `hostname | sed 's/\..*//'` or equiv
+CONFIGS=	$(SITENAME).cf newaliases.cf
+
+#  The following definitions are inserted by ../Makefile
+#  Change them there--not here!
+LIBDIR=		/usr/lib/mail
+
+all:		$(CONFIGS)
+
+install:	$(CONFIGS)
+		cp $(SITENAME).cf /usr/lib/sendmail.cf
+		cp newaliases.cf $(LIBDIR)
+
+diff:
+		-diff /usr/lib/sendmail.cf $(SITENAME).cf
+
+clean:
+		-rm -f \#* *~ *.cf
+
+backup:
+		tar cf Backup.tar *.m4 *.mc
+
+$(CONFIGS):	Sendmail.mc
+
+sendmail.cf	Sendmail.cf:
+		@echo 'Based on what host/site?  Do make <host>.cf instead.'
+
+stop:
+		-skill sendmail
+
+restart:	stop
+		/usr/lib/sendmail -bd -q30m
+
+.SUFFIXES:	.cf .m4
+
+.m4.cf:
+		@echo "# NOTE: This file was automatically generated from an m4 specification" >$*.cf
+		m4 $*.m4 >>$*.cf

@@ -1,0 +1,83 @@
+#
+#  MAKEFILE -- Library Files.
+#  Copyright (c) 1987, 1988 Lennart Lovstrand
+#  CIS Dept, Univ of Linkoping, Sweden
+#
+#  Use it, abuse it, but don't sell it.
+#
+#  Special IDA version with DECnet.
+
+
+LOCALDOMAINS=	liu.se ida.liu.se sunet.se UUCP	# only if domaintable is used
+PATHFLAGS=	-C25 -i -lIDA-TCP-NET
+SENDMAIL=	/usr/lib/sendmail
+SKILL=		/usr/local/bin/skill		# not required
+TABLES=		$(YP)domaintable$(DBMDIREXT) $(YP)generics$(DBMDIREXT) \
+		$(YP)pathtable$(DBMDIREXT) $(YP)aliases$(DBMDIREXT) \
+		mailertable$(DBMDIREXT) uucp/xtable$(DBMDIREXT) \
+		decnet/nodes decnet/xtable$(DBMDIREXT) uucp/xtable$(DBMDIREXT)
+UUCPNODES=	/usr/lib/uucp/L.sys
+# Prefix for YP dbm files; remove this if you won't be using YP databases
+YP=		#/etc/yp/ida/mail.
+
+# Where to find a fresh list of DECnet nodes {in TOPS-20 NCP format}
+NODE_DATA=	/usr/lisbet/ps/system/node-data.cmd
+
+
+#  The following definitions are inserted by ../Makefile
+#  Change them there--not here!
+DBMDIREXT=	.dir
+DBMPAGEXT=	.pag
+
+
+#  Update all dbm tables
+all:	$(TABLES)
+
+aliases generics:	xaliases
+	xalparse xaliases aliases generics
+
+$(YP)aliases$(DBMDIREXT):	aliases newaliases.cf $(YP)domaintable$(DBMDIREXT)
+	$(SENDMAIL) -Cnewaliases.cf -bi
+	if [ -n "$(YP)" ]; then \
+		mv aliases.dir $(YP)aliases.dir; \
+		mv aliases.pag $(YP)aliases.pag; \
+	fi
+
+$(YP)generics$(DBMDIREXT):	generics
+	dbm -L make generics $(YP)generics
+
+# Note: Local fix here to make all DECnet nodes belong in .SUNET.SE
+$(YP)domaintable$(DBMDIREXT):	domaintable decnet/nodes
+	(dbm parse domaintable; \
+	 awk '{printf "%s.sunet.se\t%s.sunet.se\n", $$1, $$1}' decnet/nodes) |\
+		mkdomext $(LOCALDOMAINS) | dbm -IL load $(YP)domaintable
+
+$(YP)pathtable$(DBMDIREXT):	pathtable
+	pathalias $(PATHFLAGS) pathtable | dbm load $(YP)pathtable
+
+mailertable$(DBMDIREXT):	mailertable
+	dbm -L make mailertable mailertable
+
+uucp/xtable$(DBMDIREXT):	uucp/xtable $(UUCPNODES)
+	(dbm parse uucp/xtable; \
+	 awk '{printf "%s.UUCP\t%s\n", $$1, $$1}' $(UUCPNODES)) | \
+	 dbm -IL load uucp/xtable
+
+# Note: Local fix here for making all DECnet nodes belong in .SUNET.SE
+decnet/xtable$(DBMDIREXT):	decnet/xtable decnet/nodes
+	(dbm parse decnet/xtable; \
+	 awk '{printf "%s.sunet.se\t%s\n", $$1, $$1}' decnet/nodes) | \
+		dbm -IL load decnet/xtable
+
+decnet/nodes:		$(NODE_DATA)
+	cp decnet/nodes decnet/nodes.old
+	scanf -i " set node %*s name %s" $(NODE_DATA) >$@
+
+stop:
+	-$(SKILL) sendmail
+
+restart:	stop
+	$(SENDMAIL) -bd -q30m
+
+clean:
+	-rm -f \#* *~ *.dir *.pag *.map *.dat */*.dir */*.pag */*.map */*.dat

@@ -1,0 +1,37 @@
+*** conf.c.orig	Sat Apr  2 01:51:04 1988
+--- conf.c	Fri Aug 26 01:33:56 1988
+***************
+*** 81,86 ****
+--- 81,87 ----
+  	"resent-cc",		H_RCPT|H_RESENT,
+  	"bcc",			H_RCPT|H_ACHECK,
+  	"resent-bcc",		H_RCPT|H_ACHECK|H_RESENT,
++ 	"apparently-to",	H_RCPT,
+  		/* message identification and control */
+  	"message-id",		0,
+  	"resent-message-id",	H_RESENT,
+***************
+*** 142,147 ****
+--- 143,150 ----
+  
+  setdefaults()
+  {
++ 	int c;
++ 
+  	QueueLA = 8;
+  	QueueFactor = 10000;
+  	RefuseLA = 12;
+***************
+*** 152,157 ****
+--- 155,165 ----
+  	FileMode = 0644;
+  	DefUid = 1;
+  	DefGid = 1;
++ 
++ # ifdef NDBM
++ 	for (c = 0; c < 128; c++)
++ 		DbmTab[c].db_dbm = DB_NOTYETOPEN;
++ # endif NDBM
+  }
+  
+  /*

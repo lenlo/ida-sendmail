@@ -1,0 +1,136 @@
+*** util.c.orig	Mon Mar 14 05:23:49 1988
+--- util.c	Fri Aug 26 03:56:07 1988
+***************
+*** 19,24 ****
+--- 19,26 ----
+  # include <errno.h>
+  # include "sendmail.h"
+  
++ bool catPrint = FALSE;		/* xputs: print strings for catenation */
++ 
+  /*
+  **  STRIPQUOTES -- Strip quotes & quote bits from a string.
+  **
+***************
+*** 260,272 ****
+  	register char *s;
+  {
+  	register char c;
+  
+  	if (s == NULL)
+  	{
+  		printf("<null>");
+  		return;
+  	}
+! 	(void) putchar('"');
+  	while ((c = *s++) != '\0')
+  	{
+  		if (!isascii(c))
+--- 262,292 ----
+  	register char *s;
+  {
+  	register char c;
++ 	register struct metamac *m;
+  
++ 	if (s == MACNULL)
++ 	{
++ 		printf("<macnull>");
++ 		return;
++ 	}
+  	if (s == NULL)
+  	{
+  		printf("<null>");
+  		return;
+  	}
+! 
+! 	if (s[0] == MATCHREPL && isdigit(s[1]) && s[2] == '\0') {
+! 	  printf("$%c", s[1]);
+! 	  return;
+! 	} else
+! 	  for (m = MetaMacros; m->metaname != '\0'; m++)
+! 	    if (m->metaval == *s) {
+! 	      printf("$%c%s", m->metaname, &s[1]);
+! 	      return;
+! 	    }
+! 
+! 	if (!catPrint)
+! 		(void) putchar('"');
+  	while ((c = *s++) != '\0')
+  	{
+  		if (!isascii(c))
+***************
+*** 281,287 ****
+  		}
+  		(void) putchar(c);
+  	}
+! 	(void) putchar('"');
+  	(void) fflush(stdout);
+  }
+  /*
+--- 301,308 ----
+  		}
+  		(void) putchar(c);
+  	}
+! 	if (!catPrint)
+! 		(void) putchar('"');
+  	(void) fflush(stdout);
+  }
+  /*
+***************
+*** 305,315 ****
+  	register char *p;
+  {
+  	register char c;
+  
+  	if (p == NULL)
+  		return;
+  	for (; (c = *p) != '\0'; p++)
+! 		if (isascii(c) && isupper(c))
+  			*p = c - 'A' + 'a';
+  }
+  /*
+--- 326,339 ----
+  	register char *p;
+  {
+  	register char c;
++ 	register bool quoted_string = FALSE;
+  
+  	if (p == NULL)
+  		return;
+  	for (; (c = *p) != '\0'; p++)
+! 		if (c == '"')
+! 			quoted_string = !quoted_string;
+! 		else if (!quoted_string && isascii(c) && isupper(c))
+  			*p = c - 'A' + 'a';
+  }
+  /*
+***************
+*** 861,864 ****
+--- 885,911 ----
+  		if (map[i] != 0)
+  			return (FALSE);
+  	return (TRUE);
++ }
++ 
++ /*
++ **	PRINTCAV -- Print concatenated argument vector
++ **
++ **	Parameters:
++ **		av -- argument vector.
++ **
++ **	Returns:
++ **		none.
++ **
++ **	Side Effects:
++ **		prints av.
++ */
++ 
++ printcav(av)
++      register char **av;
++ {
++   bool oldCatPrint = catPrint;
++ 
++   catPrint = TRUE;
++   printav(av);
++   catPrint = oldCatPrint;
+  }

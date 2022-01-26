@@ -1,0 +1,126 @@
+*** usersmtp.c.orig	Mon Mar 14 03:54:14 1988
+--- usersmtp.c	Thu Sep 15 22:03:01 1988
+***************
+*** 37,42 ****
+--- 37,43 ----
+  
+  #define REPLYTYPE(r)	((r) / 100)		/* first digit of reply code */
+  #define REPLYCLASS(r)	(((r) / 10) % 10)	/* second digit of reply code */
++ #define SMTPGOODREPLY	250			/* positive SMTP response */
+  #define SMTPCLOSING	421			/* "Service Shutting Down" */
+  
+  char	SmtpMsgBuffer[MAXLINE];		/* buffer for commands */
+***************
+*** 112,124 ****
+  			{
+  				p = statstring(ExitStat);
+  				fprintf(CurEnv->e_xfp,
+! 					"%.3s %s.%s... %s\n",
+  					p, pvp[1], m->m_name, p);
+  			}
+  			else
+  			{
+  				fprintf(CurEnv->e_xfp,
+! 					"421 %s.%s... Deferred: %s\n",
+  					pvp[1], m->m_name, errstring(errno));
+  			}
+  		}
+--- 113,125 ----
+  			{
+  				p = statstring(ExitStat);
+  				fprintf(CurEnv->e_xfp,
+! 					"%.3s %s (%s)... %s\n",
+  					p, pvp[1], m->m_name, p);
+  			}
+  			else
+  			{
+  				fprintf(CurEnv->e_xfp,
+! 					"421 %s (%s)... Deferred: %s\n",
+  					pvp[1], m->m_name, errstring(errno));
+  			}
+  		}
+***************
+*** 244,250 ****
+  	register int r;
+  	extern char *remotename();
+  
+! 	smtpmessage("RCPT To:<%s>", m, remotename(to->q_user, m, FALSE, TRUE));
+  
+  	SmtpPhase = "RCPT wait";
+  	r = reply(m);
+--- 245,260 ----
+  	register int r;
+  	extern char *remotename();
+  
+! 	/* DISABLED since I didn't understand why further rewriting
+! 	   should be necessary.  Since it doesn't go through ruleset 0
+! 	   on this second rewriting (which it should since it's a
+! 	   envelope recipient address) there is even the risk that it
+! 	   gets screwed up.
+! 						-- lel@ida.liu.se
+! 	smtpmessage("RCPT To:<%s>", m, remotename(to->q_user, m, FALSE, TRUE,
+! 						  FALSE));
+! 	*/
+! 	smtpmessage("RCPT To:<%s>", m, to->q_user);
+  
+  	SmtpPhase = "RCPT wait";
+  	r = reply(m);
+***************
+*** 294,300 ****
+  		return (EX_TEMPFAIL);
+  	else if (r == 554)
+  		return (EX_UNAVAILABLE);
+! 	else if (r != 354)
+  		return (EX_PROTOCOL);
+  
+  	/* now output the actual message */
+--- 304,310 ----
+  		return (EX_TEMPFAIL);
+  	else if (r == 554)
+  		return (EX_UNAVAILABLE);
+! 	else if (r != 354 && r != 250)
+  		return (EX_PROTOCOL);
+  
+  	/* now output the actual message */
+***************
+*** 381,386 ****
+--- 391,399 ----
+  	if (tTd(18, 1))
+  		printf("reply\n");
+  
++ 	if (bitnset(M_BSMTP, m->m_flags))
++ 		return (SMTPGOODREPLY);
++ 
+  	/*
+  	**  Read the input line, being careful not to hang.
+  	*/
+***************
+*** 413,419 ****
+  				errno = EPIPE;
+  # endif ECONNRESET
+  
+! 			message(Arpa_TSyserr, "reply: read error");
+  # ifdef DEBUG
+  			/* if debugging, pause so we can see state */
+  			if (tTd(18, 100))
+--- 426,432 ----
+  				errno = EPIPE;
+  # endif ECONNRESET
+  
+! 			message(Arpa_TSyserr, "Connection ended prematurely");
+  # ifdef DEBUG
+  			/* if debugging, pause so we can see state */
+  			if (tTd(18, 100))
+***************
+*** 431,436 ****
+--- 444,453 ----
+  		if (CurEnv->e_xfp != NULL && index("45", SmtpReplyBuffer[0]) != NULL)
+  		{
+  			/* serious error -- log the previous command */
++ 			/* also record who we were talking before first error */
++ 			if (SmtpError[0] == '\0')
++ 				fprintf(CurEnv->e_xfp, "While talking to %s:\n",
++ 					CurHostName);
+  			if (SmtpMsgBuffer[0] != '\0')
+  				fprintf(CurEnv->e_xfp, ">>> %s\n", SmtpMsgBuffer);
+  			SmtpMsgBuffer[0] = '\0';

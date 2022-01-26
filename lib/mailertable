@@ -1,0 +1,17 @@
+#
+#	Mailer table for physical node majestix.liu.se
+#	(aka the UUCP node liuida)
+#
+#	Format is <mailer>:<hostname> <official-name-1> ... <official-name-n>
+#	where mail sent to users on each of the <official-names> will
+#	be forced to invoke the specified mailer and sent to the
+#	specified host, which should be in a format that the mailer will
+#	understand.
+
+UUCP:alp	alp.UUCP	alp.se
+UUCP:liutde	liutde.UUCP	liutde.se	tde.liu.se
+UUCP:prosys	prosys.UUCP	prosys.se
+UUCP-A:enea	enea.UUCP	enea.se
+UUCP-A:erilin	erilin.UUCP	erilin.se	erilin.ericsson.se
+UUCP-A:erix	erix.UUCP	erix.se		erix.ericsson.se
+UUCP-A:rainier	rainier.UUCP	rainier.se	rainier.liu.se

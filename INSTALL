@@ -1,0 +1,73 @@
+#
+#  INSTALL -- The IDA Sendmail Enhancement Kit.
+#  Copyright (c) 1987, 1988 Lennart Lovstrand
+#  CIS Dept, Univ of Linkoping, Sweden
+#
+#  Use it, abuse it, but don't sell it.
+#
+
+INSTALLATION INSTRUCTIONS
+
+These instructions will tell you step-by-step how to install and bring
+the Kit's sendmail system up.  The source code modifications are given
+as context diffs, based on the BSD 4.3 release of sendmail version 5.59,
+ready to be installed using Larry Wall's eminent patch program.  You
+will also need the latest version of BIND (4.8) to compile and link
+sendmail with MX support.  The option of using Maryland's mdbm library
+is still open, although it has not been tested with this version of
+sendmail.  Finally, in order to automatically produce routing tables,
+you will need Peter Honeyman's pathalias program.  Both of the latter
+are available from your nearest USENET comp.sources.unix archive.
+
+ [1] Unpack the Kit in the sendmail directory (preferably).  This should
+     give you a new ida subdirectory with all the Kit's files.  (Hmm,
+     perhaps you've already done this since you are reading this file.)
+
+ [2] Goto sendmail/ida and check that you agree with the Makefile's
+     definitions.  If you change anything, do a "make configure" to
+     propagate those changes to the subdirectories' Makefiles.
+
+ [3] Goto sendmail/ida/doc.  Do "make doc" to print out the accompanying
+     paper and "make man" to print the manual pages.  Do "make install"
+     to install the latter in your man directory.
+
+ [4] Goto sendmail/ida/patches and do "make backup".  This will create a
+     backup copy of sendmail/src/*.[hc] and sendmail/doc/op.me in
+     Backup.tar.  You can restore them if necessary by performing "make
+     restore", still in the patches directory.
+
+ [5] Do "make patch" to install the IDA enhancements.  You will need
+     patch(1), for this or else edit the files by hand.  Look out for
+     rejected patches; that will indicate that you aren't patching the
+     generic sendmail 5.59.
+
+ [6] Goto sendmail/src and recompile sendmail.  You'll need to do a
+     "make depend" before you can do "make".  See that it still works.
+     Your old configuration file should still work unless you depend on
+     some obscure side effects.
+
+ [7] Goto sendmail/ida/aux and do "make" to compile the auxiliary
+     programs.  Try them out, guided with the newly printed manual
+     pages.
+
+ [8] Do "make install" to install the programs in BINDIR (/usr/local/bin
+     by default; but another choice would be /usr/lib/mail if you only
+     intend to use them with this kit).  It's also about time to
+     (manually) create a symbolic link from /usr/ucb/bsmtp to
+     /usr/lib/sendmail if you intend to receive batched SMTP mail.
+
+ [9] Goto sendmail/ida/cf and inspect the supplied m4(1) configuration
+     definitions.  Send Sendmail.mc to your line printer and study it.
+     Do "make" to see how the sample configurations look expanded.
+
+[10] Goto sendmail/ida/lib and inspect the supplied sample data files.
+     Try applying the xalparse program on the xaliases file if you feel
+     like it.
+
+[11] Determine your site's routing capabilities and create your corre-
+     sponding data files in LIBDIR.  Go back to sendmail/ida/cf and
+     create your own m4(1) configuration file using the samples as
+     templates.  Produce an actual, personal sendmail.cf file.
+
+[12] Try out your new sendmail system.
+     Good Luck!

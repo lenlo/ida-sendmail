@@ -1,0 +1,935 @@
+*** parseaddr.c.orig	Mon Mar 14 05:31:53 1988
+--- parseaddr.c	Wed Aug 31 14:31:06 1988
+***************
+*** 450,455 ****
+--- 450,459 ----
+  	}
+  	if (c == MATCHCLASS || c == MATCHREPL || c == MATCHNCLASS)
+  		return (ONE);
++ #ifdef MACVALUE
++ 	if (c == MACVALUE)
++ 		return (ONE);
++ #endif MACVALUE
+  	if (c == '"')
+  		return (QST);
+  	if (!isascii(c))
+***************
+*** 500,510 ****
+--- 504,523 ----
+  
+  # define MAXMATCH	9	/* max params per rewrite */
+  
++ static int nrw;
+  
+  rewrite(pvp, ruleset)
+  	char **pvp;
+  	int ruleset;
+  {
++ 	nrw = 0;
++ 	_rewrite(pvp, ruleset);
++ }
++ 
++ _rewrite(pvp, ruleset)
++ 	char **pvp;
++ 	int ruleset;
++ {
+  	register char *ap;		/* address pointer */
+  	register char *rp;		/* rewrite pointer */
+  	register char **avp;		/* address vector pointer */
+***************
+*** 513,527 ****
+  	register struct rewrite *rwr;	/* pointer to current rewrite rule */
+  	struct match mlist[MAXMATCH];	/* stores match on LHS */
+  	char *npvp[MAXATOM+1];		/* temporary space for rebuild */
+  
+  	if (OpMode == MD_TEST || tTd(21, 2))
+  	{
+  		printf("rewrite: ruleset %2d   input:", ruleset);
+! 		printav(pvp);
+  	}
+  	if (pvp == NULL)
+  		return;
+  
+  	/*
+  	**  Run through the list of rewrite rules, applying
+  	**	any that match.
+--- 526,552 ----
+  	register struct rewrite *rwr;	/* pointer to current rewrite rule */
+  	struct match mlist[MAXMATCH];	/* stores match on LHS */
+  	char *npvp[MAXATOM+1];		/* temporary space for rebuild */
++ 	char tokbuf[MAXNAME+1];		/* for concatenated class tokens */
++  	int nloops, nmatches = 0;	/* for looping rule checks */
+  
+  	if (OpMode == MD_TEST || tTd(21, 2))
+  	{
+  		printf("rewrite: ruleset %2d   input:", ruleset);
+! 		printcav(pvp);
+  	}
+  	if (pvp == NULL)
+  		return;
+  
++ 	if (++nrw > 100) {
++ 		char buf[MAXLINE];
++ 
++ 		buf[0] = buf[MAXLINE-1] = 0;
++ 		while (*pvp)
++ 			strncat(buf, *pvp++, sizeof buf);
++ 		syserr("address causes rewrite loop: <%s>", buf);
++ 		return;
++ 	}
++ 
+  	/*
+  	**  Run through the list of rewrite rules, applying
+  	**	any that match.
+***************
+*** 533,539 ****
+  		if (tTd(21, 12))
+  		{
+  			printf("-----trying rule:");
+! 			printav(rwr->r_lhs);
+  		}
+  # endif DEBUG
+  
+--- 558,564 ----
+  		if (tTd(21, 12))
+  		{
+  			printf("-----trying rule:");
+! 			printcav(rwr->r_lhs);
+  		}
+  # endif DEBUG
+  
+***************
+*** 541,548 ****
+--- 566,579 ----
+  		mlp = mlist;
+  		rvp = rwr->r_lhs;
+  		avp = pvp;
++ 		nloops = 0;
+  		while ((ap = *avp) != NULL || *rvp != NULL)
+  		{
++ 			if (nloops++ > 200) {
++ 				syserr("Looping on ruleset %d, rule %d",
++ 					ruleset, rwr-RewriteRules[ruleset]);
++ 				break;
++ 			}
+  			rp = *rvp;
+  # ifdef DEBUG
+  			if (tTd(21, 35))
+***************
+*** 568,588 ****
+  			switch (*rp)
+  			{
+  				register STAB *s;
+  
+- 			  case MATCHCLASS:
+  			  case MATCHNCLASS:
+! 				/* match any token in (not in) a class */
+  				s = stab(ap, ST_CLASS, ST_FIND);
+! 				if (s == NULL || !bitnset(rp[1], s->s_class))
+! 				{
+! 					if (*rp == MATCHCLASS)
+! 						goto backup;
+! 				}
+! 				else if (*rp == MATCHNCLASS)
+  					goto backup;
+  
+! 				/* explicit fall-through */
+  
+  			  case MATCHONE:
+  			  case MATCHANY:
+  				/* match exactly one token */
+--- 599,639 ----
+  			switch (*rp)
+  			{
+  				register STAB *s;
++ 				char **oldavp;
+  
+  			  case MATCHNCLASS:
+! 				/* match any single token not in a class */
+  				s = stab(ap, ST_CLASS, ST_FIND);
+! 				if (s != NULL && bitnset(rp[1], s->s_class))
+  					goto backup;
+  
+! 				/* match exactly one token */
+! 				mlp->first = avp;
+! 				mlp->last = avp++;
+! 				mlp++;
+! 				break;
+  
++ 			  case MATCHCLASS:
++ 				/* match any token in a class */
++ 				/* slow, concat version by lel@ida.liu.se */
++ 				/* handles multi-token class matches, though */
++ 				oldavp = avp;
++ 				*tokbuf = NULL;
++ 				do {
++ 				  if (*avp == NULL) {
++ 				    avp = oldavp;
++ 				    goto backup;
++ 				  }
++ 				  strcat(tokbuf, *avp++);
++ 				  s = stab(tokbuf, ST_CLASS, ST_FIND);
++ 				} while (s == NULL ||
++ 					 !bitnset(rp[1], s->s_class));
++ 
++ 				mlp->first = oldavp;
++ 				mlp->last = avp-1;
++ 				mlp++;
++ 				break;
++ 
+  			  case MATCHONE:
+  			  case MATCHANY:
+  				/* match exactly one token */
+***************
+*** 615,620 ****
+--- 666,702 ----
+  			while (--rvp >= rwr->r_lhs)
+  			{
+  				rp = *rvp;
++ 				if (*rp == MATCHCLASS) {
++ 				  register STAB *s;
++ 				  char **oldavp;
++ 
++ 				  /* attempt to extend binding */
++ 				  /* slow, concat version by lel@ida.liu.se */
++ 
++ 				  oldavp = avp;
++ 				  *tokbuf = NULL;
++ 				  for (avp = mlp[-1].first;
++ 				       avp <= mlp[-1].last; avp++)
++ 				    strcat(tokbuf, *avp);
++ 
++ 				  do {
++ 				    if (*avp == NULL) {
++ 				      /* back out binding */
++ 				      avp = oldavp;
++ 				      mlp--;
++ 				      goto cantextend;
++ 				    }
++ 				    strcat(tokbuf, *avp++);
++ 				    s = stab(tokbuf, ST_CLASS, ST_FIND);
++ 				  } while (s == NULL ||
++ 					   !bitnset(rp[1], s->s_class));
++ 
++ 				  /* found an extension */
++ 				  mlp[-1].last = avp-1;
++ 				  rvp++;
++ 				  break;
++ 				}
++ 			      cantextend:
+  				if (*rp == MATCHANY || *rp == MATCHZANY)
+  				{
+  					/* extend binding and continue */
+***************
+*** 624,631 ****
+  					break;
+  				}
+  				avp--;
+! 				if (*rp == MATCHONE || *rp == MATCHCLASS ||
+! 				    *rp == MATCHNCLASS)
+  				{
+  					/* back out binding */
+  					mlp--;
+--- 706,712 ----
+  					break;
+  				}
+  				avp--;
+! 				if (*rp == MATCHONE || *rp == MATCHNCLASS)
+  				{
+  					/* back out binding */
+  					mlp--;
+***************
+*** 650,657 ****
+--- 731,747 ----
+  				printf("----- rule fails\n");
+  # endif DEBUG
+  			rwr = rwr->r_next;
++ 			nmatches = 0;
+  			continue;
+  		}
++ 		
++ 		if (nmatches++ > 200) {
++ 			syserr("Loop in ruleset %d, rule %d (too many matches)",
++ 				ruleset, rwr-RewriteRules[ruleset]);
++ 			rwr = rwr->r_next;
++ 			nmatches = 0;
++ 			continue;
++ 		}
+  
+  		rvp = rwr->r_rhs;
+  # ifdef DEBUG
+***************
+*** 658,664 ****
+  		if (tTd(21, 12))
+  		{
+  			printf("-----rule matches:");
+! 			printav(rvp);
+  		}
+  # endif DEBUG
+  
+--- 748,754 ----
+  		if (tTd(21, 12))
+  		{
+  			printf("-----rule matches:");
+! 			printcav(rvp);
+  		}
+  # endif DEBUG
+  
+***************
+*** 667,672 ****
+--- 757,763 ----
+  		{
+  			rvp++;
+  			rwr = rwr->r_next;
++ 			nmatches = 0;
+  		}
+  		else if (*rp == CANONHOST)
+  		{
+***************
+*** 689,695 ****
+  				m = &mlist[rp[1] - '1'];
+  				if (m >= mlp)
+  				{
+! 					syserr("rewrite: ruleset %d: replacement out of bounds", ruleset);
+  					return;
+  				}
+  # ifdef DEBUG
+--- 780,786 ----
+  				m = &mlist[rp[1] - '1'];
+  				if (m >= mlp)
+  				{
+! 					syserr("rewrite: ruleset %d: replacement #%c out of bounds", ruleset, rp[1]);
+  					return;
+  				}
+  # ifdef DEBUG
+***************
+*** 726,732 ****
+  					syserr("rewrite: expansion too long");
+  					return;
+  				}
+! 				*avp++ = rp;
+  			}
+  		}
+  		*avp++ = NULL;
+--- 817,836 ----
+  					syserr("rewrite: expansion too long");
+  					return;
+  				}
+! #ifdef MACVALUE
+! 				if (*rp == MACVALUE) {
+! 					extern char *macvalue();
+! #ifdef DEBUG
+! 					char *p = macvalue(rp[1], CurEnv);
+! 					if (tTd(21, 2))
+! 					    printf("expanding runtime macro '%c' to \"%s\"\n",
+! 						   rp[1], p ? p : "(null)");
+! #endif DEBUG
+! 					if (p)
+! 						*avp++ = p;
+! 				} else
+! #endif MACVALUE
+! 					*avp++ = rp;
+  			}
+  		}
+  		*avp++ = NULL;
+***************
+*** 737,826 ****
+  
+  		for (rvp = npvp; *rvp != NULL; rvp++)
+  		{
+! 			char **hbrvp;
+  			char **xpvp;
+  			int trsize;
+  			char *olddelimchar;
+! 			char buf[MAXNAME + 1];
+  			char *pvpb1[MAXATOM + 1];
+  			char pvpbuf[PSBUFSIZE];
+  			extern char *DelimChar;
+  
+! 			if (**rvp != HOSTBEGIN)
+  				continue;
+  
+  			/*
+! 			**  Got a hostname lookup.
+  			**
+  			**	This could be optimized fairly easily.
+  			*/
+  
+  			hbrvp = rvp;
+  
+  			/* extract the match part */
+! 			while (*++rvp != NULL && **rvp != HOSTEND)
+  				continue;
+  			if (*rvp != NULL)
+  				*rvp++ = NULL;
+  
+! 			/* save the remainder of the input string */
+  			trsize = (int) (avp - rvp + 1) * sizeof *rvp;
+  			bcopy((char *) rvp, (char *) pvpb1, trsize);
+  
+! 			/* look it up */
+! 			cataddr(++hbrvp, buf, sizeof buf);
+! 			maphostname(buf, sizeof buf);
+! 
+! 			/* scan the new host name */
+! 			olddelimchar = DelimChar;
+! 			xpvp = prescan(buf, '\0', pvpbuf);
+! 			DelimChar = olddelimchar;
+! 			if (xpvp == NULL)
+! 			{
+! 				syserr("rewrite: cannot prescan canonical hostname: %s", buf);
+! 				return;
+  			}
+  
+! 			/* append it to the token list */
+! 			for (avp = --hbrvp; *xpvp != NULL; xpvp++)
+! 			{
+! 				*avp++ = newstr(*xpvp);
+! 				if (avp >= &npvp[MAXATOM])
+! 					goto toolong;
+! 			}
+  
+  			/* restore the old trailing information */
+! 			for (xpvp = pvpb1; (*avp++ = *xpvp++) != NULL; )
+! 				if (avp >= &npvp[MAXATOM])
+! 					goto toolong;
+  
+! 			break;
+  		}
+  
+  		/*
+  		**  Check for subroutine calls.
+  		*/
+  
+! 		if (*npvp != NULL && **npvp == CALLSUBR)
+! 		{
+! 			bcopy((char *) &npvp[2], (char *) pvp,
+! 				(int) (avp - npvp - 2) * sizeof *avp);
+  # ifdef DEBUG
+- 			if (tTd(21, 3))
+- 				printf("-----callsubr %s\n", npvp[1]);
+- # endif DEBUG
+- 			rewrite(pvp, atoi(npvp[1]));
+- 		}
+- 		else
+- 		{
+- 			bcopy((char *) npvp, (char *) pvp,
+- 				(int) (avp - npvp) * sizeof *avp);
+- 		}
+- # ifdef DEBUG
+  		if (tTd(21, 4))
+  		{
+  			printf("rewritten as:");
+! 			printav(pvp);
+  		}
+  # endif DEBUG
+  	}
+--- 841,973 ----
+  
+  		for (rvp = npvp; *rvp != NULL; rvp++)
+  		{
+! 			char **hbrvp, **ubrvp;
+  			char **xpvp;
+  			int trsize;
+  			char *olddelimchar;
+! 			char hbuf[MAXNAME + 1], ubuf[MAXNAME + 1];
+  			char *pvpb1[MAXATOM + 1];
+  			char pvpbuf[PSBUFSIZE];
++ 			bool match, defaultpart;
+  			extern char *DelimChar;
++ 			char begintype, db;
+  
+! 			if (**rvp != HOSTBEGIN && **rvp != KEYBEGIN)
+  				continue;
+  
+  			/*
+! 			**  Got a hostname or database lookup.
+  			**
+  			**	This could be optimized fairly easily.
+  			*/
+  
++ 			begintype = **rvp;
+  			hbrvp = rvp;
++ 			ubrvp = NULL;
+  
++ 			/* read database name if that's what we're up for */
++ 			if (begintype == KEYBEGIN) {
++ 				if (*++rvp != NULL)
++ 					db = **rvp;
++ 			}
++ 
+  			/* extract the match part */
+! 			if (begintype == HOSTBEGIN)
+! 			    while (*++rvp != NULL && **rvp != HOSTEND &&
+! 				   **rvp != CANONUSER)
+  				continue;
++ 			else
++ 			    while (*++rvp != NULL && **rvp != KEYEND &&
++ 				   **rvp != CANONHOST && **rvp != CANONUSER)
++ 				continue;
++ 			/* got a sprintf argument? */
++ 			if (**rvp == CANONHOST) {
++ 			    *rvp = NULL;
++ 			    ubrvp = rvp+1;
++ 			    while (*++rvp != NULL && **rvp != KEYEND &&
++ 				   **rvp != CANONUSER)
++ 				continue;
++ 			}
++ 			defaultpart = **rvp == CANONUSER;
+  			if (*rvp != NULL)
+  				*rvp++ = NULL;
+  
+! 			/* Save the remainder of the input string */
+  			trsize = (int) (avp - rvp + 1) * sizeof *rvp;
+  			bcopy((char *) rvp, (char *) pvpb1, trsize);
+  
+! 			/* Look it up (lowercase version) */
+! 			cataddr(hbrvp + (begintype == HOSTBEGIN ? 1 : 2),
+! 				hbuf, sizeof hbuf);
+! 			if (begintype == HOSTBEGIN)
+! 			    match = maphostname(hbuf, sizeof hbuf);
+! 			else {
+! 			    if (ubrvp == NULL) {
+! 				/* no sprintf argument part */
+! 				match = mapkey(db, hbuf, sizeof hbuf, NULL);
+! 			    } else {
+! 				cataddr(ubrvp, ubuf, sizeof ubuf);
+! 				match = mapkey(db, hbuf, sizeof hbuf, ubuf);
+! 			    }
+  			}
++ 			if (match || !defaultpart) {
++ 				/* scan the new route/host name */
++ 				olddelimchar = DelimChar;
++ 				xpvp = prescan(hbuf, '\0', pvpbuf);
++ 				DelimChar = olddelimchar;
++ 				if (xpvp == NULL) {
++ 					syserr("rewrite: cannot prescan %s: %s", 
++ 					       begintype == HOSTBEGIN ?
++ 					       "new hostname" :
++ 					       "dbm lookup result",
++ 					       hbuf);
++ 					return;
++ 				}
+  
+! 				/* append it to the token list */
+! 				for (avp = hbrvp; *xpvp != NULL; xpvp++) {
+! 					*avp++ = newstr(*xpvp);
+! 					if (avp >= &npvp[MAXATOM])
+! 						goto toolong;
+! 				}
+! 			} else
+! 				avp = hbrvp;
+  
+  			/* restore the old trailing information */
+! 			rvp = avp - 1;
+! 			for (xpvp = pvpb1; *xpvp != NULL; xpvp++) {
+! 			    if (defaultpart && (begintype == HOSTBEGIN ?
+! 						**xpvp == HOSTEND :
+! 						**xpvp == KEYEND)) {
+! 				defaultpart = FALSE;
+! 				rvp = avp - 1;
+! 			    } else if (!defaultpart || !match)
+! 				*avp++ = *xpvp;
+! 			    if (avp >= &npvp[MAXATOM])
+! 			  	goto toolong;
+! 			}
+! 			*avp++ = NULL;
+  
+! 			/*break;*/
+  		}
+  
+  		/*
+  		**  Check for subroutine calls.
++ 		**  Then copy vector back into original space.
+  		*/
+  
+! 		callsubr(npvp);
+! 
+! 		for (avp = npvp; *avp++ != NULL;);
+! 		bcopy((char *) npvp, (char *) pvp,
+! 		      (int) (avp - npvp) * sizeof *avp);
+! 
+! 
+  # ifdef DEBUG
+  		if (tTd(21, 4))
+  		{
+  			printf("rewritten as:");
+! 			printcav(pvp);
+  		}
+  # endif DEBUG
+  	}
+***************
+*** 828,837 ****
+  	if (OpMode == MD_TEST || tTd(21, 2))
+  	{
+  		printf("rewrite: ruleset %2d returns:", ruleset);
+! 		printav(pvp);
+  	}
+  }
+  /*
+  **  BUILDADDR -- build address from token vector.
+  **
+  **	Parameters:
+--- 975,1033 ----
+  	if (OpMode == MD_TEST || tTd(21, 2))
+  	{
+  		printf("rewrite: ruleset %2d returns:", ruleset);
+! 		printcav(pvp);
+  	}
+  }
+  /*
++ **  CALLSUBR -- call subroutines in rewrite vector
++ **
++ **	Parameters:
++ **		pvp -- pointer to token vector.
++ **
++ **	Returns:
++ **		none.
++ **
++ **	Side Effects:
++ **		pvp is modified.
++ */
++ 
++ callsubr(pvp)
++     char **pvp;
++ {
++     char **rvp;
++     int subr;
++ 
++     for (; *pvp != NULL; pvp++)
++ 	if (**pvp == CALLSUBR) {
++ 
++ 	    subr = atoi(pvp[1]);
++ 
++ # ifdef DEBUG
++ 	    if (tTd(21, 3))
++ 		printf("-----callsubr %d\n", subr);
++ # endif DEBUG
++ 
++ 	    /*
++ 	    **  Take care of possible inner calls.
++ 	    */
++ 	    callsubr(pvp+2);
++ 
++ 	    /*
++ 	    **  Move vector up over calling opcode.
++ 	    */
++ 	    for (rvp = pvp+2; *rvp != NULL; rvp++)
++ 		rvp[-2] = rvp[0];
++ 	    rvp[-2] = NULL;
++ 
++ 	    /*
++ 	    **  Call inferior ruleset.
++ 	    */
++ 	    rewrite(pvp, subr);
++ 
++ 	    break;
++ 	}
++ }
++ /*
+  **  BUILDADDR -- build address from token vector.
+  **
+  **	Parameters:
+***************
+*** 899,919 ****
+  	a->q_mailer = m;
+  
+  	/* figure out what host (if any) */
+! 	tv++;
+! 	if (!bitnset(M_LOCAL, m->m_flags))
+! 	{
+! 		if (**tv++ != CANONHOST)
+! 		{
+  			syserr("buildaddr: no host");
+  			return (NULL);
+! 		}
+  		buf[0] = '\0';
+! 		while (*tv != NULL && **tv != CANONUSER)
+! 			(void) strcat(buf, *tv++);
+  		a->q_host = newstr(buf);
+  	}
+- 	else
+- 		a->q_host = NULL;
+  
+  	/* figure out the user */
+  	if (**tv != CANONUSER)
+--- 1095,1112 ----
+  	a->q_mailer = m;
+  
+  	/* figure out what host (if any) */
+! 	if (**++tv != CANONHOST) {
+! 		if (!bitnset(M_LOCAL, m->m_flags)) {
+  			syserr("buildaddr: no host");
+  			return (NULL);
+! 		} else
+! 			a->q_host = NULL;
+! 	} else {
+  		buf[0] = '\0';
+! 		while (*++tv != NULL && **tv != CANONUSER)
+! 			(void) strcat(buf, *tv);
+  		a->q_host = newstr(buf);
+  	}
+  
+  	/* figure out the user */
+  	if (**tv != CANONUSER)
+***************
+*** 922,931 ****
+  		return (NULL);
+  	}
+  
+  	/* rewrite according recipient mailer rewriting rules */
+  	rewrite(++tv, 2);
+! 	if (m->m_r_rwset > 0)
+! 		rewrite(tv, m->m_r_rwset);
+  	rewrite(tv, 4);
+  
+  	/* save the result for the command line/RCPT argument */
+--- 1115,1127 ----
+  		return (NULL);
+  	}
+  
++ 	/* define tohost before running mailer rulesets */
++ 	define('h', a->q_host, CurEnv);
++ 
+  	/* rewrite according recipient mailer rewriting rules */
+  	rewrite(++tv, 2);
+! 	if (m->m_re_rwset > 0)
+! 		rewrite(tv, m->m_re_rwset);
+  	rewrite(tv, 4);
+  
+  	/* save the result for the command line/RCPT argument */
+***************
+*** 1006,1012 ****
+  		return (FALSE);
+  
+  	/* if the user isn't the same, we can drop out */
+! 	if (strcmp(a->q_user, b->q_user) != 0)
+  		return (FALSE);
+  
+  	/* if the mailer ignores hosts, we have succeeded! */
+--- 1202,1208 ----
+  		return (FALSE);
+  
+  	/* if the user isn't the same, we can drop out */
+! 	if (strcasecmp(a->q_user, b->q_user))
+  		return (FALSE);
+  
+  	/* if the mailer ignores hosts, we have succeeded! */
+***************
+*** 1016,1022 ****
+  	/* otherwise compare hosts (but be careful for NULL ptrs) */
+  	if (a->q_host == NULL || b->q_host == NULL)
+  		return (FALSE);
+! 	if (strcmp(a->q_host, b->q_host) != 0)
+  		return (FALSE);
+  
+  	return (TRUE);
+--- 1212,1218 ----
+  	/* otherwise compare hosts (but be careful for NULL ptrs) */
+  	if (a->q_host == NULL || b->q_host == NULL)
+  		return (FALSE);
+! 	if (strcasecmp(a->q_host, b->q_host))
+  		return (FALSE);
+  
+  	return (TRUE);
+***************
+*** 1076,1081 ****
+--- 1272,1279 ----
+  **			rather than the recipient rewriting rules.
+  **		canonical -- if set, strip out any comment information,
+  **			etc.
++ **		headeraddress -- if set, use header specific rewriting
++ **			rulesets and uurelativize if M_RELATIVIZE is set.
+  **
+  **	Returns:
+  **		the text string representing this address relative to
+***************
+*** 1090,1100 ****
+  */
+  
+  char *
+! remotename(name, m, senderaddress, canonical)
+  	char *name;
+  	struct mailer *m;
+  	bool senderaddress;
+  	bool canonical;
+  {
+  	register char **pvp;
+  	char *fancy;
+--- 1288,1299 ----
+  */
+  
+  char *
+! remotename(name, m, senderaddress, canonical, headeraddress)
+  	char *name;
+  	struct mailer *m;
+  	bool senderaddress;
+  	bool canonical;
++ 	bool headeraddress;
+  {
+  	register char **pvp;
+  	char *fancy;
+***************
+*** 1112,1118 ****
+  # endif DEBUG
+  
+  	/* don't do anything if we are tagging it as special */
+! 	if ((senderaddress ? m->m_s_rwset : m->m_r_rwset) < 0)
+  		return (name);
+  
+  	/*
+--- 1311,1319 ----
+  # endif DEBUG
+  
+  	/* don't do anything if we are tagging it as special */
+! 	if ((senderaddress ?
+! 	     (headeraddress ? m->m_sh_rwset : m->m_se_rwset) :
+! 	     (headeraddress ? m->m_rh_rwset : m->m_re_rwset)) < 0)
+  		return (name);
+  
+  	/*
+***************
+*** 1158,1180 ****
+  
+  	/*
+  	**  Do more specific rewriting.
+! 	**	Rewrite using ruleset 1 or 2 depending on whether this is
+! 	**		a sender address or not.
+  	**	Then run it through any receiving-mailer-specific rulesets.
+  	*/
+  
+! 	if (senderaddress)
+! 	{
+! 		rewrite(pvp, 1);
+! 		if (m->m_s_rwset > 0)
+! 			rewrite(pvp, m->m_s_rwset);
+  	}
+- 	else
+- 	{
+- 		rewrite(pvp, 2);
+- 		if (m->m_r_rwset > 0)
+- 			rewrite(pvp, m->m_r_rwset);
+- 	}
+  
+  	/*
+  	**  Do any final sanitation the address may require.
+--- 1359,1391 ----
+  
+  	/*
+  	**  Do more specific rewriting.
+! 	**	Rewrite using ruleset 1 or 2 for envelope addresses and
+! 	**	5 or 6 for header addresses depending on whether this
+! 	**	is a sender address or not.
+  	**	Then run it through any receiving-mailer-specific rulesets.
+  	*/
+  
+! 	if (senderaddress) {
+! 		if (headeraddress) {
+! 			rewrite(pvp, SplitRewriting ? 5 : 1);
+! 			if (m->m_sh_rwset > 0)
+! 				rewrite(pvp, m->m_sh_rwset);
+! 		} else {
+! 			rewrite(pvp, 1);
+! 			if (m->m_se_rwset > 0)
+! 				rewrite(pvp, m->m_se_rwset);
+! 		}
+! 	} else {
+! 		if (headeraddress) {
+! 			rewrite(pvp, SplitRewriting ? 6 : 2);
+! 			if (m->m_rh_rwset > 0)
+! 				rewrite(pvp, m->m_rh_rwset);
+! 		} else {
+! 			rewrite(pvp, 2);
+! 			if (m->m_re_rwset > 0)
+! 				rewrite(pvp, m->m_re_rwset);
+! 		}
+  	}
+  
+  	/*
+  	**  Do any final sanitation the address may require.
+***************
+*** 1186,1191 ****
+--- 1397,1410 ----
+  	rewrite(pvp, 4);
+  
+  	/*
++ 	**  Check if we're supposed to do make the address
++ 	**  UUCP !-relative to the rcpt host vs ourselves.
++ 	*/
++ 
++ 	if (headeraddress && bitnset(M_RELATIVIZE, m->m_flags))
++ 		uurelativize("\001k", "\001h", pvp);
++ 
++ 	/*
+  	**  Now restore the comment information we had at the beginning.
+  	*/
+  
+***************
+*** 1199,1202 ****
+--- 1418,1483 ----
+  		printf("remotename => `%s'\n", buf);
+  # endif DEBUG
+  	return (buf);
++ }
++ /*
++ **  UURELATIVIZE -- Make an address !-relative to recipient/sender nodes
++ **
++ **	Parameters:
++ **		from -- the sending node (usually "$k" or "$w")
++ **		to -- the receiving node (usually "$h")
++ **		pvp -- address vector
++ **
++ **	Returns:
++ **		none.
++ **
++ **	Side Effects:
++ **		The pvp is rewritten to be relative the "to" node
++ **		wrt the "from" node.  In other words, if the pvp
++ **		is headed by "to!" that part is stripped; otherwise
++ **		"from!" is prepended.  Exception: "to!user" addresses
++ **		with no '!'s in the user part are sent as is.
++ **
++ **	Bugs:
++ **		The pvp may overflow, but we don't catch it.
++ */
++ 
++ uurelativize(from, to, pvp)
++ 	char *from, *to;
++ 	char **pvp;
++ {
++ 	register char **pxp = pvp;
++ 	char expfrom[MAXNAME], expto[MAXNAME];
++ 
++ 	expand(from, expfrom, &expfrom[sizeof expfrom - 1], CurEnv);
++ 	expand(to, expto, &expto[sizeof expto - 1], CurEnv);
++ 
++ 	/*
++ 	 * supposing that we've got something, should
++ 	 * we add "from!" or remove "to!"?
++ 	 */
++ 	if (pvp[0] != NULL)
++ 	    if (pvp[1] == NULL || strcmp(pvp[1], "!") != 0 ||
++ 		    /*strcasecmp?*/ strcmp(pvp[0], expto) != 0) {
++ 		/* either local name, no UUCP address, or not to "to!"	*/
++ 		/* ==> prepend address with "from!"			*/
++ 
++ 		/* already there? */
++ 		if (pvp[1] == NULL || strcmp(pvp[1], "!") != 0 ||
++ 			/*strcasecmp?*/ strcmp(pvp[0], expfrom) != 0) {
++ 		    /* no, put it there */
++ 		    while (*pxp != NULL)
++ 			pxp++;
++ 		    do
++ 			pxp[2] = *pxp;
++ 		    while (pxp-- != pvp);
++ 		    pvp[0] = newstr(expfrom);
++ 		    pvp[1] = "!";
++ 		}
++ 	    } else {
++ 		/* address is to "to!" -- remove if not "to!user" */
++ 		for (pxp = &pvp[2]; *pxp != NULL && strcmp(*pxp, "!") != 0; pxp++);
++ 		if (*pxp != NULL)
++ 		    for (pxp = pvp; *pxp != NULL; pxp++)
++ 			*pxp = pxp[2];
++ 	    }
+  }

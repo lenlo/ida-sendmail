@@ -1,0 +1,20 @@
+*** headers.c.orig	Mon Mar 14 05:31:51 1988
+--- headers.c	Mon Aug  1 15:07:23 1988
+***************
+*** 782,788 ****
+  		*p = '\0';
+  
+  		/* translate the name to be relative */
+! 		name = remotename(name, m, bitset(H_FROM, h->h_flags), FALSE);
+  		if (*name == '\0')
+  		{
+  			*p = savechar;
+--- 782,789 ----
+  		*p = '\0';
+  
+  		/* translate the name to be relative */
+! 		name = remotename(name, m, bitset(H_FROM, h->h_flags), FALSE,
+! 				  TRUE);
+  		if (*name == '\0')
+  		{
+  			*p = savechar;

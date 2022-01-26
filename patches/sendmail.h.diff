@@ -1,0 +1,232 @@
+*** sendmail.h.orig	Mon Mar 28 09:24:51 1988
+--- sendmail.h	Fri Aug 26 03:59:10 1988
+***************
+*** 37,43 ****
+  # include "useful.h"
+  
+  # ifdef LOG
+! # include <sys/syslog.h>
+  # endif LOG
+  
+  # ifdef DAEMON
+--- 37,47 ----
+  # include "useful.h"
+  
+  # ifdef LOG
+! #  ifdef vax
+! #   include <sys/syslog.h>
+! #  else vax
+! #   include <syslog.h>
+! #  endif vax
+  # endif LOG
+  
+  # ifdef DAEMON
+***************
+*** 126,133 ****
+  	BITMAP	m_flags;	/* status flags, see below */
+  	short	m_mno;		/* mailer number internally */
+  	char	**m_argv;	/* template argument vector */
+! 	short	m_s_rwset;	/* rewriting set for sender addresses */
+! 	short	m_r_rwset;	/* rewriting set for recipient addresses */
+  	char	*m_eol;		/* end of line string */
+  	long	m_maxsize;	/* size limit on message to this mailer */
+  };
+--- 130,139 ----
+  	BITMAP	m_flags;	/* status flags, see below */
+  	short	m_mno;		/* mailer number internally */
+  	char	**m_argv;	/* template argument vector */
+! 	short	m_se_rwset;	/* rewriting ruleset for envelope senders */
+! 	short	m_sh_rwset;	/* rewriting ruleset for header senders */
+! 	short	m_re_rwset;	/* rewriting ruleset for envelope recipients */
+! 	short	m_rh_rwset;	/* rewriting ruleset for header recipient */
+  	char	*m_eol;		/* end of line string */
+  	long	m_maxsize;	/* size limit on message to this mailer */
+  };
+***************
+*** 135,140 ****
+--- 141,147 ----
+  typedef struct mailer	MAILER;
+  
+  /* bits for m_flags */
++ # define M_BSMTP	'B'	/* don't wait for SMTP responses */
+  # define M_CANONICAL	'C'	/* make addresses canonical "u@dom" */
+  # define M_EXPENSIVE	'e'	/* it costs to use this mailer.... */
+  # define M_ESCFROM	'E'	/* escape From lines to >From */
+***************
+*** 152,157 ****
+--- 159,165 ----
+  # define M_RESTR	'S'	/* must be daemon to execute */
+  # define M_USR_UPPER	'u'	/* preserve user case distinction */
+  # define M_UGLYUUCP	'U'	/* this wants an ugly UUCP from line */
++ # define M_RELATIVIZE	'V'	/* !-relativize all addresses */
+  # define M_XDOT		'X'	/* use hidden-dot algorithm */
+  
+  EXTERN MAILER	*Mailer[MAXMAILERS+1];
+***************
+*** 249,254 ****
+--- 257,265 ----
+  #define EF_RESPONSE	000200		/* this is an error or return receipt */
+  #define EF_RESENT	000400		/* this message is being forwarded */
+  
++ /* special shadowing null for e_macro's */
++ #define MACNULL		((char *) 1)	/* don't check parent's value */
++ 
+  EXTERN ENVELOPE	*CurEnv;	/* envelope currently being processed */
+  /*
+  **  Message priority classes.
+***************
+*** 322,331 ****
+  # define CONDELSE	'\033'	/* conditional else */
+  # define CONDFI		'\034'	/* conditional fi */
+  
+! /* bracket characters for host name lookup */
+  # define HOSTBEGIN	'\035'	/* hostname lookup begin */
+  # define HOSTEND	'\036'	/* hostname lookup end */
+  
+  /* \001 is also reserved as the macro expansion character */
+  /*
+  **  Information about hosts that we have looked up recently.
+--- 333,348 ----
+  # define CONDELSE	'\033'	/* conditional else */
+  # define CONDFI		'\034'	/* conditional fi */
+  
+! /* bracket characters for host name & database keyed lookup */
+  # define HOSTBEGIN	'\035'	/* hostname lookup begin */
+  # define HOSTEND	'\036'	/* hostname lookup end */
++ # define KEYBEGIN	'\037'	/* keyed lookup begin */
++ # define KEYEND		'\017'	/* keyed lookup end */
+  
++ /* other miscellaneous */
++ # define MACVALUE	'\016'	/* delayed macro expansion $& */
++ # define QUOTE822	'\015'	/* quote next macro if RFC822 requires it */
++ 
+  /* \001 is also reserved as the macro expansion character */
+  /*
+  **  Information about hosts that we have looked up recently.
+***************
+*** 384,389 ****
+--- 401,411 ----
+  # define ST_ALIAS	4	/* an alias */
+  # define ST_HOST	5	/* host information */
+  
++ /* s_host is defined is /usr/include/whatever on Suns */
++ # ifdef s_host
++ #  undef s_host
++ # endif
++ 
+  # define s_class	s_value.sv_class
+  # define s_address	s_value.sv_addr
+  # define s_mailer	s_value.sv_mailer
+***************
+*** 446,451 ****
+--- 468,474 ----
+  
+  
+  EXTERN char	SendMode;	/* send mode, see below */
++ #define MD_BSMTP	'b'		/* batched smtp mode */
+  
+  #define SM_DELIVER	'i'		/* interactive delivery */
+  #define SM_QUICKD	'j'		/* deliver w/o queueing */
+***************
+*** 470,475 ****
+--- 493,537 ----
+   */
+  #define	MAX_ERRNO	100
+  /*
++ **  Database ([n]dbm) definitions.
++ */
++ 
++ #ifdef DBM
++ 
++ typedef struct {
++ 	char	*dptr;
++ 	int	dsize;
++ } DATUM;
++ 
++ # define DB_DIREXT	".dir"
++ # define DB_PAGEXT	".pag"
++ 
++ # ifdef NDBM
++ 
++ #  undef DBM			/* while including ndbm.h */
++ #  include <ndbm.h>		/* DBM is typedef'ed here */
++ typedef DBM DBMFILE;		/* move typedef to DBMFILE */
++ #  define DBM			/* and restore DBM definition */
++ #  include <fcntl.h>		/* needed for dbm_open */
++ 
++ #  define DATUM datum		/* use the definition in ndbm.h */
++ 
++ struct dbm_table {
++   char *db_name;		/* database file name */
++   time_t db_mtime;		/* last modify time */
++   DBMFILE *db_dbm;		/* dbm file descriptor */
++ };
++ 
++ #  define DB_NOSUCHFILE	((DBMFILE *)  0) /* file could not be found */
++ #  define DB_NOTYETOPEN	((DBMFILE *) -1) /* file has not yet been opened */
++ 
++ #  define DB_ALIAS	'@'	/* "name" of aliases database */
++ #  define AliasFile	DbmTab[DB_ALIAS].db_name
++ #  define AliasDbm	DbmTab[DB_ALIAS].db_dbm
++ 
++ # endif NDBM
++ #endif DBM
++ /*
+  **  Global variables.
+  */
+  
+***************
+*** 511,517 ****
+--- 573,581 ----
+  EXTERN int	RefuseLA;	/* load average refusing connections are */
+  EXTERN int	QueueFactor;	/* slope of queue function */
+  EXTERN time_t	QueueIntvl;	/* intervals between running the queue */
++ #ifndef NDBM
+  EXTERN char	*AliasFile;	/* location of alias file */
++ #endif !NDBM
+  EXTERN char	*HelpFile;	/* location of SMTP help file */
+  EXTERN char	*StatFile;	/* location of statistics summary */
+  EXTERN char	*QueueDir;	/* location of queue directory */
+***************
+*** 533,538 ****
+--- 597,603 ----
+  EXTERN int	CheckPointLimit;	/* deliveries before checkpointing */
+  EXTERN int	Nmx;			/* number of MX RRs */
+  EXTERN char	*PostMasterCopy;	/* address to get errs cc's */
++ EXTERN bool	SplitRewriting;	/* use split envelope/header rewriting */
+  EXTERN char	*MxHosts[MAXMXHOSTS+1];	/* for MX RRs */
+  EXTERN char	*TrustedUsers[MAXTRUST+1];	/* list of trusted users */
+  EXTERN char	*UserEnviron[MAXUSERENVIRON+1];	/* saved user environment */
+***************
+*** 539,544 ****
+--- 604,615 ----
+  /*
+  **  Trace information
+  */
++ #ifdef NDBM
++ EXTERN struct dbm_table DbmTab[128];	/* keyed database table */
++ #ifdef YP
++ #define YPMARK	'%'			/* yellow pages indicator */
++ #endif YP
++ #endif NDBM
+  
+  /* trace vector and macros for debugging flags */
+  EXTERN u_char	tTdvect[100];
+***************
+*** 579,581 ****
+--- 650,664 ----
+  extern char	*sfgets();
+  extern char	*queuename();
+  extern time_t	curtime();
++ 
++ /*
++ **  Metamacro definitions.
++ */
++ 
++ struct metamac
++ {
++ 	char	metaname;
++ 	char	metaval;
++ };
++ 
++ extern struct metamac	MetaMacros[];

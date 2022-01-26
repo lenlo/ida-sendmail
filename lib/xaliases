@@ -1,0 +1,337 @@
+##########################################################################
+## Alias file for IDA.LiU.SE aka liuida.UUCP				##
+##########################################################################
+#  Aliases in this file will NOT be expanded in message headers.
+#
+#  Aliases are recognized in any mix of upper and lower case,
+#  since they are all converted to lower case.
+#
+#	>>>>>>>>>>	A consequence of the above line is that mail
+#	>> BUG! >>	can't be aliased to addresses with capital
+#	>>>>>>>>>>	letters (eg. files).
+#
+#	>>>>>>>>>>	The program "newaliases" may need to be run after
+#	>> NOTE >>	this file is updated for any changes to
+#	>>>>>>>>>>	show through to sendmail.
+#
+##
+
+# Following alias is required by the new mail protocol, RFC 822
+# Set it to the address of a HUMAN who deals with this system's mail problems.
+Postmaster@ida:		lel@ida
+Postmaster:		Postmaster@ida
+
+# Alias for mailer daemon; returned messages from our MAILER-DAEMON
+# should be routed to our local Postmaster.
+MAILER-DAEMON, MAILER-DAEMON@ida:	Postmaster@ida
+
+# Aliases to handle mail to programs or files, eg news
+b-smtp, b-smtp@ida:	"|egrep '^#' | sed 's/^#//' | /usr/lib/sendmail -bs"
+decode, decode@ida:	"|/usr/bin/uudecode"
+namelist, namelist@ida:	"|/usr/lib/uucp/reclist"
+nobody, nobody@ida:	/dev/null
+rnews, rnews@ida:	"|/usr/lib/news/uurec"
+
+xlp@ida, xlp-e-1tr@ida:	xlp-e-1tr-s@ida
+xlp-e-bv@ida:		xlp-e-bv-s@ida
+xlp-b-1tr@ida:		xlp-b-1tr-s@ida
+
+xlp-e-1tr-e@ida:	"|/usr/lib/mail/mahafilter -Pxlp-e-1tr"
+xlp-e-bv-e@ida:		"|/usr/lib/mail/mahafilter -Pxlp-e-bv"
+xlp-b-1tr-e@ida:	"|/usr/lib/mail/mahafilter -Pxlp-b-1tr"
+
+xlp-e-1tr-s@ida:	"|/usr/lib/mail/mahafilter -Pxlp-e-1tr -S"
+xlp-e-bv-s@ida:		"|/usr/lib/mail/mahafilter -Pxlp-e-bv -S"
+xlp-b-1tr-s@ida:	"|/usr/lib/mail/mahafilter -Pxlp-b-1tr -S"
+
+alw, alw-e-1tr:		"|lpr -Palw"
+
+#########################################################################
+# Specific mail -> news entries						#
+#########################################################################
+
+test-news@ida:		"|/usr/lib/news/inews -h -n test"
+
+ida-mac@ida:		"|/usr/lib/news/altrecnews ida.mac"
+
+owner-ida-mac@ida:	Postmaster@ida
+
+#########################################################################
+# Misc generic system users						#
+#########################################################################
+
+news, news@ida:		Postmaster@ida
+usenet, usenet@ida:	Postmaster@ida
+daemon, daemon@ida:	Postmaster@ida
+uucp, uucp@ida:		Postmaster@ida
+
+#########################################################################
+# Misc mail group links							#
+#########################################################################
+
+IDA, IDA@IDA, IDA@LiU.SE:	IDA@LISBET
+ADB@ida:			ADB@LISBET
+AIELAB@ida, AILAB@ida:		AIELAB@LISBET
+ASLAB@ida:			ASLAB@LISBET
+CADLAB@ida:			CADLAB@LISBET
+LIBLAB@ida:			LIBLAB@LISBET
+NLPLAB@ida:			NLPLAB@LISBET
+PELAB@ida:			PELAB@LISBET
+RKLLAB@ida, RKL@ida:		RKLLAB@LISBET
+
+owner-IDA, owner-IDA@IDA, owner-IDA@LiU.SE:	Postmaster@ida
+owner-ADB@ida:			Postmaster@ida
+owner-AIELAB@ida:		Postmaster@ida
+owner-ASLAB@ida:		Postmaster@ida
+owner-CADLAB@ida:		Postmaster@ida
+owner-LIBLAB@ida:		Postmaster@ida
+owner-NLPLAB@ida:		Postmaster@ida
+owner-PELAB@ida:		Postmaster@ida
+
+#########################################################################
+# Arpanet mail group links						#
+#########################################################################
+
+akt@ida:			AKT@LISBET
+ARPAnet-BBoards@ida:		ARPANET-BBOARDS@LISBET
+ExPhi-Group@ida:		:include:/usr/lib/mail/groups/exphi-group
+Horse-List@ida:			HORSE-LIST@LISBET
+IDA-Info-1100@ida:		:include:/usr/lib/mail/groups/ida-info-1100
+IDA-Bug-1100@ida:		BUG-1100@LISBET
+ida-info-gnu@ida:		:include:/usr/lib/mail/groups/ida-info-gnu
+Info-Postscript@ida:		INFO-POSTSCRIPT@LISBET
+lll@ida:			LASER-LOVERS@LISBET, Leif.Finmo@IDA
+Music-Research@ida:		MUSIC-RESEARCH@LISBET, JANNE@TOKER
+NL-KR@ida:			NL-KR@LISBET
+Parsym@ida:			PARSYM@LISBET
+Prolog-Digest@ida:		PROLOG-DIGEST@LISBET
+PsychNet@ida:			PsychNet@LISBET
+SMAuG@ida:			SMAuG@LISBET
+sunflash@ida:			:include: /usr/lib/mail/groups/sunflash
+TekTCP@ida:			TEKTCP@LISBET
+TeXHAX@ida:			TEXHAX@LISBET, Arne.Faldt@IDA
+tester@ida:			:include:/usr/lib/mail/groups/foo
+TOPS-20-Experts@ida:		lenlo@ida, arnfa@ida
+Transputer@ida:			Transputer@LISBET, "|/usr/lib/news/altrecnews -h -a daemon@ida.liu.se -n fa.transputer"
+
+owner-akt@ida:			Postmaster@ida
+owner-ARPAnet-BBoards@ida:	Postmaster@ida
+owner-ExPhi-Group@ida:		Postmaster@ida
+owner-Horse-List@ida:		Postmaster@ida
+owner-IDA-Info-1100@ida:	Postmaster@ida
+owner-IDA-Bug-1100@ida:		Postmaster@ida
+owner-ida-info-gnu@ida:		Postmaster@ida
+owner-Info-Postscript@ida:	Postmaster@ida
+owner-lll@ida:			Postmaster@ida
+owner-Music-Research@ida:	Postmaster@ida
+owner-nl-kr@ida:		Postmaster@ida
+owner-parsym@ida:		Postmaster@ida
+owner-prolog-digest@ida:	Postmaster@ida
+owner-psychnet@ida:		Postmaster@ida
+owner-SMAuG@ida:		Postmaster@ida
+owner-sunflash@ida:		Postmaster@ida
+owner-TekTCP@ida:		Postmaster@ida
+owner-TeXHAX@ida:		Postmaster@ida
+owner-tester@ida:		lel@ida
+owner-TOPS-20-Experts@ida:	Postmaster@ida
+owner-Transputer@ida:		Postmaster@ida
+
+#########################################################################
+# Individual local aliases						#
+#########################################################################
+
+lennart:		lenlo
+lin-p:			linpa				(Lin Padgham)
+
+bly@ida:		jbl@ida				(Bryan Lyles)
+bud@ida:		hla@ida				(Harald Lawson)
+es@ida:			ejs@ida				(Erik Sandewall)
+jac@ida:		lel@ida				(Jacek's mail sent to LeL)
+janba@ida:		lel@ida				(Janell's mail sent to lel)
+jim@ida:		jwg@ida				(James W Goodwin)
+lpa@ida:		lin@ida				(Lin Padgham)
+ola@ida:		olast@ida
+peter-f@ida:		petfr@majestix			(Peter Fritzsons bror, suck)
+ralf@ida:		rni@ida				(Ralf Nilsson)
+ralf-n@ida:		rni@ida				(Ralf Nilsson)
+ralf_n@ida:		rni@ida				(Ralf Nilsson)
+rolf-k@ida:		rolka@ida			(Rolf Karlsson)
+sandewal@ida:		ejs@ida				(Erik Sandewall)
+sandewall@ida:		ejs@ida				(Erik Sandewall)
+
+vaxTest@ida:		lennart@hazel			(testing, testing...)
+
+# Temporary due to enea/seismo lossage
+j-maluszynski@ida:	J-MALUSZYNSKI@LISBET
+l-lovstrand@ida:	L-LOVSTRAND@LISBET
+w-drabent@ida:		W-DRABENT@LISBET
+
+
+#########################################################################
+# Signature aliases							#
+#									#
+# The format here is:							#
+#	signature, altsign, full.name: alias-list			#
+# where alias-list is a comma and/or newline-separated list of user	#
+# names.  Each user name may be headed by a '<' and/or '>' with the	#
+# following meaning:							#
+#	 > user -- mail to this sign/full.name is delivered to the user	#
+#	<  user -- mail from this user is rewritten with the signature	#
+#		   as new sender					#
+#	<> user -- the combination of the above				#
+#	   user -- same as '> user'					#
+#									#
+# BE AWARE!  This special '<>' syntax is quite in antagony with RFC822	#
+#	     and was adapted only for its simplicity.  Any suggestions	#
+#	     for an alternative syntax are warmly welcomed.		#
+#########################################################################
+
+aha@ida, andha@ida, Anders.Haraldsson@ida:	<> A-HARALDSSON@LISBET
+ajl@ida, andli@ida, Andrzej.Lingas@ida, lingas@ida: <> A-LINGAS@LISBET
+aka@ida, andka@ida, Andreas.Kagedal@ida:	<> A-KAGEDAL@LISBET
+alu@ida, andlu@ida, Anders.Lundberg@ida:	<> A-LUNDBERG@LISBET
+amj@ida, annja@ida, Anne-Marie.Jacobsson@ida:	<> AM-JACOBSON@LISBET
+any@ida, andny@ida, Anders.Nyberg@ida:		<> A-NYBERG@LISBET, < andny
+aoa@ida, andal@ida, Anders.Aleryd@ida:		<> A-ALERYD@LISBET, < andal
+ara@ida, andra@ida, Anders.Rantila@ida:		<> A-RANTILA@LISBET, < ara
+arf@ida, arnfa@ida, Arne.Faldt@ida:		<> A-FAELDT@LISBET, <> arnfa
+arj@ida, arnjo@ida, Arne.Jonsson@ida:		<> ARNE-J@LISBET, < arnjo
+aro@ida, annro@ida, Annie.Rostlinger@ida:	<> A-ROSTLINGER@LISBET
+#-- saknar userid!
+ast@ida, arnst@ida, Arne.Stahre@ida:		<> A-STAHRE@LISBET, < arnst
+ato@ida, andto@ida, Anders.Torne@ida:		<> A-TORNE@LISBET
+ava@ida, arjva@ida, Arja.Vainio-Larsson@ida: 	<> A-VAINIO@LISBET
+ban@ida, bjoni@ida, Bjorn.Nilsson@ida:		<> B-NILSSON@LISBET, < bjoni
+baw@ida, andwi@ida, Andreas.Wickberg@ida:	<> A-WICKBERG@LISBET, < andwi
+bda@ida, birda@ida, Birgitta.Dahlgren@ida: 	<> B-DAHLGREN@LISBET
+bek@ida, barek@ida, Barbara.Ekman@ida:		<> BARBARA@LISBET
+bfa@ida, bjofj@ida, Bjorn.Fjellborg@ida, bfj@ida: <> B-FJELLBORG@LISBET
+bkn@ida, berni@ida, Bernt.Nilsson@ida:		<> BERNT-N@LISBET, < berni
+bln@ida, benle@ida, Bengt.Lennartsson@ida:	< BENGT@LISBET, <> bln
+bma@ida, briah@ida, Britt-Marie.Ahlenback@ida:	<> BM-AHLENBECK@LISBET
+bmk@ida, bodma@ida, Bodil.Mattson-Kihlstrom@ida: <> B-KIHLSTROM@LISBET
+bod@ida, benod@ida, Benny.Odenteg@ida:		<> B-ODENTEG@LISBET
+bol@ida, birol@ida, Birgitta.Olander@ida, bio@ida: <> B-OLANDER@LISBET, < birol
+bro@ida, borro@ida, Borje.Rosenberg@ida:	<> B-ROSENBERG@LISBET
+bsu@ida, bosu@ida, Bo.Sundgren@ida:		<> B-SUNDGREN@LISBET
+cba@ida, chrba@ida, Christer.Backstrom@ida:	<> C-BACKSTROM@LISBET
+ccg@ida, chrgn@ida, Christian.Gnosspelius@ida:	<> C-GNOSSPELIUS@LISBET, < chrgn
+cha@ida, chrha@ida, Christer.Hansson@ida:	<> C-HANSSON@LISBET, < chrha
+chl@ida, chrle@ida, Christos.Levcopoulos@ida:	<> CHRISTOS@LISBET, < chrle
+cib@ida, carbj@ida, Carina.Bjorkman@ida:	<> CARINA@LISBET
+cil@ida, clail@ida, Claes.Illergard@ida:	<> C-ILLERGARD@LISBET, < clail
+ckr@ida, chrkr@ida, Christian.Krysander@ida:	<> CHRISTIAN@LISBET, < chrkr
+dbu@ida, doubu@ida, Douglas.Busch@ida:		<> D-BUSCH@LISBET
+ddr@ida, dimdr@ida, Dimiter.Driankov@ida:	<> D-DRIANKOV@LISBET, < dimdr
+dif@ida, dimfo@ida, Dimitrios.Fotiades@ida:	<> DIMITRIOS@LISBET, < dimfo
+eat@ida, erite@ida, Erik.Tengvald@ida:		<> E-TENGVALD@LISBET, < erite
+ecs@ida, evasv@ida, Eva-Chris.Svensson@ida:	<> EVA-CHRIS@LISBET
+ejs@ida, erisa@ida, Erik.Sandewall@ida:		<> E-SANDEWALL@LISBET, < erisa
+eno@ida, erlno@ida, Erling.Nordmark@ida:	<> E-NORDMARK@LISBET
+fli@ida, freli@ida, Fredrik.Lindstrom@ida:	<> F-LINDSTROM@LISBET
+ggo@ida, gorgo@ida, Goran.Goldkuhl@ida:		<> G-GOLDKUHL@LISBET
+gka@ida, gorka@ida, Goran.Karlsson@ida:		<> G-KARLSON@LISBET
+glt@ida, gunli@ida, Gunilla.Lingenhult@ida:	<> G-LINGENHULT@LISBET
+gni@ida, gosni@ida, Gosta.Nilsson@ida:		<> G-NILSSON@LISBET
+her@ida, hener@ida, Henrik.Eriksson@ida:	<> H-ERIKSSON@LISBET, < her
+hbl@ida, hanbl@ida, Hans.Block@ida:		<> H-BLOCK@LISBET
+heh@ida, hanho@ida, Hans.Holmgren@ida:		<> H-HOLMGREN@LISBET, < hanho
+hjk@ida, janko@ida, Jan.Komorowski@ida:		<> J-KOMOROWSKI@LISBET
+hla@ida, harla@ida, Harold.Lawson@ida, budla@ida, Bud.Lawson@ida: <> BUD@LISBET, < harla
+hno@ida, henno@ida, Henrik.Nordin@ida:		<> H-NORDIN@LISBET, < henno
+hst@ida, hakst@ida, Hakan.Straaf@ida:		<> H-STRAAF@LISBET
+ime@ida, ingem@ida, Inger.Emanuelson@ida:	<> INGER@LISBET, < ingem
+ira@ida, ivara@ida, Ivan.Rankin@ida:		<> I-RANKIN@LISBET, < ivara
+jas@ida, johan@ida, Johan.Andersson@ida:	<> JOHAN@LISBET, < johan
+jbl@ida, bryly@ida, Bryan.Lyles@ida:		> Lyles.wbst@Xerox.COM
+#-- tills vidare
+jfa@ida, johfa@ida, Johan.Fagerstrom@ida:	<> J-FAGERSTROM@LISBET, < johfa
+jhu@ida, johhu@ida, Johan.Hultman@ida:		<> J-HULTMAN@LISBET, < johhu
+jlo@ida, jonlo@ida, Jonas.Lowgren@ida:		<> J-LOWGREN@LISBET, < jlo
+jma@ida, jalma@ida, Jalal.Maleki@ida:		<> JALAL@LISBET, < jalma
+jmz@ida, janma@ida, Jan.Maluszynski@ida:	<> J-MALUSZYNSKI@LISBET, < janma
+jwc@ida, jonwa@ida, Jonas.Wallgren@ida:		<> J-WALLGREN@LISBET
+jwg@ida, jamgo@ida, James.Goodwin@ida, James.W.Goodwin@ida, jimgo@ida, Jim.Goodwin@ida: <> JIM@LISBET, < jimgo
+kku@ida, krzku@ida, Krzysztof.Kuchcinski@ida, krk@ida: <> K-KUCHCINSKI@LISBET, < krzku
+kol@ida, kerol@ida, Kerstin.Olsson@ida:		<> K-OLSSON@LISBET, < kerol
+kre@ida, krier@ida, Kristina.Ernstsson@ida:	<> KRISTINA@LISBET, < krier
+krs@ida, krisa@ida, Kristian.Sandahl@ida:	<> K-SANDAHL@LISBET, < krisa
+kry@ida, kevry@ida, Kevin.Ryan@ida:		<> K-RYAN@LISBET, < kevry
+ksd@ida, katsu@ida, Katarina.Sunnerud@ida:	<> KATARINA@LISBET, < katsu
+lah@ida, larah@ida, Lars.Ahrenberg@ida:		<> L-AHRENBERG@LISBET
+lbe@ida, larbe@ida, Lars.Bengtsson@ida:		<> L-BENGTSSON@LISBET, < larbe
+lbf@ida, leifi@ida, Leif.Finmo@ida:		<> LEIF@LISBET, < leifi
+lbj@ida, lisbj@ida, Lisbet.Bjorklund@ida:	<> L-BJORKLUND@LISBET
+lel@ida, lenlo@ida, Lennart.Lovstrand@ida:	<> L-LOVSTRAND@LISBET,
+	< lel@obelix, < LENNART@HAZEL, <> lenlo
+lew@ida, lilwa@ida, Lillemor.Wallgren@ida:	<> LILLEMOR@LISBET
+lin@ida, linpa@ida, Lin.Padgham@ida:		< L-PADGHAM@LISBET, <> linpa
+lli@ida, lisli@ida, Lisbeth.Linge@ida:		<> LISBETH@LISBET
+lra@ida, lisra@ida, Lise-Lotte.Raunio@ida:	<> L-RAUNIO@LISBET
+lro@ida, lenro@ida, Lennart.Rohlin@ida:		<> L-ROHLIN@LISBET
+lst@ida, larst@ida, Lars.Stromberg@ida:		<> L-STROMBERG@LISBET, < larst
+lwi@ida, larwi@ida, Lars.Wikstrand@ida:		<> L-WIKSTRAND@LISBET
+mak@ida, marka@ida, Mariam.Kamkar@ida:		<> MARIAM@LISBET, < marka
+mgw@ida, matwi@ida, Mats.Wiren@ida:		<> M-WIREN@LISBET, < matwi
+mij@ida, maljo@ida, Malin.Johansson@ida:	<> MALIN@LISBET
+mip@ida, mikpa@ida, Mikael.Patel@ida:		<> MIKAEL@LISBET, < mikpa
+mja@ida, manja@ida, Manny.Jagerfeld@ida:	<> M-JAGERFELD@LISBET
+mme@ida, magme@ida, Magnus.Merkel@ida:		<> M-MERKEL@LISBET
+mre@ida, micre@ida, Michael.Reinfrank@ida:	<> M-REINFRANK@LISBET
+# reinfra@ztivax.UUCP
+mru@ida, matru@ida, Mats.Rundquist@ida:		<> M-RUNDQUIST@LISBET, < mru
+msa@ida, matan@ida, Mats.S.Andersson@ida, masan@ida, Mats.Andersson@ida: <> MATS@LISBET, < msa
+msv@ida, miksv@ida, Mikael.Svensson@ida:	<> M-SVENSSON@LISBET, < miksv
+nda@ida, nilda@ida, Nils.Dahlback@ida:		<> N-DAHLBACK@LISBET
+nka@ida, naika@ida, Nail.Kavak@ida:		<> N-KAVAK@LISBET, < naika
+nos@ida, nossh@ida, Nosrat.Shahsavar@ida:	<> N-SHAHSAVAR@LISBET, < nos
+nsh@ida, nahsh@ida, Nahid.Shahmehri@ida:	<> NAHID@LISBET, < nahsh
+oha@ida, oveha@ida, Ove.Hanebring@ida:		<> O-HANEBRING@LISBET
+ope@ida, olape@ida, Ola.Petersson@ida:		<> O-PETERSSON@LISBET
+owl@ida, ollwi@ida, Olle.Willen@ida:		<> OLLE-W@LISBET, < ollwi
+pab@ida, petab@ida, Peter.Aberg@ida:		<> P-ABERG@LISBET, < pab
+paf@ida, petfr@ida, Peter.Fritzson@ida:		< P-FRITZSON@LISBET, <> petfr
+pdy@ida, patdo@ida, Patrick.Doherty@ida, pdo@ida: <> P-DOHERTY@LISBET, < patdo
+#pem@ida, parem@ida, Par.Emanuelson@ida:	<> PAER@LISBET
+pha@ida, petha@ida, Peter.Haneklou@ida:		<> P-HANEKLO@LISBET, < petha
+phj@ida, hakja@ida, Hakan.Jakobsson@ida:	<> H-JAKOBSSON@LISBET, < hakja
+pjn@ida, pejni@ida, Peter.J.Nilsson@ida:	<> PJ-NILSSON@LISBET, <> pjn, < PJN@HAZEL
+plo@ida, petlo@ida, Peter.Loborg@ida:		<> P-LOBORG@LISBET
+pkw@ida, kriwa@ida, Kristian.Wallin@ida:	<> K-WALLIN@LISBET
+plv@ida, pablo@ida, Pablo.Lozan-Villegas@ida:	<> P-LOZAN-VILLEGAS@LISBET
+psn@ida, pesni@ida, Peter.S.Nilsson@ida, pni@ida: <> P-NILSSON@LISBET, < pesni
+# vilken g{ller?  'psn' torde vara b{ttre (med tanke p} 'pjn')
+pso@ida, palso@ida, Pal.Sorgaard@ida:		<> P-SORGAARD@LISBET
+puo@ida, perov@ida, Per.Overnas@ida:		<> PER@LISBET, < perov
+rhj@ida, rolhj@ida, Roland.Hjerppe@ida:		<> R-HJERPPE@LISBET, < rolhj
+rka@ida, rolka@ida, Rolf.Karlsson@ida:		<> R-KARLSSON@LISBET, < rolka
+rni@ida, ralni@ida, Ralf.Nilsson@ida:		<> ralni, < RALF-N@LISBET
+#-- slutat
+rob@ida, robbi@ida, Rober.Bilos@ida:		<> ROBER@LISBET, < robbi
+ron@ida, rolni@ida, Rolf.Nilsson@ida:		<> R-NILSSON@LISBET
+rre@ida, rolre@ida, Roland.Rehmnert@ida:	<> R-REHMNERT@LISBET, < rolre
+sbo@ida, stabo@ida, Staffan.Bonnier@ida:	<> S-BONNIER@LISBET, < stabo
+rrq@ida, ralro@ida, Ralph.Ronnquist@ida:	<> RALPH-RONNQUIST@LISBET, < ralro
+rzo@ida, rogzo@ida, Roger.Zollner@ida:		<> R-ZOLLNER@LISBET
+sha@ida, steha@ida, Stefan.Hammar@ida:		<> S-HAMMAR@LISBET
+sic@ida, shach@ida, Shamsul.Chowdhury@ida:	<> SHAMSUL@LISBET, < shach
+smn@ida, svemo@ida, Sven.Moen@ida:		< S-MOEN@LISBET, <> svemo
+snt@ida, simna@ida, Simin.Nadjm-Tehrani@ida:	<> S-NADJM-TEHRANI@LISBET, < snt
+sos@ida, olast@ida, Ola.Stromfors@ida:		< OLA@LISBET, <> ola
+sso@ida, sivso@ida, Siv.Soderlund@ida:		<> S-SODERLUND@LISBET
+sth@ida, stuha@ida, Sture.Hagglund@ida:		<> STURE@LISBET, < stuha
+swr@ida, stewr@ida, Stefan.Wrammerfors@ida:	<> stewr
+tao@ida, tomol@ida, Tommy.Olsson@ida:		<> TOMMY@LISBET, < tao
+tha@ida, timha@ida, Tim.Hansen@ida:		<> T-HANSEN@LISBET
+tla@ida, tonla@ida, Tony.Larsson@ida:		<> T-LARSSON@LISBET, < tonla
+ton@ida, torna@ida, Torbjorn.Naslund@ida, tna@ida: < T-NASLUND@LISBET, <> torna
+toh@ida, tomoh@ida, Tommy.Ohlsson@ida:		<> T-OHLSSON@LISBET
+tor@ida, totna@ida, Torbjorn.Naslund.ADB@ida:	<> TORBJORN-NASLUND-ADB@LISBET
+tps@ida, tomso@ida, Tomas.Sokolnicki@ida:	<> T-SOKOLNICKI@LISBET
+tri@ida, tomri@ida, Tom.Rindborg@ida:		<> T-RINDBORG@LISBET, < tomri
+tti@ida, tooti@ida, Toomas.Timpka@ida:		<> T-TIMPKA@LISBET
+uda@ida, ulfda@ida, Ulf.Dahlen@ida:		<> U-DAHLEN@LISBET, < uda
+urn@ida, ulfni@ida, Ulf.Nilsson@ida:		<> U-NILSSON@LISBET, < ulfni
+wdr@ida, wlodr@ida, Wlodek.Drabent@ida, Wlodzimierz.Drabent@ida: <> W-DRABENT@LISBET, < wlodr
+yla@ida, yngla@ida, Yngve.Larsson@ida:		<  Y-LARSSON@LISBET, <> yngla
+zpe@ida, zebpe@ida, Zebo.Peng@ida:		<> ZEBO@LISBET, < zebpe

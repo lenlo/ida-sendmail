@@ -1,0 +1,463 @@
+*** daemon.c.orig	Sat Apr  2 00:43:22 1988
+--- daemon.c	Tue Aug 30 01:57:23 1988
+***************
+*** 32,37 ****
+--- 32,40 ----
+  # include <sys/wait.h>
+  # include <sys/time.h>
+  # include <sys/resource.h>
++ # include <sys/file.h>
++ # include <sys/types.h>
++ # include <sys/stat.h>
+  
+  /*
+  **  DAEMON.C -- routines to use when running as a daemon.
+***************
+*** 62,67 ****
+--- 65,78 ----
+  **	maphostname(hbuf, hbufsize)
+  **		Convert the entry in hbuf into a canonical form.  It
+  **		may not be larger than hbufsize.
++ **
++ **	mapinit(c)
++ **		Open and initialize a dbm database.  Reopen if our current
++ **		file descriptor is out of date.
++ **
++ **	mapkey(c, key, argval, argsiz)
++ **		Search a database for a match to the given key, sprintf'ing
++ **		the argument through the result if found.
+  */
+  /*
+  **  GETREQUESTS -- open mail IPC port and get requests.
+***************
+*** 492,520 ****
+  }
+  
+  /*
+!  *  MAPHOSTNAME -- turn a hostname into canonical form
+!  *
+!  *	Parameters:
+!  *		hbuf -- a buffer containing a hostname.
+!  *		hbsize -- the size of hbuf.
+!  *
+!  *	Returns:
+!  *		none.
+!  *
+!  *	Side Effects:
+!  *		Looks up the host specified in hbuf.  If it is not
+!  *		the canonical name for that host, replace it with
+!  *		the canonical name.  If the name is unknown, or it
+!  *		is already the canonical name, leave it unchanged.
+!  */
+  maphostname(hbuf, hbsize)
+  	char *hbuf;
+  	int hbsize;
+  {
+  	register struct hostent *hp;
+! 	u_long in_addr;
+! 	char ptr[256];
+! 	struct hostent *gethostbyaddr();
+  
+  	/*
+  	 * If first character is a bracket, then it is an address
+--- 503,532 ----
+  }
+  
+  /*
+! **  MAPHOSTNAME -- turn a hostname into canonical form
+! **
+! **	Parameters:
+! **		hbuf -- a buffer containing a hostname.
+! **		hbsize -- the size of hbuf.
+! **
+! **	Returns:
+! **		An exit code telling if the hostname was found and
+! **		canonicalized.
+! **
+! **	Side Effects:
+! **		Looks up the host specified in hbuf.  If it is not
+! **		the canonical name for that host, replace it with
+! **		the canonical name.  If the name is unknown, or it
+! **		is already the canonical name, leave it unchanged.
+! **/
+! bool
+  maphostname(hbuf, hbsize)
+  	char *hbuf;
+  	int hbsize;
+  {
+  	register struct hostent *hp;
+! 	extern struct hostent *gethostbyname();
+! 	static char tmphbuf[MAXNAME];
+  
+  	/*
+  	 * If first character is a bracket, then it is an address
+***************
+*** 522,543 ****
+  	 * strip the brackets and to preserve hbuf if address is
+  	 * unknown.
+  	 */
+! 	if (*hbuf != '[') {
+! 		getcanonname(hbuf, hbsize);
+! 		return;
+  	}
+! 	*index(strcpy(ptr, hbuf), ']') = '\0';
+! 	in_addr = inet_addr(&ptr[1]);
+! 	hp = gethostbyaddr((char *)&in_addr, sizeof(struct in_addr), AF_INET);
+  	if (hp == NULL)
+! 		return;
+  	if (strlen(hp->h_name) >= hbsize)
+  		hp->h_name[hbsize - 1] = '\0';
+! 	(void)strcpy(hbuf, hp->h_name);
+  }
+  
+  # else DAEMON
+! /* code for systems without sophisticated networking */
+  
+  /*
+  **  MYHOSTNAME -- stub version for case of no daemon code.
+--- 534,573 ----
+  	 * strip the brackets and to preserve hbuf if address is
+  	 * unknown.
+  	 */
+! 	if (*hbuf == '[')
+! 	{
+! 		extern struct hostent *gethostbyaddr();
+! 		u_long in_addr;
+! 
+! 		(void) strncpy(tmphbuf, hbuf+1, strlen(hbuf)-2);
+! 		in_addr = inet_addr(tmphbuf);
+! 		hp = gethostbyaddr((char *) &in_addr, sizeof(struct in_addr), AF_INET);
+  	}
+! 	else
+! 	{
+! 		hp = gethostbyname(hbuf);
+! 		if (hp == NULL) {
+! 			/* try lowercase version */
+! 			(void) strcpy(tmphbuf, hbuf);
+! 			(void) makelower(tmphbuf);
+! 		}
+! 	}
+! #ifdef DEBUG
+! 	if (tTd(9, 1))
+! 		printf("maphostname(%s, %d) => %.*s\n",
+! 			hbuf, hbsize, hbsize-1, hp ? hp->h_name : "NOT_FOUND");
+! #endif DEBUG
+  	if (hp == NULL)
+! 		return FALSE;
+! 
+  	if (strlen(hp->h_name) >= hbsize)
+  		hp->h_name[hbsize - 1] = '\0';
+! 	(void) strcpy(hbuf, hp->h_name);
+! 	return TRUE;
+  }
+  
+  # else DAEMON
+! /* code for systems without sophisticated networking */
+  
+  /*
+  **  MYHOSTNAME -- stub version for case of no daemon code.
+***************
+*** 564,570 ****
+  	}
+  	return (NULL);
+  }
+! /*
+  **  MAPHOSTNAME -- turn a hostname into canonical form
+  **
+  **	Parameters:
+--- 594,601 ----
+  	}
+  	return (NULL);
+  }
+! 
+! /*
+  **  MAPHOSTNAME -- turn a hostname into canonical form
+  **
+  **	Parameters:
+***************
+*** 572,578 ****
+  **		hbsize -- the size of hbuf.
+  **
+  **	Returns:
+! **		none.
+  **
+  **	Side Effects:
+  **		Looks up the host specified in hbuf.  If it is not
+--- 603,610 ----
+  **		hbsize -- the size of hbuf.
+  **
+  **	Returns:
+! **		An exit code telling if the hostname was found and
+! **		canonicalized.
+  **
+  **	Side Effects:
+  **		Looks up the host specified in hbuf.  If it is not
+***************
+*** 586,592 ****
+  	char *hbuf;
+  	int hbsize;
+  {
+! 	return;
+  }
+  
+  #endif DAEMON
+--- 618,876 ----
+  	char *hbuf;
+  	int hbsize;
+  {
+! 	return (FALSE);
+  }
+  
+  #endif DAEMON
++ /*
++ **  MAPINIT -- Open and (re)initialize a dbm database
++ **
++ **	Parameters:
++ **		c -- the (one character) name of the database
++ **
++ **	Returns:
++ **		An exit code telling if we could open the database.
++ **
++ */
++ #ifdef NDBM
++ bool
++ mapinit(c)
++     char c;
++ {
++     struct stat stb;
++     struct dbm_table *db;
++     char buf[MAXNAME];
++ 
++     db = &DbmTab[c & 0177];
++ 
++     if (db->db_name == NULL) {
++ 	syserr("database '%c' has not been defined", c);
++ 	return FALSE;
++     }
++ 
++ #ifdef YPMARK
++     /*
++      * Yellow pages are always supposed to be ready
++      */
++     if (db->db_name[0] == YPMARK)
++ 	return TRUE;
++ #endif YPMARK
++ 
++     /*
++      * Have we already (unsuccessfully) tried to open it?
++      */
++     if (db->db_dbm == DB_NOSUCHFILE) {
++ #ifdef DEBUG
++ 	if (tTd(60, 1))
++ 	    printf("mapinit(%c) => NO_FILE\n", c);
++ #endif DEBUG
++ 	return FALSE;
++     }
++ 
++     /*
++      * If it already is open, check if it has been changed.
++      */
++     (void) sprintf(buf, "%s%s", db->db_name, DB_DIREXT);
++     if (db->db_dbm != DB_NOTYETOPEN) {
++ 	if (stat(buf, &stb) < 0 && (sleep(30), stat(buf, &stb) < 0)) {
++ 	    syserr("somebody removed %s for db '%c'", buf, c);
++ 	    db->db_dbm = DB_NOSUCHFILE;
++ #ifdef DEBUG
++ 	    if (tTd(60, 1))
++ 		printf("mapinit(%c) => FILE_REMOVED\n", c);
++ #endif DEBUG
++ 	    return FALSE;
++ 	}
++ 	if (db->db_mtime != stb.st_mtime) {
++ #ifdef DEBUG
++ 	    if (tTd(60, 1))
++ 		printf("database '%c' [%s] has changed; reopening it\n",
++ 		       c, db->db_name);
++ #endif DEBUG
++ 	    (void) dbm_close(db->db_dbm);
++ 	    db->db_dbm = DB_NOTYETOPEN;
++ 	}
++     }
++ 
++     /*
++      * Initialize database if not already open (r/w for aliases)
++      */
++     if (db->db_dbm == DB_NOTYETOPEN) {
++ 	db->db_dbm = dbm_open(db->db_name,
++ 			      c == DB_ALIAS ? O_RDWR : O_RDONLY, 0);
++ 	if (db->db_dbm == DB_NOSUCHFILE) {
++ 	    /* try once more */
++ 	    sleep(30);
++ 	    db->db_dbm = dbm_open(db->db_name,
++ 				  c == DB_ALIAS ? O_RDWR : O_RDONLY, 0);
++ 	}
++ 	if (db->db_dbm == DB_NOSUCHFILE) {
++ 	    syserr("can't open database '%c' [%s]", c, db->db_name);
++ #ifdef DEBUG
++ 	    if (tTd(60, 1))
++ 		printf("mapinit(%c) => CAN'T OPEN %s\n", c, db->db_name);
++ #endif DEBUG
++ 	    return FALSE;
++ 	}
++ 	if (stat(buf, &stb) < 0 && (sleep(30), stat(buf, &stb) < 0)) {
++ 	    syserr("can't stat %s", buf);
++ #ifdef DEBUG
++ 	    if (tTd(60, 1))
++ 		printf("mapinit(%c) => FILE_REMOVED\n", c);
++ #endif DEBUG
++ 	    return FALSE;
++ 	}
++ 	db->db_mtime = stb.st_mtime;
++ 
++ 	/*
++ 	 * Make sure the database isn't being updated
++ 	 */
++ 	if (flock(dbm_dirfno(db->db_dbm), LOCK_EX | LOCK_NB) < 0)
++ 	    if (errno == EWOULDBLOCK) {
++ #ifdef DEBUG
++ 		if (tTd(60, 1))
++ 		    printf("%s%s is locked, waiting...\n",
++ 			   db->db_name, DB_DIREXT);
++ #endif DEBUG
++ 		(void) flock(dbm_dirfno(db->db_dbm), LOCK_EX);
++ 	    } else
++ 		syserr("flock failed for db %c [%s]", c, db->db_name);
++ 	(void) flock(dbm_dirfno(db->db_dbm), LOCK_UN);
++     }
++     return TRUE;
++ }
++ /*
++ **  MAPKEY -- Search a dbm database.
++ **
++ **	Search the named database using the given key.  If
++ **	a result is found, sprintf the argument through the
++ **	result back into the key and return TRUE;
++ **	otherwise return FALSE and do nothing.
++ **
++ **	Keysize may also be given as zero, in which case the
++ **	sprintf'ed result is returned if the key matched.
++ **
++ **	Parameters:
++ **		c -- the database
++ **		key -- search string
++ **		argval -- sprintf argument & result
++ **		argsiz -- size of argval
++ **
++ **	Returns:
++ **		An exit code telling if there was a match.
++ **
++ **	Side Effects:
++ **		The argval is rewritten to reflect what was found
++ **		in the database.
++ */
++ 
++ mapkey(c, key, keysiz, arg)
++     char c, *key, *arg;
++     int keysiz;
++ {
++     struct dbm_table *db;
++     DATUM dkey, result;
++     static char lowkey[MAXNAME];
++ #ifdef YPMARK
++     static char *yp_domain = NULL;
++ #endif YPMARK
++ 
++     db = &DbmTab[c & 0177];
++ 
++ #ifdef DEBUG
++     if (tTd(60, 1))
++ 	printf("mapkey('%c', \"%s\", \"%s\") => ", c, key, arg ? arg : "--");
++ #endif DEBUG
++ 
++     /*
++      * Init the database; return if failure
++      */
++     if (!mapinit(c))
++ 	return FALSE;
++ 
++     /*
++      * Normalize key (ie turn it to lowercase)
++      */
++     (void) strcpy(lowkey, key);
++     (void) makelower(lowkey);
++ 
++ #ifdef YPMARK
++     /*
++      * Test for yellow page database first
++      */
++     if (db->db_name[0] == YPMARK) {
++ 	if (yp_domain == NULL)
++ 	    (void) yp_get_default_domain(&yp_domain);
++ 
++ 	/*
++ 	 * We include the null after the string, but Sun doesn't
++ 	 */
++ 	if (yp_match(yp_domain, &db->db_name[1], lowkey,
++ 		     strlen(key)+1, &result.dptr, &result.dsize) != 0 &&
++ 	    yp_match(yp_domain, &db->db_name[1], lowkey,
++ 		     strlen(key), &result.dptr, &result.dsize) != 0)
++ 	    result.dptr = NULL;
++ 	else
++ 	    /* smash newline */
++ 	    result.dptr[result.dsize] = '\0';
++     } else {
++ #endif YPMARK
++ 	/*
++ 	 * Go look for matching dbm entry
++ 	 */
++ 	dkey.dptr = lowkey;
++ 	dkey.dsize = strlen(dkey.dptr) + 1;
++ 	result = dbm_fetch(db->db_dbm, dkey);
++ #ifdef YPMARK
++     }
++ #endif YPMARK
++ 
++     /*
++      * Well, were we successful?
++      */
++     if (result.dptr == NULL) {
++ #ifdef DEBUG
++ 	if (tTd(60, 1))
++ 	    printf("NOT_FOUND\n");
++ #endif DEBUG
++ 	return FALSE;
++     }
++ 
++     /*
++      * Yes, rewrite result if sprintf arg was given.
++      */
++     if (arg == NULL)
++ 	(void) strcpy(lowkey, result.dptr);
++     else
++ 	(void) sprintf(lowkey, result.dptr, arg);
++     /* if keysiz is zero, that means we should return a string from the heap */
++     if (keysiz == 0)
++ 	key = newstr(lowkey);
++     else {
++ 	if (strlen(lowkey)+1 > keysiz) {
++ 	    syserr("mapkey: result \"%s\" too long after expansion\n",
++ 		   lowkey, keysiz);
++ 	    lowkey[keysiz-1] = '\0';
++ 	}
++ 	(void) strcpy(key, lowkey);
++     }
++ #ifdef DEBUG
++     if (tTd(60, 1))
++ 	printf("%s\n", key);
++ #endif DEBUG
++ 
++     /* Ugly kludge that assumes that sizeof(int) == sizeof(char *) */
++     return (int) key;
++ }
++ 
++ #else NDBM
++ 
++ /* should really read the table into the stab instead */
++ mapkey(db, key, keysiz, arg)
++     char db, *key, *arg;
++     int keysiz;
++ {
++     return FALSE;
++ }
++ 
++ #endif NDBM

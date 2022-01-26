@@ -1,0 +1,363 @@
+*** main.c.orig	Tue Apr 19 21:40:01 1988
+--- main.c	Fri Aug 26 03:10:02 1988
+***************
+*** 110,116 ****
+  	bool queuemode = FALSE;		/* process queue requests */
+  	bool nothaw;
+  	static bool reenter = FALSE;
+! 	char jbuf[30];			/* holds MyHostName */
+  	extern bool safefile();
+  	extern time_t convtime();
+  	extern putheader(), putbody();
+--- 110,116 ----
+  	bool queuemode = FALSE;		/* process queue requests */
+  	bool nothaw;
+  	static bool reenter = FALSE;
+! 	char jbuf[60];			/* holds MyHostName */
+  	extern bool safefile();
+  	extern time_t convtime();
+  	extern putheader(), putbody();
+***************
+*** 118,123 ****
+--- 118,124 ----
+  	extern intsig();
+  	extern char **myhostname();
+  	extern char *arpadate();
++ 	extern char *index();
+  	extern char **environ;
+  
+  	/*
+***************
+*** 134,140 ****
+--- 135,143 ----
+  	reenter = TRUE;
+  
+  	/* Enforce use of local time */
++ #ifndef sun
+  	unsetenv("TZ");
++ #endif !sun
+  
+  	/*
+  	**  Be sure we have enough file descriptors.
+***************
+*** 187,192 ****
+--- 190,203 ----
+  		}
+  		else if (strncmp(p, "-bz", 3) == 0)
+  			nothaw = TRUE;
++ 		else if (strncmp(p, "-Z", 2) == 0)
++ 		{
++ 			FreezeFile = &p[2];
++ 			if (FreezeFile[0] == '\0')
++ 				FreezeFile = "sendmail.fc";
++ 			(void) setgid(getrgid());
++ 			(void) setuid(getruid());
++ 		}
+  # ifdef DEBUG
+  		else if (strncmp(p, "-d", 2) == 0)
+  		{
+***************
+*** 236,242 ****
+--- 247,257 ----
+  	FullName = getenv("NAME");
+  
+  # ifdef LOG
++ #ifndef sun
+  	openlog("sendmail", LOG_PID, LOG_MAIL);
++ #else
++ 	openlog("sendmail", LOG_PID);
++ #endif
+  # endif LOG
+  	errno = 0;
+  	from = NULL;
+***************
+*** 257,262 ****
+--- 272,281 ----
+  			p = newstr(jbuf);
+  			define('w', p, CurEnv);
+  			setclass('w', p);
++ 			if ((p = index(jbuf, '.')) != NULL)
++ 				*p = '\0';
++ 			makelower(jbuf);
++ 			define('k', newstr(jbuf), CurEnv);
+  		}
+  		while (av != NULL && *av != NULL)
+  		{
+***************
+*** 288,293 ****
+--- 307,314 ----
+  		OpMode = MD_PRINT;
+  	else if (strcmp(p, "smtpd") == 0)
+  		OpMode = MD_DAEMON;
++ 	else if (strcmp(p, "bsmtp") == 0)
++ 		OpMode = MD_BSMTP;
+  	while ((p = *++av) != NULL && p[0] == '-')
+  	{
+  		switch (p[1])
+***************
+*** 301,306 ****
+--- 322,328 ----
+  				break;
+  # endif DAEMON
+  			  case MD_SMTP:
++ 			  case MD_BSMTP:
+  # ifndef SMTP
+  				syserr("I don't speak SMTP");
+  				break;
+***************
+*** 324,335 ****
+  		  case 'C':	/* select configuration file (already done) */
+  			break;
+  
+  #ifdef DEBUG
+  		  case 'd':	/* debugging -- redo in case frozen */
+  			tTsetup(tTdvect, sizeof tTdvect, "0-99.1");
+  			tTflag(&p[2]);
+  			setbuf(stdout, (char *) NULL);
+! 			_res.options |= RES_DEBUG;
+  			break;
+  #endif
+  
+--- 346,361 ----
+  		  case 'C':	/* select configuration file (already done) */
+  			break;
+  
++ 		  case 'Z':	/* select frozen config file (already done) */
++ 			break;
++ 
+  #ifdef DEBUG
+  		  case 'd':	/* debugging -- redo in case frozen */
+  			tTsetup(tTdvect, sizeof tTdvect, "0-99.1");
+  			tTflag(&p[2]);
+  			setbuf(stdout, (char *) NULL);
+! 			if (tTd(8, 8))
+! 				_res.options |= RES_DEBUG;
+  			break;
+  #endif
+  
+***************
+*** 496,502 ****
+  
+  	  case MD_INITALIAS:
+  		/* initialize alias database */
+! 		initaliases(AliasFile, TRUE);
+  		exit(EX_OK);
+  
+  	  case MD_DAEMON:
+--- 522,528 ----
+  
+  	  case MD_INITALIAS:
+  		/* initialize alias database */
+! 		initaliases(TRUE);
+  		exit(EX_OK);
+  
+  	  case MD_DAEMON:
+***************
+*** 505,511 ****
+  
+  	  default:
+  		/* open the alias database */
+! 		initaliases(AliasFile, FALSE);
+  		break;
+  	}
+  
+--- 531,537 ----
+  
+  	  default:
+  		/* open the alias database */
+! 		initaliases(FALSE);
+  		break;
+  	}
+  
+***************
+*** 521,529 ****
+  
+  			if (m == NULL)
+  				continue;
+! 			printf("mailer %d (%s): P=%s S=%d R=%d M=%ld F=", i, m->m_name,
+! 				m->m_mailer, m->m_s_rwset, m->m_r_rwset,
+! 				m->m_maxsize);
+  			for (j = '\0'; j <= '\177'; j++)
+  				if (bitnset(j, m->m_flags))
+  					(void) putchar(j);
+--- 547,556 ----
+  
+  			if (m == NULL)
+  				continue;
+! 			printf("mailer %d (%s): P=%s S=%d/%d R=%d/%d M=%ld F=",
+! 				i, m->m_name, m->m_mailer,
+! 				m->m_se_rwset, m->m_sh_rwset,
+! 				m->m_re_rwset, m->m_rh_rwset, m->m_maxsize);
+  			for (j = '\0'; j <= '\177'; j++)
+  				if (bitnset(j, m->m_flags))
+  					(void) putchar(j);
+***************
+*** 550,555 ****
+--- 577,583 ----
+  		char buf[MAXLINE];
+  
+  		printf("ADDRESS TEST MODE\nEnter <ruleset> <address>\n");
++ 		printf("[Note: No initial ruleset 3 call]\n");
+  		for (;;)
+  		{
+  			register char **pvp;
+***************
+*** 576,582 ****
+  				pvp = prescan(++p, ',', pvpbuf);
+  				if (pvp == NULL)
+  					continue;
+! 				rewrite(pvp, 3);
+  				p = q;
+  				while (*p != '\0')
+  				{
+--- 604,610 ----
+  				pvp = prescan(++p, ',', pvpbuf);
+  				if (pvp == NULL)
+  					continue;
+! 				/* rewrite(pvp, 3); */
+  				p = q;
+  				while (*p != '\0')
+  				{
+***************
+*** 654,661 ****
+  	**  commands.  This will never return.
+  	*/
+  
+! 	if (OpMode == MD_SMTP)
+! 		smtp();
+  # endif SMTP
+  
+  	/*
+--- 682,694 ----
+  	**  commands.  This will never return.
+  	*/
+  
+! 	if (OpMode == MD_SMTP || OpMode == MD_BSMTP) {
+! 		bool batched = (OpMode == MD_BSMTP);
+! 		OpMode = MD_SMTP;
+! 		/* have to run unbuffered or else will lose synchronization */
+! 		setbuf(InChannel, (char *) NULL);
+! 		smtp(batched);
+! 	}
+  # endif SMTP
+  
+  	/*
+***************
+*** 794,805 ****
+  **		initializes several macros to be themselves.
+  */
+  
+- struct metamac
+- {
+- 	char	metaname;
+- 	char	metaval;
+- };
+- 
+  struct metamac	MetaMacros[] =
+  {
+  	/* LHS pattern matching characters */
+--- 827,832 ----
+***************
+*** 812,820 ****
+  	/* the conditional operations */
+  	'?', CONDIF,	'|', CONDELSE,	'.', CONDFI,
+  
+! 	/* and finally the hostname lookup characters */
+  	'[', HOSTBEGIN,	']', HOSTEND,
+  
+  	'\0'
+  };
+  
+--- 839,855 ----
+  	/* the conditional operations */
+  	'?', CONDIF,	'|', CONDELSE,	'.', CONDFI,
+  
+! 	/* and finally the hostname and database lookup characters */
+  	'[', HOSTBEGIN,	']', HOSTEND,
++ 	'(', KEYBEGIN,	')', KEYEND,
+  
++ #ifdef MACVALUE
++ 	/* run-time macro expansion, not at freeze time */
++ 	'&', MACVALUE,
++ #endif
++ #ifdef QUOTE822
++ 	'!', QUOTE822,	/* quote next macro if RFC822 requires it */
++ #endif
+  	'\0'
+  };
+  
+***************
+*** 863,868 ****
+--- 898,904 ----
+  		char	*frzedata;	/* address of edata */
+  		char	*frzend;	/* address of end */
+  		char	frzver[252];	/* sendmail version */
++ 		char	frzdatecompiled[64];	/* sendmail compilation date */
+  	} frzinfo;
+  };
+  
+***************
+*** 874,879 ****
+--- 910,916 ----
+  	extern char edata, end;
+  	extern char *sbrk();
+  	extern char Version[];
++ 	extern char datecompiled[];
+  
+  	if (freezefile == NULL)
+  		return;
+***************
+*** 893,898 ****
+--- 930,936 ----
+  	fhdr.frzinfo.frzedata = &edata;
+  	fhdr.frzinfo.frzend = &end;
+  	(void) strcpy(fhdr.frzinfo.frzver, Version);
++ 	(void) strcpy(fhdr.frzinfo.frzdatecompiled, datecompiled);
+  
+  	/* write out the freeze header */
+  	if (write(f, (char *) &fhdr, sizeof fhdr) != sizeof fhdr ||
+***************
+*** 926,931 ****
+--- 964,970 ----
+  	union frz fhdr;
+  	extern char edata, end;
+  	extern char Version[];
++ 	extern char datecompiled[];
+  	extern caddr_t brk();
+  
+  	if (freezefile == NULL)
+***************
+*** 943,949 ****
+  	if (read(f, (char *) &fhdr, sizeof fhdr) < sizeof fhdr ||
+  	    fhdr.frzinfo.frzedata != &edata ||
+  	    fhdr.frzinfo.frzend != &end ||
+! 	    strcmp(fhdr.frzinfo.frzver, Version) != 0)
+  	{
+  		(void) close(f);
+  		return (FALSE);
+--- 982,989 ----
+  	if (read(f, (char *) &fhdr, sizeof fhdr) < sizeof fhdr ||
+  	    fhdr.frzinfo.frzedata != &edata ||
+  	    fhdr.frzinfo.frzend != &end ||
+! 	    strcmp(fhdr.frzinfo.frzver, Version) != 0 ||
+! 	    strcmp(fhdr.frzinfo.frzdatecompiled, datecompiled) != 0)
+  	{
+  		(void) close(f);
+  		return (FALSE);
+***************
+*** 1010,1016 ****
+  
+  	/* we can't communicate with our caller, so.... */
+  	HoldErrs = TRUE;
+! 	ErrorMode = EM_MAIL;
+  	Verbose = FALSE;
+  
+  	/* all input from /dev/null */
+--- 1050,1056 ----
+  
+  	/* we can't communicate with our caller, so.... */
+  	HoldErrs = TRUE;
+! 	setoption('e', "m", TRUE, TRUE);
+  	Verbose = FALSE;
+  
+  	/* all input from /dev/null */

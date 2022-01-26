@@ -1,0 +1,70 @@
+Path: liuida!lel
+From: Lennart_Lovstrand.EuroPARC@Xerox.COM
+Newsgroups: comp.mail.sendmail
+Subject: Re: sendmail with MX and IDA-enhancements
+Message-Id: <884@majestix.liu.se>
+Date: 26 Aug 88 20:53:47 GMT
+References: <298@pvab.UUCP> <450@comdesign.CDI.COM>
+Organization: Rank Xerox EuroPARC, Cambridge, England
+Sender: lenlo@majestix.liu.se
+Lines: 59
+
+In article <450@comdesign.CDI.COM> pst@comdesign.CDI.COM (Paul Traina) writes:
+> From article <298@pvab.UUCP>, by robert@pvab.UUCP (Robert Claeson):
+> | In article <553@laura.UUCP>, ap@laura.UUCP (Axel Pawlik) writes:
+> |>   has anybody out there already merged the MX-sendmail
+> |> with Lennard Loevstrand's IDA-enhancements?
+> | And added Sun's enhancements (being able to query YP for known hosts
+> | and the like)?
+> Ditto please, I'm torn between runing old 4.12 and hacking 5.59 to have
+> the YP support.
+
+Gentlemen and -women, it does indeed exist!
+
+Please welcome the IDA Sendmail Enhancement Kit v1.2 for sendmail 5.59
+with MX and Yellow Pages support.  It has tonight been made available on
+Arisia.Xerox.COM in ~ftp/pub1/ida.tar.Z (available via anonymous ftp)
+and will be sent to comp.sources.unix shortly.
+
+The major change is that of Yellow Pages support, but others include dbm
+file update locking, setting classes from programs (eg. FU|uuname),
+delayed macro evaluation (from the net), rfc822 quoted macro expansion,
+address rewriting loop detection and an extra compile-time frozen file
+check; the latter ones contributed by Guy Middleton @ Waterloo.
+
+There has also been some bug fixes and slight improvements on the IDA
+configuration file and associated files.
+
+All the old enhancements still apply, with the exception of BSD2.9 and
+4.2 support, although it will compile and run under SunOS 3.x given that
+you have bind 4.8 as well.
+
+For those of you who haven't heard of this before, the IDA Enhancement
+Kit is a set of changes to the standard Berkeley mailer which implements
+the following features:
+
+  o  Nameserver Default Argument
+  o  Direct Access to Dbm(3) Files
+  o  Batched SMTP Support
+  o  Separate Envelope/Header Rewriting Rulesets
+  o  Separate Local UUCP Host Name
+  o  Return Path for UUCP Mailers
+  o  UUCP Header Address Relativization
+  o  Support for Multi-Token Matches
+  o  Support for Embedded Subruleset Calls
+  o  Elaborate Matching Algorithm for Unknown Local Recipients
+  o  Support for Maryland's Mdbm Package
+  o  Improved Test Mode Output
+  o  Better To: and Cc: Headers of Returned Messages
+
+It also comes with the IDA Configuration Kit, which has pathalias based
+systems routing within sendmail, fully !-/@-translating rulesets,
+generic localuser addresses, and more.
+
+Enjoy!
+
+--Lennart Lovstrand
+  Rank Xerox EuroPARC, Cambridge, England
+
+  DARPA Internet: Lovstrand.EuroPARC@Xerox.COM
+  Xerox Internet: Lovstrand:EuroPARC:RX

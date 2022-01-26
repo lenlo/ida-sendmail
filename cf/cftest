@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+#	usage: cftest [sendmail_options] < test_file
+#
+#	sends the test patterns on stdin through sendmail and
+#	collects the results.
+#
+
+/usr/lib/sendmail -bt $* | awk '\
+	!/^>/ {lastline = $0} \
+	/^>/  {print lastline; print ""; print substr($0, 3, 999)}'

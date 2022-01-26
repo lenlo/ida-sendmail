@@ -1,0 +1,466 @@
+*** alias.c.orig	Sat Apr  2 01:22:15 1988
+--- alias.c	Tue Aug 30 04:19:45 1988
+***************
+*** 58,71 ****
+  */
+  
+  
+! #ifdef DBM
+! typedef struct
+! {
+! 	char	*dptr;
+! 	int	dsize;
+! } DATUM;
+  extern DATUM fetch();
+! #endif DBM
+  
+  alias(a, sendq)
+  	register ADDRESS *a;
+--- 58,66 ----
+  */
+  
+  
+! #if defined(DBM) && !defined(NDBM)
+  extern DATUM fetch();
+! #endif DBM && !NDBM
+  
+  alias(a, sendq)
+  	register ADDRESS *a;
+***************
+*** 76,82 ****
+  
+  # ifdef DEBUG
+  	if (tTd(27, 1))
+! 		printf("alias(%s)\n", a->q_paddr);
+  # endif
+  
+  	/* don't realias already aliased names */
+--- 71,77 ----
+  
+  # ifdef DEBUG
+  	if (tTd(27, 1))
+! 		printf("alias(%s)\n", a->q_user);
+  # endif
+  
+  	/* don't realias already aliased names */
+***************
+*** 125,131 ****
+  **		none.
+  **
+  **	Warnings:
+! **		The return value will be trashed across calls.
+  */
+  
+  char *
+--- 120,127 ----
+  **		none.
+  **
+  **	Warnings:
+! **		The return value will be trashed across calls
+! **		unless NDBM is defined and we're using mapkey().
+  */
+  
+  char *
+***************
+*** 133,149 ****
+  	char *name;
+  {
+  # ifdef DBM
+  	DATUM rhs, lhs;
+  
+  	/* create a key for fetch */
+! 	lhs.dptr = name;
+  	lhs.dsize = strlen(name) + 1;
+  	rhs = fetch(lhs);
+  	return (rhs.dptr);
+  # else DBM
+  	register STAB *s;
+  
+  	s = stab(name, ST_ALIAS, ST_FIND);
+  	if (s == NULL)
+  		return (NULL);
+  	return (s->s_alias);
+--- 129,178 ----
+  	char *name;
+  {
+  # ifdef DBM
++ # ifdef NDBM
++ 	char *newname;
++ 
++ # ifdef DEBUG
++ 	if (tTd(27, 3))
++ 	    printf("aliaslookup(\"%s\") => ", name);
++ # endif DEBUG
++ 	newname = (char *) mapkey(DB_ALIAS, name, 0, 0);
++ # ifdef DEBUG
++ 	if (tTd(27, 3))
++ 	    printf("%s\n", newname == NULL ? "NOT_FOUND" : newname);
++ # endif DEBUG
++ 	return newname;
++ 
++ # else NDBM
++ 
+  	DATUM rhs, lhs;
++ 	char *lowname = xalloc(strlen(name) + 1); /* potential space hog */
+  
+  	/* create a key for fetch */
+! 	(void) strcpy(lowname, name);
+! 	(void) makelower(lowname);
+! 	lhs.dptr = lowname;
+  	lhs.dsize = strlen(name) + 1;
++ # ifdef DEBUG
++ 	if (tTd(27, 3))
++ 	    printf("aliaslookup(\"%s\") => ", lhs.dptr);
++ # endif DEBUG
+  	rhs = fetch(lhs);
++ # ifdef DEBUG
++ 	if (tTd(27, 3))
++ 	    printf("%s\n", rhs.dptr == NULL ? "NOT_FOUND" : rhs.dptr);
++ # endif DEBUG
++ 	(void) free(lowname);
+  	return (rhs.dptr);
++ # endif !NDBM
+  # else DBM
+  	register STAB *s;
+  
+  	s = stab(name, ST_ALIAS, ST_FIND);
++ # ifdef DEBUG
++ 	if (tTd(27, 3))
++ 	    printf("%s\n", s == NULL ? "NOT_FOUND" : s->s_alias);
++ # endif DEBUG
+  	if (s == NULL)
+  		return (NULL);
+  	return (s->s_alias);
+***************
+*** 155,161 ****
+  **	Very different depending on whether we are running DBM or not.
+  **
+  **	Parameters:
+- **		aliasfile -- location of aliases.
+  **		init -- if set and if DBM, initialize the DBM files.
+  **
+  **	Returns:
+--- 184,189 ----
+***************
+*** 169,176 ****
+  
+  # define DBMMODE	0666
+  
+! initaliases(aliasfile, init)
+! 	char *aliasfile;
+  	bool init;
+  {
+  #ifdef DBM
+--- 197,203 ----
+  
+  # define DBMMODE	0666
+  
+! initaliases(init)
+  	bool init;
+  {
+  #ifdef DBM
+***************
+*** 186,195 ****
+  		return;
+  	initialized = TRUE;
+  
+! 	if (aliasfile == NULL || stat(aliasfile, &stb) < 0)
+  	{
+! 		if (aliasfile != NULL && init)
+! 			syserr("Cannot open %s", aliasfile);
+  		NoAlias = TRUE;
+  		errno = 0;
+  		return;
+--- 213,229 ----
+  		return;
+  	initialized = TRUE;
+  
+! 	if (AliasFile == NULL ||
+! #ifdef YPMARK
+! 	    (AliasFile[0] != YPMARK &&
+! #endif YPMARK
+! 	     stat(AliasFile, &stb) < 0)
+! #ifdef YPMARK
+! 	    )
+! #endif YPMARK
+  	{
+! 		if (AliasFile != NULL && init)
+! 			syserr("Cannot open %s", AliasFile);
+  		NoAlias = TRUE;
+  		errno = 0;
+  		return;
+***************
+*** 202,230 ****
+  	**	to us to rebuild it.
+  	*/
+  
+  	if (!init)
+! 		dbminit(aliasfile);
+  	atcnt = SafeAlias * 2;
+  	if (atcnt > 0)
+- 	{
+  		while (!init && atcnt-- >= 0 && aliaslookup("@") == NULL)
+- 		{
+- 			/*
+- 			**  Reinitialize alias file in case the new
+- 			**  one is mv'ed in instead of cp'ed in.
+- 			**
+- 			**	Only works with new DBM -- old one will
+- 			**	just consume file descriptors forever.
+- 			**	If you have a dbmclose() it can be
+- 			**	added before the sleep(30).
+- 			*/
+- 
+  			sleep(30);
+- # ifdef NDBM
+- 			dbminit(aliasfile);
+- # endif NDBM
+- 		}
+- 	}
+  	else
+  		atcnt = 1;
+  
+--- 236,249 ----
+  	**	to us to rebuild it.
+  	*/
+  
++ #ifndef NDBM
+  	if (!init)
+! 		dbminit(AliasFile);
+! #endif !NDBM
+  	atcnt = SafeAlias * 2;
+  	if (atcnt > 0)
+  		while (!init && atcnt-- >= 0 && aliaslookup("@") == NULL)
+  			sleep(30);
+  	else
+  		atcnt = 1;
+  
+***************
+*** 238,247 ****
+  	*/
+  
+  	modtime = stb.st_mtime;
+! 	(void) strcpy(buf, aliasfile);
+! 	(void) strcat(buf, ".pag");
+  	stb.st_ino = 0;
+! 	if (!init && (stat(buf, &stb) < 0 || stb.st_mtime < modtime || atcnt < 0))
+  	{
+  		errno = 0;
+  		if (AutoRebuild && stb.st_ino != 0 &&
+--- 257,270 ----
+  	*/
+  
+  	modtime = stb.st_mtime;
+! 	(void) strcpy(buf, AliasFile);
+! 	(void) strcat(buf, DB_PAGEXT);
+  	stb.st_ino = 0;
+! 	if (!init &&
+! #ifdef YPMARK
+! 	    AliasFile[0] != YPMARK &&
+! #endif YPMARK
+! 	    (stat(buf, &stb) < 0 || stb.st_mtime < modtime || atcnt < 0))
+  	{
+  		errno = 0;
+  		if (AutoRebuild && stb.st_ino != 0 &&
+***************
+*** 282,291 ****
+  				automatic ? "auto" : "", username());
+  		}
+  #endif LOG
+! 		readaliases(aliasfile, TRUE);
+  	}
+  # else DBM
+! 	readaliases(aliasfile, init);
+  # endif DBM
+  }
+  /*
+--- 305,314 ----
+  				automatic ? "auto" : "", username());
+  		}
+  #endif LOG
+! 		readaliases(TRUE);
+  	}
+  # else DBM
+! 	readaliases(init);
+  # endif DBM
+  }
+  /*
+***************
+*** 295,301 ****
+  **	when we are not going to use the DBM stuff.
+  **
+  **	Parameters:
+- **		aliasfile -- the pathname of the alias file master.
+  **		init -- if set, initialize the DBM stuff.
+  **
+  **	Returns:
+--- 318,323 ----
+***************
+*** 302,314 ****
+  **		none.
+  **
+  **	Side Effects:
+! **		Reads aliasfile into the symbol table.
+  **		Optionally, builds the .dir & .pag files.
+  */
+  
+  static
+! readaliases(aliasfile, init)
+! 	char *aliasfile;
+  	bool init;
+  {
+  	register char *p;
+--- 324,335 ----
+  **		none.
+  **
+  **	Side Effects:
+! **		Reads AliasFile into the symbol table.
+  **		Optionally, builds the .dir & .pag files.
+  */
+  
+  static
+! readaliases(init)
+  	bool init;
+  {
+  	register char *p;
+***************
+*** 321,331 ****
+  	register STAB *s;
+  	char line[BUFSIZ];
+  
+! 	if ((af = fopen(aliasfile, "r")) == NULL)
+  	{
+  # ifdef DEBUG
+  		if (tTd(27, 1))
+! 			printf("Can't open %s\n", aliasfile);
+  # endif
+  		errno = 0;
+  		NoAlias++;
+--- 342,364 ----
+  	register STAB *s;
+  	char line[BUFSIZ];
+  
+! # ifdef YPMARK
+! 	if (AliasFile[0] == YPMARK) {
+! # ifdef DEBUG
+! 	    if (tTd(27, 1))
+! 		printf("Can't reinit YP databases: \"%s\"\n", AliasFile);
+! # endif
+! 	    /* reuse old aliases */
+! 	    errno = 0;
+! 	    return;
+! 	}
+! # endif YPMARK
+! 
+! 	if ((af = fopen(AliasFile, "r")) == NULL)
+  	{
+  # ifdef DEBUG
+  		if (tTd(27, 1))
+! 			printf("Can't open %s\n", AliasFile);
+  # endif
+  		errno = 0;
+  		NoAlias++;
+***************
+*** 356,363 ****
+  	if (init)
+  	{
+  		oldsigint = signal(SIGINT, SIG_IGN);
+! 		(void) strcpy(line, aliasfile);
+! 		(void) strcat(line, ".dir");
+  		if (close(creat(line, DBMMODE)) < 0)
+  		{
+  			syserr("cannot make %s", line);
+--- 389,396 ----
+  	if (init)
+  	{
+  		oldsigint = signal(SIGINT, SIG_IGN);
+! 		(void) strcpy(line, AliasFile);
+! 		(void) strcat(line, DB_PAGEXT);
+  		if (close(creat(line, DBMMODE)) < 0)
+  		{
+  			syserr("cannot make %s", line);
+***************
+*** 364,371 ****
+  			(void) signal(SIGINT, oldsigint);
+  			return;
+  		}
+! 		(void) strcpy(line, aliasfile);
+! 		(void) strcat(line, ".pag");
+  		if (close(creat(line, DBMMODE)) < 0)
+  		{
+  			syserr("cannot make %s", line);
+--- 397,404 ----
+  			(void) signal(SIGINT, oldsigint);
+  			return;
+  		}
+! 		(void) strcpy(line, AliasFile);
+! 		(void) strcat(line, DB_DIREXT);
+  		if (close(creat(line, DBMMODE)) < 0)
+  		{
+  			syserr("cannot make %s", line);
+***************
+*** 372,378 ****
+  			(void) signal(SIGINT, oldsigint);
+  			return;
+  		}
+! 		dbminit(aliasfile);
+  	}
+  
+  	/*
+--- 405,415 ----
+  			(void) signal(SIGINT, oldsigint);
+  			return;
+  		}
+! # ifdef NDBM
+! 		mapinit(DB_ALIAS);
+! # else NDBM
+! 		dbminit(AliasFile);
+! # endif NDBM
+  	}
+  
+  	/*
+***************
+*** 379,385 ****
+  	**  Read and interpret lines
+  	*/
+  
+! 	FileName = aliasfile;
+  	LineNumber = 0;
+  	naliases = bytes = longest = 0;
+  	skipping = FALSE;
+--- 416,422 ----
+  	**  Read and interpret lines
+  	*/
+  
+! 	FileName = AliasFile;
+  	LineNumber = 0;
+  	naliases = bytes = longest = 0;
+  	skipping = FALSE;
+***************
+*** 498,504 ****
+--- 535,545 ----
+  			key.dptr = al.q_user;
+  			content.dsize = rhssize;
+  			content.dptr = rhs;
++ # ifdef NDBM
++ 			(void) dbm_store(AliasDbm, key, content);
++ # else NDBM
+  			store(key, content);
++ # endif NDBM
+  		}
+  		else
+  # endif DBM
+***************
+*** 522,528 ****
+--- 563,573 ----
+  
+  		key.dsize = 2;
+  		key.dptr = "@";
++ # ifdef NDBM
++ 		(void) dbm_store(AliasDbm, key, key);
++ # else NDBM
+  		store(key, key);
++ # endif NDBM
+  
+  		/* restore the old signal */
+  		(void) signal(SIGINT, oldsigint);

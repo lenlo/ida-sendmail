@@ -1,0 +1,55 @@
+.TH MKDOMEXT 1 "24 April 1987"				\" -*- nroff -*-
+.SH NAME
+mkdomext \- make the exteneded set of domain names
+.SH SYNOPSIS
+.B mkdomext
+.IR domain " [\|.\|.\|.\|]"
+.SH DESCRIPTION
+This program acts as a filter that, when supplied with fully qualified
+domain names on stdin, will generate all legal abbreviations of these on
+stdout with respect to the parent domains given on the command line.  It
+is used to be able to recognize unqualified local subdomains and sibling
+domains from one or more positions in the domain hierarchy.
+.PP
+The fully qualified domains on stdin should be given one on a line, each
+terminated by a newline or tab.  Any text after the tab will go through
+untouched.  This makes it especially useful for filtering the output of
+the
+.IR dbm (1)
+.B parse
+function when producing a domain name server table.
+.SH EXAMPLE
+.nf
+.ta \w'majestix.liu.se'u+5n
+% cat >foo
+majestix.liu.se	majestix.liu.se
+obelix.liu.se	obelix.liu.se
+obelix.\s-1UUCP\s+1	obelix.liu.se
+aida.uu.se	aida.uu.se
+mc.lcs.mit.edu	mc.lcs.mit.edu
+mit-mc	mc.lcs.mit.edu
+^D
+% mkdomext liu.se \s-1UUCP\s+1 <foo >bar
+% cat bar
+majestix	majestix.liu.se
+majestix.liu	majestix.liu.se
+majestix.liu.se	majestix.liu.se
+obelix	obelix.liu.se
+obelix.liu	obelix.liu.se
+obelix.liu.se	obelix.liu.se
+obelix	obelix.liu.se
+obelix.\s-1UUCP\s+1	obelix.liu.se
+aida.uu	aida.uu.se
+aida.uu.se	aida.uu.se
+mc.lcs.mit.edu	mc.lcs.mit.edu
+mit-mc	mc.lcs.mit.edu
+.SH AUTHOR
+.nf
+Lennart Lovstrand <lel@ida.liu.se>
+CIS Dept, Univ of Linkoping, Sweden
+.fi
+.SH "SEE ALSO"
+.IR dbm (1)
+.br
+RFC822\-Standard for the Format of ARPA Internet Text Messages
+(section 6.2.2)

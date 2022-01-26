@@ -1,0 +1,135 @@
+*** macro.c.orig	Mon Mar 14 03:53:58 1988
+--- macro.c	Fri Aug 26 03:59:36 1988
+***************
+*** 47,52 ****
+--- 47,53 ----
+  	register char *q;
+  	bool skipping;		/* set if conditionally skipping output */
+  	bool recurse = FALSE;	/* set if recursion required */
++ 	bool quote, inquote, inescape;
+  	int i;
+  	char xbuf[BUFSIZ];
+  	extern char *macvalue();
+***************
+*** 73,78 ****
+--- 74,80 ----
+  		*/
+  
+  		q = NULL;
++ 		quote = FALSE;
+  		c = *s;
+  		switch (c)
+  		{
+***************
+*** 89,99 ****
+--- 91,106 ----
+  			skipping = FALSE;
+  			continue;
+  
++ 		  case QUOTE822:
++ 			quote = TRUE;
++ 			/*FALLTHROUGH*/
+  		  case '\001':		/* macro interpolation */
+  			c = *++s;
+  			q = macvalue(c & 0177, e);
+  			if (q == NULL)
+  				continue;
++ 			if (quote && !mustquote(q))
++ 				quote = FALSE;
+  			break;
+  		}
+  
+***************
+*** 103,108 ****
+--- 110,117 ----
+  
+  		if (skipping || xp >= &xbuf[sizeof xbuf])
+  			continue;
++ 		inquote = FALSE;
++ 		inescape = FALSE;
+  		if (q == NULL)
+  			*xp++ = c;
+  		else
+***************
+*** 112,119 ****
+--- 121,144 ----
+  			{
+  				if (iscntrl(c) && !isspace(c))
+  					recurse = TRUE;
++ 				if (quote) {
++ 					if (!inquote) {
++ 						*xp++ = '"';
++ 						inquote = TRUE;
++ 					}
++ 					if (c == '"' && !inescape)
++ 						*xp++ = '\\';
++ 					if (c == '\\')
++ 						inescape = !inescape;
++ 					else
++ 						inescape = FALSE;
++ 				}
+  				*xp++ = c;
+  			}
++ 			if (inescape && xp < &xbuf[sizeof xbuf - 1])
++ 				*xp++ = '\\';
++ 			if (quote && xp < &xbuf[sizeof xbuf - 1])
++ 				*xp++ = '"';
+  		}
+  	}
+  	*xp = '\0';
+***************
+*** 174,179 ****
+--- 199,205 ----
+  **		$h   to host
+  **		$i   queue id
+  **		$j   official SMTP hostname, used in messages+
++ **		$k   our UUCP host name, if different from $w
+  **		$l   UNIX-style from line+
+  **		$n   name of sendmail ("MAILER-DAEMON" on local
+  **		     net typically)+
+***************
+*** 239,247 ****
+--- 265,307 ----
+  	{
+  		register char *p = e->e_macro[n];
+  
++ 		if (p == MACNULL)
++ 			/* shadowing null */
++ 			return (NULL);
+  		if (p != NULL)
+  			return (p);
+  		e = e->e_parent;
+  	}
+  	return (NULL);
++ }
++ /*
++ **  MUSTQUOTE -- Check if string contains special RFC-822 chars.
++ **
++ **	Parameters:
++ **		s -- the string to be checked.
++ **
++ **	Returns:
++ **		TRUE if string is in need to be quoted, FALSE otherwise.
++ **
++ **	Side Effects:
++ **		none.
++ **
++ **	Does this string contain any characters that RFC 822 says
++ **	must be quoted?
++ **	This is not strictly correct, since we consider ' ' non-special.
++ **	Otherwise we'd quote "My Name", which is just too ugly.
++ */
++ mustquote(s)
++ 	register char *s;
++ {
++ 	register int c;
++ 	extern char *index();
++ 
++ 	while (c = *s++) {
++ 		c &= 0177;
++ 		if (c <= 037 || c == 0177 || 		/* CTLs */
++ 		    index(".()<>@,;:\\\"[]", c) != NULL)/* 822 specials */
++ 			return TRUE;
++ 	}
++ 	return FALSE;
+  }

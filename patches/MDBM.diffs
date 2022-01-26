@@ -1,0 +1,104 @@
+*** alias.c.old	Fri Aug 26 18:30:22 1988
+--- alias.c	Fri Aug 26 19:14:16 1988
+***************
+*** 578,583 ****
+--- 578,586 ----
+  	(void) fclose(af);
+  	CurEnv->e_to = NULL;
+  	FileName = NULL;
++ #ifdef MDBM
++ 	(void) mdbm_sync(AliasDbm);
++ #endif MDBM
+  	message(Arpa_Info, "%d aliases, longest %d bytes, %d bytes total",
+  			naliases, longest, bytes);
+  # ifdef LOG
+*** conf.h.old	Fri Aug 26 18:30:27 1988
+--- conf.h	Fri Aug 26 19:07:48 1988
+***************
+*** 48,53 ****
+--- 48,54 ----
+  
+  # define DBM		1	/* use DBM library (requires -ldbm) */
+  # define NDBM		1	/* new DBM library available (requires DBM) */
++ # define MDBM		1	/* subst Maryland's mdbm package for ndbm */
+  # define YP		1	/* enable Yellow Pages code */
+  # define DEBUG		1	/* enable debugging */
+  # define LOG		1	/* enable logging */
+*** sendmail.h.old	Fri Aug 26 18:30:56 1988
+--- sendmail.h	Fri Aug 26 19:06:19 1988
+***************
+*** 493,499 ****
+   */
+  #define	MAX_ERRNO	100
+  /*
+! **  Database ([n]dbm) definitions.
+  */
+  
+  #ifdef DBM
+--- 493,499 ----
+   */
+  #define	MAX_ERRNO	100
+  /*
+! **  Database ([mn]dbm) definitions.
+  */
+  
+  #ifdef DBM
+***************
+*** 503,517 ****
+  	int	dsize;
+  } DATUM;
+  
+! # define DB_DIREXT	".dir"
+! # define DB_PAGEXT	".pag"
+  
+! # ifdef NDBM
+  
+! #  undef DBM			/* while including ndbm.h */
+! #  include <ndbm.h>		/* DBM is typedef'ed here */
+  typedef DBM DBMFILE;		/* move typedef to DBMFILE */
+! #  define DBM			/* and restore DBM definition */
+  #  include <fcntl.h>		/* needed for dbm_open */
+  
+  #  define DATUM datum		/* use the definition in ndbm.h */
+--- 503,526 ----
+  	int	dsize;
+  } DATUM;
+  
+! # ifdef MDBM
+! #  define DB_DIREXT	".map"
+! #  define DB_PAGEXT	".dat"
+! # else MDBM
+! #  define DB_DIREXT	".dir"
+! #  define DB_PAGEXT	".pag"
+! # endif MDBM
+  
+! # if defined(NDBM) || defined(MDBM)
+  
+! #  ifdef MDBM
+! #   include "mdbm_compat.h"	/* mdbm compatibility file */
+! #  else MDBM
+! #   undef DBM			/* while including ndbm.h */
+! #   include <ndbm.h>		/* DBM is typedef'ed here */
+  typedef DBM DBMFILE;		/* move typedef to DBMFILE */
+! #   define DBM			/* and restore DBM definition */
+! #  endif MDBM
+  #  include <fcntl.h>		/* needed for dbm_open */
+  
+  #  define DATUM datum		/* use the definition in ndbm.h */
+***************
+*** 529,535 ****
+  #  define AliasFile	DbmTab[DB_ALIAS].db_name
+  #  define AliasDbm	DbmTab[DB_ALIAS].db_dbm
+  
+! # endif NDBM
+  #endif DBM
+  /*
+  **  Global variables.
+--- 538,544 ----
+  #  define AliasFile	DbmTab[DB_ALIAS].db_name
+  #  define AliasDbm	DbmTab[DB_ALIAS].db_dbm
+  
+! # endif NDBM || MDBM
+  #endif DBM
+  /*
+  **  Global variables.

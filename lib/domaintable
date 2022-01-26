@@ -1,0 +1,145 @@
+#
+#	Primitive name server table -- version 3.0 of 20-Apr-87
+#
+#	Format is <official-name> <nickname-1> .. <nickname-n>,
+#	where the <nicnames> are optional.  Comments start with
+#	a sharp sign (#).  A line beginning with whitespace is
+#	assumed to be a continuation of the previous line.
+#
+#	The order in which the names are givin is significant;
+#	early entries will hide later entries with coinciding
+#	nicknames.
+#
+
+#	Misc known nodes
+#
+		# Direct UUCP nodes
+enea.se		enea	enea.UUCP
+erilin.UUCP	erilin
+erix.ericsson.se erix	erix.UUCP
+liutde.UUCP	liutde
+rainier.UUCP	rainier
+		# UUCP Major Relays & Backbones
+cbosgd.UUCP	cbosgd
+cernvax.UUCP	cernvax
+decvax.UUCP	decvax
+diku.UUCP	diku
+enea.se		enea	enea.UUCP
+i2unix.UUCP	i2unix
+inria.UUCP	inria
+mcvax.cwi.nl	mcvax	mcvax.UUCP
+penet.UUCP	penet
+prlb2.UUCP	prlb2
+ukc.UUCP	ukc
+unido.UUCP	unido
+vmars.UUCP	vmars
+
+#
+#	These are just here to help people through the ARPAnet name change
+#
+
+seismo.CSS.GOV		SEISMO.ARPA
+HARVARD.HARVARD.EDU	HARVARD.ARPA
+ucbvax.BERKELEY.EDU	UCB-VAX.ARPA
+WISCVM.WISC.EDU		WISCVM.ARPA
+AI.AI.MIT.EDU		MIT-AI.ARPA
+MC.LCS.MIT.EDU		MIT-MC.ARPA
+KL.SRI.COM		SRI-KL.ARPA
+# NIC.SRI.COM		SRI-NIC.ARPA		# Not yet
+SAIL.STANFORD.EDU	SU-AI.ARPA
+SCORE.STANFORD.EDU	SU-SCORE.ARPA
+A.CS.CMU.EDU		CMU-CS-A.ARPA
+C.CS.CMU.EDU		CMU-CS-C.ARPA
+R20.UTEXAS.EDU		UTEXAS-20.ARPA
+SALLY.UTEXAS.EDU	UT-SALLY.ARPA
+RELAY.CS.NET		CSNET-RELAY.ARPA
+SUMEX-AIM.STANFORD.EDU	SUMEX-AIM.ARPA
+CSLI.STANFORD.EDU	CSLI.ARPA
+Xerox.COM		Xerox.ARPA
+
+#
+#	Nodes within LiU.SE -- The University of Linkoping, Sweden
+#
+			# The IDA domain -- Dept of Comp and Info Science
+IDA.LiU.SE		liuida.UUCP	liuida.liu.se	liuida.ida.liu.se
+			# DECsystems
+ALADIN.LiU.SE		ALADIN.SUNET.SE
+CLOVER.LiU.SE		CLOVER.SUNET.SE
+DAISY.LiU.SE		DAISY.SUNET.SE
+ELINOR.LiU.SE		ELINOR.SUNET.SE
+HAZEL.LiU.SE		HAZEL.SUNET.SE			HAZEL.IDA.LiU.SE
+JINJIN.LiU.SE		JINJIN.SUNET.SE
+LINA.LiU.SE		LINA.SUNET.SE
+LINNEA.LiU.SE		LINNEA.SUNET.SE
+LINUS.LiU.SE		LINUSE.SUNET.SE			LINUS.IDA.LiU.SE
+LISBET.LiU.SE		LISBET.SUNET.SE			LISBET.IDA.LiU.SE
+LUDVIG.LiU.SE		LUDVIG.SUNET.SE
+MINMIN.LiU.SE		MINMIN.SUNET.SE
+P13L00.LiU.SE		P13L00.SUNET.SE
+TURTLE.LiU.SE		TURTLE.SUNET.SE
+VIKTOR.LiU.SE		VIKTOR.SUNET.SE
+WEIWEI.LiU.SE		WEIWEI.SUNET.SE
+			# Unix systems
+asterix.liu.se		asterix.liu.uucp		asterix.ida.liu.se
+crabbofix.liu.se					crabbofix.ida.liu.se
+lillefix.liu.se						lillefix.ida.liu.se
+majestix.liu.se						majestix.ida.liu.se
+miraculix.liu.se					miraculix.ida.liu.se
+obelix.liu.se		obelix.UUCP obelix.liu.uucp	obelix.ida.liu.se
+portofix.liu.se						portofix.ida.liu.se
+prefix.liu.se						prefix.ida.liu.se
+senilix.liu.se						senilix.ida.liu.se
+smidefix.liu.se						smidefix.ida.liu.se
+tragicomix.liu.se					tragicomix.ida.liu.se
+
+#	Nodes within QZ.SE -- The Stockholm University Computing Center
+#
+FREJA.QZ.SE		FREJA.SUNET.SE
+
+#	Nodes within UU.SE -- University of Uppsala, Sweden
+#
+AIDA.UU.SE		AIDA.SUNET.SE			AIDA.UPPSALA.SE
+BMC1.UU.SE		BMC1.SUNET.SE
+CARMEN.UU.SE		CARMEN.SUNET.SE			CARMEN.UPPSALA.SE
+CARTUS.UU.SE		CARTUS.SUNET.SE
+CELL.UU.SE		CELL.SUNET.SE
+ESCIL.UU.SE		ESCIL.SUNET.SE
+emil.uu.se
+EVA.UU.SE		EVA.SUNET.SE
+FARFAR.UU.SE		FARFAR.SUNET.SE
+GRAPH.UU.SE		GRAPH.SUNET.SE
+GWAX1.UU.SE		GWAX1.SUNET.SE
+GWAX2.UU.SE		GWAX2.SUNET.SE
+IMMUNA.UU.SE		IMMUNA.SUNET.SE
+IMUNIS.UU.SE		IMUNIS.SUNET.SE
+KEMIST.UU.SE		KEMIST.SUNET.SE
+kuling.uu.se		kuling.UUCP			kuling.uppsala.se
+KVAX1.UU.SE		KVAX1.SUNET.SE
+KVAX2.UU.SE		KVAX2.SUNET.SE
+LABAN.UU.SE		LABAN.SUNET.SE
+LAPSE.UU.SE		LAPSE.SUNET.SE
+MAJA.UU.SE		MAJA.SUNET.SE
+MALIN.UU.SE		MALIN.SUNET.SE
+MAX.UU.SE		MAX.SUNET.SE			MAX.UPPSALA.SE
+MINC.UU.SE		MINC.SUNET.SE
+NIMBUS.UU.SE		NIMBUS.SUNET.SE
+numax.uu.se
+PAX.UU.SE		PAX.SUNET.SE
+PELLE.UU.SE		PELLE.SUNET.SE
+PICTOR.UU.SE		PICTOR.SUNET.SE
+RTR18A.UU.SE		RTR18A.SUNET.SE
+SIGURD.UU.SE		SIGURD.SUNET.SE
+SILVER.UU.SE		SILVER.SUNET.SE
+TEKLA.UU.SE		TEKLA.SUNET.SE
+TLU.UU.SE		TLU.SUNET.SE
+XRAY.UU.SE		XRAY.SUNET.SE
+
+#	Nodes within LU.SE -- Universtiy of Lund, Sweden
+#
+AGATON.LU.SE		AGATON.SUNET.SE
+PANDOR.LU.SE		PANDOR.SUNET.SE
+
+#	Nodes within SUNET.SE -- The Swedish University Network (DECnet)
+#	are automatically inserted here.
+
+ATHENA.SUNET.SE		# This one is not in the DECnet tables

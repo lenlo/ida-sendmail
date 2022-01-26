@@ -1,0 +1,66 @@
+Path: liuida!lel
+From: lel@ida.liu.se (Lennart Lovstrand)
+Newsgroups: comp.mail.uucp,comp.mail.misc
+Subject: The IDA Sendmail Enhancement Kit
+Message-ID: <579@prefix.liu.se>
+Date: 10 Jun 87 16:55:29 GMT
+Sender: lenlo@prefix.liu.se
+Lines: 54
+Xref: liuida comp.mail.uucp:464 comp.mail.misc:268
+
+The IDA Sendmail Enhancement Kit was finally sent off to Rich Salz of
+comp.sources.unix today.  He still has problems receiving sources for
+the newsgroup after his relocation, but I'm afraid I couldn't wait any
+longer.  At the end of this week, I'm off for a new job in another
+country.  I hope it won't take too long for the Kit to appear in the
+newsgroup.  For those of you who have ARPANET access and don't want to
+wait, thanks to Dorab Patel of UCLA there is a copy on the host
+ulysses.cs.ucla.edu [128.97.2.19] in the file ~ftp/pub/ida.tar.Z
+available for anonymous FTP.  If anyone is really desperate, I can
+probably send copy by mail too (330 Kbyte in 7 shars).  But you will
+have to react quickly then...
+
+The Kit includes a set of source code modifications to the BSD 4.3
+sendmail program (version 5.11).  The changes will enable sendmail to
+have direct access to dbm(3) files, separate envelope/header rewriting
+rulesets, and multi-token class matches among other things.
+
+As a separate part of the Kit is the IDA Sendmail Master Configuration
+file and a sample setup used at the CIS Dept, U of Linkoping.  The
+configuration file together with the supplied data files and utility
+programs, implement such nice features as pathalias based systems
+routing within sendmail, fully !-/@-translating rulesets, and generic
+local user addresses.
+
+The new sendmail functions are breifly listed below and further
+described in the accompanying paper, which in addition discusses
+electronic mail addressing in general and hybrid addresses in
+particular.
+
+   Nameserver Default Argument
+   Direct Access to Dbm(3) Files
+   Batched SMTP Support
+   Separate Envelope/Header Rewriting Rulesets
+   Separate Local UUCP Host Name
+   Return Path for UUCP Mailers
+   UUCP Header Address Relativization
+   Support for Multi-Token Matches
+   Support for Embedded Subruleset Calls
+   Elaborate Matching Algorithm for Unknown Local Recipients
+   Support for Maryland's Mdbm Package
+   Improved Test Mode Output
+   Better To: and Cc: Headers of Returned Messages
+   Queue Bug Fixed
+   Shared Input SMTP Bug Tentatively Fixed
+   Optional BSD 2.9 and 4.2 Compatibility Code
+ & Miscellaneous Changes
+
+Enjoy!
+--Lennart
+(soon at Xerox EuroPARC, Cambridge, U.K.)
+--
+Dept of Computer and Information Science, University of Linkoping, Sweden
+Internet: Lennart.Lovstrand@IDA.LiU.SE       EAN/X.400: lel@ida.liu.sunet
+UUCP: {mcvax,munnari,seismo}!enea!liuida!lel    EARN/BITNET: LEL@SELIUI51
+
+

@@ -1,0 +1,68 @@
+#
+#	DECnet domain translation table v1.0
+#	Last edited by lel@ida.liu.se Mon Apr 20 21:42:58 MET DST 1987
+#
+#	This file contiains the official domain name for nodes
+#	either on the locally connected DECnet or on the national
+#	SUNET.
+#
+#	Each line should contain the node's name within the DECnet
+#	followed by it's full official domain name.  The domain name
+#	may be followed by other names by which the node should be
+#	recognized, eg. when nodes are present in multiple domains.
+#
+#	Nodes not represented here but present in the decnet/nodes file
+#	are assumed to be contained in the SUNET.SE domain.
+#
+
+agaton		agaton.lu.se
+aida		aida.uu.se
+aladin		aladin.liu.se
+bmc1		bmc1.uu.se
+carmen		carmen.uu.se
+cartus		cartus.uu.se
+cell		cell.uu.se
+clover		clover.liu.se
+daisy		daisy.liu.se
+elinor		elinor.liu.se
+escil		escil.uu.se
+eva		eva.uu.se
+farfar		farfar.uu.se
+freja		freja.qz.se
+graph		graph.uu.se
+gwax1		gwax1.uu.se
+gwax2		gwax2.uu.se
+hazel		hazel.liu.se
+immuna		immuna.uu.se
+imunis		imunis.uu.se
+jinjin		jinjin.liu.se
+kemist		kemist.uu.se
+kvax1		kvax1.uu.se
+kvax2		kvax2.uu.se
+laban		laban.uu.se
+lapse		lapse.uu.se
+lina		lina.liu.se
+linnea		linnea.liu.se
+linus		linus.liu.se
+lisbet		lisbet.liu.se
+ludvig		ludvig.liu.se
+maja		maja.uu.se
+malin		malin.uu.se
+max		max.uu.se
+minc		minc.uu.se
+minmin		minmin.liu.se
+nimbus		nimbus.uu.se
+p13l00		p13l00.liu.se
+pandor		pandor.lu.se
+pax		pax.uu.se
+pelle		pelle.uu.se
+pictor		pictor.uu.se
+rtr18a		rtr18a.uu.se
+sigurd		sigurd.uu.se
+silver		silver.uu.se
+tekla		tekla.uu.se
+tlu		tlu.uu.se
+turtle		turtle.liu.se
+viktor		viktor.liu.se
+weiwei		weiwei.liu.se
+xray		xray.uu.se

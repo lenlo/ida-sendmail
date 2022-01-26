@@ -1,0 +1,23 @@
+.fp 1 R
+.fp 2 I
+.fp 3 B
+.fp 4 S
+.nf
+.vs 0.3i
+.sv 2.47i
+.ce 100
+.ps 18
+.ft 2
+Examensarbete
+.sp
+.ft 3
+Electronic Mail Addressing
+in Theory and Practice
+.ft 1
+.sp
+.ps 14
+Lennart L\(o:vstrand
+.sp
+.ps 12
+LiTH-IDA-Ex-8715
+1987-05-27

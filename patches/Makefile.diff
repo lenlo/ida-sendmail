@@ -1,0 +1,48 @@
+*** Makefile.orig	Sat Aug 20 05:10:52 1988
+--- Makefile	Sun Sep 25 18:16:07 1988
+***************
+*** 22,27 ****
+--- 22,28 ----
+  
+  CFLAGS=	-O -I. -I../include -DVMUNIX -DMXDOMAIN
+  ASMSED=	../include/asm.sed
++ LIBS=	-ldbm -lresolv
+  
+  GET=	sccs get
+  DELTA=	sccs delta
+***************
+*** 29,44 ****
+  PRT=	sccs prt
+  
+  .c.o:
+! 	cc -S ${CFLAGS} $*.c
+! 	sed -f ${ASMSED} $*.s | as -o $*.o
+! 	rm -f $*.s
+  
+! sendmail: ${OBJS} Version.o
+! 	${CC} ${COPTS} -o $@ Version.o ${OBJS} -ldbm
+! 	size sendmail; ls -l sendmail; ${WHAT} < Version.o
+! 
+! dsendmail: ${OBJS} Version.o
+! 	${CC} ${COPTS} -o sendmail Version.o ${OBJS} -ldbm -lresolv
+  	size sendmail; ls -l sendmail; ${WHAT} < Version.o
+  
+  install:
+--- 30,46 ----
+  PRT=	sccs prt
+  
+  .c.o:
+! 	cc -c ${CFLAGS} $*.c
+! #	cc -S ${CFLAGS} $*.c
+! #	sed -f ${ASMSED} $*.s | as -o $*.o
+! #	rm -f $*.s
+  
+! # The date sendmail was compiled is written to the
+! # freeze file, to avoid reading in a .fc file created
+! # by a different version.
+! sendmail: $(OBJS) Version.o
+! 	echo 'char datecompiled[] = "' `date` '";' >datecompiled.c
+! 	$(CC) $(COPTS) -o sendmail Version.o datecompiled.c $(OBJS) $(LIBS)
+  	size sendmail; ls -l sendmail; ${WHAT} < Version.o
+  
+  install:

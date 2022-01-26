@@ -1,0 +1,198 @@
+*** srvrsmtp.c.orig	Mon Mar 14 05:31:55 1988
+--- srvrsmtp.c	Thu Aug 25 13:57:07 1988
+***************
+*** 101,107 ****
+  
+  #define EX_QUIT		22		/* special code for QUIT command */
+  
+! smtp()
+  {
+  	register char *p;
+  	register struct cmd *c;
+--- 101,108 ----
+  
+  #define EX_QUIT		22		/* special code for QUIT command */
+  
+! smtp(batched)
+! 	bool batched;			/* running non-interactively? */
+  {
+  	register char *p;
+  	register struct cmd *c;
+***************
+*** 114,119 ****
+--- 115,121 ----
+  	char inp[MAXLINE];
+  	char cmdbuf[100];
+  	extern char Version[];
++ 	char hostbuf[MAXNAME];		/* for host name transformations */
+  	extern tick();
+  	extern bool iswiz();
+  	extern char *arpadate();
+***************
+*** 201,207 ****
+  		  case CMDHELO:		/* hello -- introduce yourself */
+  			SmtpPhase = "HELO";
+  			setproctitle("%s: %s", CurHostName, inp);
+! 			if (!strcasecmp(p, MyHostName))
+  			{
+  				/* connected to an echo server */
+  				message("553", "%s I refuse to talk to myself",
+--- 203,212 ----
+  		  case CMDHELO:		/* hello -- introduce yourself */
+  			SmtpPhase = "HELO";
+  			setproctitle("%s: %s", CurHostName, inp);
+! 			/* find canonical name */
+! 			strcpy(hostbuf, p);
+! 			maphostname(hostbuf, sizeof(hostbuf));
+! 			if (!strcasecmp(hostbuf, MyHostName))
+  			{
+  				/* connected to an echo server */
+  				message("553", "%s I refuse to talk to myself",
+***************
+*** 208,224 ****
+  					MyHostName);
+  				break;
+  			}
+! 			if (RealHostName != NULL && strcasecmp(p, RealHostName))
+  			{
+- 				char hostbuf[MAXNAME];
+- 
+  				(void) sprintf(hostbuf, "%s (%s)", p, RealHostName);
+  				sendinghost = newstr(hostbuf);
+! 			}
+! 			else
+  				sendinghost = newstr(p);
+! 			message("250", "%s Hello %s, pleased to meet you",
+! 				MyHostName, p);
+  			break;
+  
+  		  case CMDMAIL:		/* mail -- designate sender */
+--- 213,228 ----
+  					MyHostName);
+  				break;
+  			}
+! 			if (RealHostName != NULL && strcasecmp(hostbuf, RealHostName))
+  			{
+  				(void) sprintf(hostbuf, "%s (%s)", p, RealHostName);
+  				sendinghost = newstr(hostbuf);
+! 				message("250", "Hello %s, why do you call yourself %s?",
+! 					RealHostName, p);
+! 			} else {
+  				sendinghost = newstr(p);
+! 				message("250", "Hello %s, pleased to meet you", p);
+! 			}
+  			break;
+  
+  		  case CMDMAIL:		/* mail -- designate sender */
+***************
+*** 243,248 ****
+--- 247,253 ----
+  			/* fork a subprocess to process this command */
+  			if (runinchild("SMTP-MAIL") > 0)
+  				break;
++ 			define('r', "SMTP", CurEnv);
+  			define('s', sendinghost, CurEnv);
+  			initsys();
+  			setproctitle("%s %s: %s", CurEnv->e_id,
+***************
+*** 268,274 ****
+  				CurHostName, inp);
+  			if (setjmp(TopFrame) > 0)
+  			{
+! 				CurEnv->e_flags &= ~EF_FATALERRS;
+  				break;
+  			}
+  			QuickAbort = TRUE;
+--- 273,280 ----
+  				CurHostName, inp);
+  			if (setjmp(TopFrame) > 0)
+  			{
+! 				if (!batched)
+! 					CurEnv->e_flags &= ~EF_FATALERRS;
+  				break;
+  			}
+  			QuickAbort = TRUE;
+***************
+*** 299,311 ****
+  			SmtpPhase = "DATA";
+  			if (!hasmail)
+  			{
+! 				message("503", "Need MAIL command");
+! 				break;
+  			}
+  			else if (CurEnv->e_nrcpts <= 0)
+  			{
+! 				message("503", "Need RCPT (recipient)");
+! 				break;
+  			}
+  
+  			/* collect the text of the message */
+--- 305,323 ----
+  			SmtpPhase = "DATA";
+  			if (!hasmail)
+  			{
+! 				message("503", "Need valid MAIL command");
+! 				if (batched)
+! 					Errors++;
+! 				else
+! 					break;
+  			}
+  			else if (CurEnv->e_nrcpts <= 0)
+  			{
+! 				message("503", "Need valid RCPT (recipient)");
+! 				if (batched)
+! 					Errors++;
+! 				else
+! 					break;
+  			}
+  
+  			/* collect the text of the message */
+***************
+*** 335,347 ****
+  			*/
+  
+  			SmtpPhase = "delivery";
+! 			if (CurEnv->e_nrcpts != 1)
+  			{
+  				HoldErrs = TRUE;
+  				ErrorMode = EM_MAIL;
+  			}
+! 			CurEnv->e_flags &= ~EF_FATALERRS;
+! 			CurEnv->e_xfp = freopen(queuename(CurEnv, 'x'), "w", CurEnv->e_xfp);
+  
+  			/* send to all recipients */
+  			sendall(CurEnv, SM_DEFAULT);
+--- 347,362 ----
+  			*/
+  
+  			SmtpPhase = "delivery";
+! 			if (CurEnv->e_nrcpts != 1 || batched)
+  			{
+  				HoldErrs = TRUE;
+  				ErrorMode = EM_MAIL;
+  			}
+! 			if (!batched) {
+! 				CurEnv->e_flags &= ~EF_FATALERRS;
+! 				CurEnv->e_xfp = freopen(queuename(CurEnv, 'x'),
+! 							"w", CurEnv->e_xfp);
+! 			}
+  
+  			/* send to all recipients */
+  			sendall(CurEnv, SM_DEFAULT);
+***************
+*** 681,687 ****
+  	}
+  
+  	/* open alias database */
+! 	initaliases(AliasFile, FALSE);
+  
+  	return (0);
+  }
+--- 696,702 ----
+  	}
+  
+  	/* open alias database */
+! 	initaliases(FALSE);
+  
+  	return (0);
+  }

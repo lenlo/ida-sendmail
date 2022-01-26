@@ -1,0 +1,191 @@
+.TH DBM 1 "24 April 1987"				\" -*- nroff -*-
+.SH NAME
+dbm \- general
+.IR dbm (3)
+database management tool
+.SH SYNOPSIS
+.BR dbm
+.RB [\| \-AILNRSU \|]
+.RB [\| \-d
+.IR dbm_file \|]
+.RB [\| \-m
+.IR mode \|]
+.RB [\| \-o 
+.IR output_file \|]
+.I command
+.RI [\| args\|.\|.\|. \|]
+.SH DESCRIPTION
+.I Dbm
+is used to manage
+.IR dbm (3)
+type databases.  Its function is controlled by the dbm
+.I command
+given on the command line, possibly with additional arguments.  Its
+typical usage is to load a
+.I dbm
+database from a input file or to dump it to a readable format.  It may
+also be used to probe for selected keys or add specific key/value pairs. 
+In addition,
+.I dbm
+provides parsing routines for an extended textual format, suitable for
+building tables or various kinds.  The format is further described in
+the section about the
+.B parse
+command below. 
+.SH OPTIONS
+.TP
+.B \-A
+Append mode, don't automatically clear the database on the
+.BR load
+and
+.B make
+operations. 
+.TP
+.B \-I
+Insert mode; will supply the \s-1DBM_INSERT\s+1 flag to all
+.I dbm_store
+operations.  This means that if two entries with equal keys are given,
+only the first will actually be entered to the database (default) and no
+warning will be given. 
+.TP
+.B \-L
+Lowercase mode.  Change all keys to lowercase before reading from or writing
+to the database.
+.TP
+.B \-R
+Replace mode; will supply the \s-1DBM_REPLACE\s+1 flag to all
+.I dbm_store
+operations.  This means that if two entries with equal keys are given,
+only the last will actually be entered to the database and no warning
+messages are given. 
+.TP
+.B \-S
+Add a
+.B @@@
+senteniel after the last entry has been written to the database. 
+.TP
+.B \-U
+Uppercase mode.  Turn all keys to uppercase before reading from or
+writing to the database.
+.TP
+.BI \-d " dbm_file"
+Perform all operations on the named database file.  If no
+.B \-d
+option is given, the last argument after the
+.I command
+will be used as the
+.IR dbm_file. 
+.TP
+.BI \-m " mode"
+Use the given
+.I mode
+when creating new databases. 
+.TP
+.BI \-o " output_file"
+Send all output from the
+.B dump
+and
+.B parse
+operations to the named output file instead of stdout. 
+.SH COMMANDS
+.PP
+.TP
+.B clear
+Creats an empty
+.I dbm
+database, either by clearing an old one or by creating a new.
+.TP
+.BR delete " key \fR[\|.\|.\|.\|]\fP"
+Removes entries with the specified keys from the database.
+.TP
+.B dump
+Dumps the
+.I dbm
+database to stdout (or to
+.IR output_file ,
+if the 
+.B \-o
+option is used).  The output will consist of one entry per line with a
+tab between each key and value. 
+.TP
+.BI fetch " key \fR[\|.\|.\|.\|]\fP"
+.B Fetch
+will search for the
+.I key
+in the database and print both key and value in
+.B dump
+format if found on the standard output.  Non-existing
+.IR keys
+will be signalled by a [\s-1NOT_FOUND\s+1] message. 
+.TP
+.BR load " [\|\fIfile\fP\|.\|.\|.\|]"
+Load the database with entries from the specified
+.IR files .
+If no
+.I files
+are given or if a file is specified as `-', the database will be loaded
+from standard input.  Each line of the file should have a key and value
+separated by a tab.  (Incidentally, this is the same format as
+.B dump
+and
+.IR pathalias (1)
+will produce.)  The database is first cleared unless the append
+(\fB\-A\fP) switch has been given. 
+.TP
+.BR make " [\|\fIfile\fP\|.\|.\|.\|]"
+.B Make
+combines the operations of
+.B parse
+and
+.BR load
+(q.v.), by storing each record after it has been parsed. 
+.TP
+.BR parse " [\|\fIfile\fP\|.\|.\|.\|]"
+This command will parse the contents of the specified
+.IR files
+(or stdin if no
+.I files
+are given or when a file is `-'), according to the following syntax:
+.in +\n()Iu
+value key key .\|.\|. 
+.in -\n()Iu
+Whitespace delimit tokens and sharp signs (\fB#\fP) anywhere on a line
+begins comments unless any of them are quoted by a backslash (\fB\\\fP)
+or put inside double quotes (\fB"\fP\|.\|.\|.\|\fB"\fP) or angle
+brackets (\fB<\fP\|.\|.\|.\|\fB>\fP).  Lines beginning with whitespace
+are considered to be continuations of the previous line.
+.TP
+.BI store " key value \fR[\|\fI key value \fR\|.\|.\|.\|]\fI"
+Store one or more key/value pairs explicitly mentioned on the command
+line.
+.SH EXAMPLES
+.nf
+.ta \w'dbm parse xfile | dbm -AI load foo'u+6n
+dbm -d foo clear	\fIcreate the database foo\fP
+cat infile | dbm load foo	\fIload it from the infile\fP
+dbm parse xfile | dbm -AI load foo	\fIadd keys from the xfile...\fP
+.I "(or, shorter)	\fI...not already present...\fP"
+dbm -I make xfile foo	\fI...in the database\fP
+dbm fetch keya keyb foo	\fIfetch values for the keys\fP
+dbm -R store keyc valuec foo	\fIoverwrite previous value for keyc\fP
+.fi
+.SH AUTHOR
+.nf
+Lennart Lovstrand <lel@ida.liu.se>
+CIS Dept, Univ of Linkoping, Sweden
+.fi
+.SH "SEE ALSO"
+.IR pathalias (1),
+.IR dbm (3),
+.IR ndbm (3)
+.SH BUGS
+Should probably remove the senteniel when opening the database for write
+access (provided that the
+.B \-S
+flag has been given).
+.br
+Requires
+.IR ndbm (3)
+or
+.IR mdbm (3)
+support for no real reason. 

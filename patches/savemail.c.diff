@@ -1,0 +1,90 @@
+*** savemail.c.orig	Mon Mar 14 03:54:08 1988
+--- savemail.c	Thu Sep  1 20:32:33 1988
+***************
+*** 371,377 ****
+  	extern ENVELOPE *newenvelope();
+  	ENVELOPE errenvelope;
+  	static int returndepth;
+! 	register ADDRESS *q;
+  
+  # ifdef DEBUG
+  	if (tTd(6, 1))
+--- 371,379 ----
+  	extern ENVELOPE *newenvelope();
+  	ENVELOPE errenvelope;
+  	static int returndepth;
+! 	register ADDRESS *p, *q;
+! 	char *to, *cc;
+! 	int len;
+  
+  # ifdef DEBUG
+  	if (tTd(6, 1))
+***************
+*** 396,411 ****
+  	define('g', "\001f", CurEnv);
+  	ee = newenvelope(&errenvelope);
+  	define('a', "\001b", ee);
+  	ee->e_puthdr = putheader;
+  	ee->e_putbody = errbody;
+  	ee->e_flags |= EF_RESPONSE;
+  	ee->e_sendqueue = returnq;
+  	openxscript(ee);
+! 	for (q = returnq; q != NULL; q = q->q_next)
+! 	{
+! 		if (q->q_alias == NULL)
+! 			addheader("to", q->q_paddr, ee);
+  	}
+  
+  	(void) sprintf(buf, "Returned mail: %s", msg);
+  	addheader("subject", buf, ee);
+--- 398,447 ----
+  	define('g', "\001f", CurEnv);
+  	ee = newenvelope(&errenvelope);
+  	define('a', "\001b", ee);
++ 	/* undefine sending host & proto for error msg */
++ 	define('s', MACNULL, ee);
++ 	define('r', MACNULL, ee);
+  	ee->e_puthdr = putheader;
+  	ee->e_putbody = errbody;
+  	ee->e_flags |= EF_RESPONSE;
+  	ee->e_sendqueue = returnq;
+  	openxscript(ee);
+! 
+! 	/* put the recipients in the to: header (cc: for PostMasterCopy) */
+! 	cc = NULL;
+! 	to = buf;
+! 	for (q = returnq; q != NULL; q = q->q_next) {
+! 	    if (q->q_alias == NULL)
+! 		if (strcmp(q->q_paddr, PostMasterCopy) == 0)
+! 		    cc = q->q_paddr;
+! 		else {
+! 		    /* Not Postmaster; already on the To: line? */
+! 		    for (p = returnq; p != q; p = p->q_next)
+! 			if (strcasecmp(p->q_paddr, q->q_paddr) == 0)
+! 			    break;
+! 		    if (p == q) {
+! 			/* No, add it */
+! 			*to++ = ',';
+! 			*to++ = ' ';
+! 
+! 			len = strlen(q->q_paddr);
+! 			if (q->q_paddr[0] == '<' && q->q_paddr[len-1] == '>' &&
+! 			    q->q_paddr[1] != '@') {
+! 			    /* Remove angle brackets; they aren't needed */
+! 			    strncpy(to, q->q_paddr+1, len-2);
+! 			    to += len-2;
+! 			} else {
+! 			    strcpy(to, q->q_paddr, len);
+! 			    to += len;
+! 			}
+! 		    }
+! 		}
+  	}
++ 	*to = '\0';
++ 	if (to != buf)
++ 	    addheader("to", buf+2, ee);
++ 	if (cc)
++ 	    addheader("cc", cc, ee);
+  
+  	(void) sprintf(buf, "Returned mail: %s", msg);
+  	addheader("subject", buf, ee);
